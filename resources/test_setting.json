@@ -1,7 +1,17 @@
 [
   {
-    "regexpLeft": "make ",
+    "regexpLeft": "^ *make ",
     "regexpRight": "",
     "command": "cat Makefile"
+  },
+  {
+    "regexpLeft": "^ *cd ",
+    "regexpRight": "",
+    "command": "ls -alh1"
+  },
+  {
+    "regexpLeft": "^ *vim ",
+    "regexpRight": "",
+    "command": "find . -maxdepth 2"
   }
 ]
