@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"log"
 	"os"
 
 	pmy "github.com/relastle/pmy/src"
@@ -22,6 +23,9 @@ func main() {
 	flag.StringVar(&bufferLeft, "bufferLeft", "", "")
 	flag.StringVar(&bufferRight, "bufferRight", "", "")
 	flag.Parse()
+
+	log.Print(bufferLeft)
+	log.Print(bufferRight)
 
 	cfgPath, ok := os.LookupEnv(PmyConfigEnvVarName)
 	if !ok {
