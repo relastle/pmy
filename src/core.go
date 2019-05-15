@@ -1,7 +1,15 @@
-package anypm
+package pmy
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
-func Run() {
-	fmt.Println("Hello")
+// Run runs the main process of pmy
+func Run(cfgPath string) {
+	rules, err := loadAllRules(cfgPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(rules)
 }

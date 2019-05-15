@@ -1,7 +1,7 @@
 package main
 
-import anypm "github.com/relastle/anypm/src"
+import pmy "github.com/relastle/pmy/src"
 
 func main() {
-	anypm.Run()
+	pmy.Run("./resources/test_setting.json")
 }
