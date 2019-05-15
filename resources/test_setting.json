@@ -1,16 +1,24 @@
 [
   {
-    "regexpLeft": "^ *make ",
+    "regexpLeft": "^make ",
     "regexpRight": "",
     "command": "cat Makefile"
   },
   {
-    "regexpLeft": "^ *cd ",
+    "regexpLeft": "^cd ",
     "regexpRight": "",
+    "command": "ls 1"
+  },
+  {
+    "regexpLeft": "git +add +",
     "command": "ls -alh1"
   },
   {
-    "regexpLeft": "^ *vim ",
+    "regexpLeft": "^export ",
+    "command": "printenv"
+  },
+  {
+    "regexpLeft": "^(vi||vim|nvim) ",
     "regexpRight": "",
     "command": "find . -maxdepth 2"
   }
