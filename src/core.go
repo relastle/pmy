@@ -18,7 +18,7 @@ func Run(cfgPath string, bufferLeft string, bufferRight string) {
 		log.Fatal(err)
 	}
 	if len(resRules) == 0 {
-		fmt.Println("")
+		fmt.Print("")
 		return
 	}
 	rule := resRules[0]
