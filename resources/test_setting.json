@@ -1,0 +1,7 @@
+[
+  {
+    "regexpLeft": "make ",
+    "regexpRight": "",
+    "command": "cat Makefile"
+  }
+]
