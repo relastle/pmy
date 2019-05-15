@@ -5,13 +5,12 @@
     "command": "cat Makefile"
   },
   {
-    "regexpLeft": "^cd ",
-    "regexpRight": "",
-    "command": "ls 1"
+    "regexpLeft": "^cd +(?P<path>.+)$",
+    "command": "ls -1 ${path}"
   },
   {
     "regexpLeft": "git +add +",
-    "command": "ls -alh1"
+    "command": "git status --short | git status -s | grep -Ev \"^(A|C|D|M|R|T|U|X|B)\" | cut -c4-"
   },
   {
     "regexpLeft": "^export ",
@@ -19,7 +18,6 @@
   },
   {
     "regexpLeft": "^(vi||vim|nvim) ",
-    "regexpRight": "",
     "command": "find . -maxdepth 2"
   }
 ]
