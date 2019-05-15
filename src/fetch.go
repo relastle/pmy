@@ -1,9 +1,6 @@
 package pmy
 
-import (
-	"log"
-	"regexp"
-)
+import "log"
 
 type ruleFetcher interface {
 	// GetCommand returns the command to be executed
@@ -42,10 +39,16 @@ func (cg *ruleFetcherImpl) fetch(
 ) (pmyRules, error) {
 	resRules := pmyRules{}
 	for _, rule := range rules {
-		if matched, err := regexp.Match(rule.RegexpLeft, []byte(bufferLeft)); matched {
-			resRules = append(resRules, rule)
-		} else if err != nil {
+		ok, err := (&rule).match(
+			bufferLeft,
+			bufferRight,
+		)
+		if err != nil {
 			log.Fatal(err)
+			continue
+		}
+		if ok {
+			resRules = append(resRules, rule)
 		}
 	}
 	return resRules, nil
