@@ -1,30 +1,52 @@
 package pmy
 
-type commandGetter interface {
+import (
+	"log"
+	"regexp"
+)
+
+type ruleFetcher interface {
 	// GetCommand returns the command to be executed
 	// given the
-	GetCommand(
+	fetch(
+		rules pmyRules,
 		bufferLeft string,
 		bufferRight string,
-	) string
+	) (pmyRules, error)
 }
 
-type commandGetterMock struct {
+// Mock of rruleFetcher
+type ruleFetcherMock struct {
 }
 
-func (cg *commandGetterMock) GetCommand(
+func (cg *ruleFetcherMock) fetch(
+	rules pmyRules,
 	bufferLeft string,
 	bufferRight string,
-) string {
-	return "ls"
+) (pmyRules, error) {
+	rule := pmyRule{
+		RegexpLeft:  "make ",
+		RegexpRight: "",
+		Command:     "ls",
+	}
+	return pmyRules{rule}, nil
 }
 
-type commandGetterImpl struct {
+type ruleFetcherImpl struct {
 }
 
-func (cg *commandGetterImpl) GetCommand(
+func (cg *ruleFetcherImpl) fetch(
+	rules pmyRules,
 	bufferLeft string,
 	bufferRight string,
-) string {
-	return ""
+) (pmyRules, error) {
+	resRules := pmyRules{}
+	for _, rule := range rules {
+		if matched, err := regexp.Match(rule.RegexpLeft, []byte(bufferLeft)); matched {
+			resRules = append(resRules, rule)
+		} else if err != nil {
+			log.Fatal(err)
+		}
+	}
+	return resRules, nil
 }
