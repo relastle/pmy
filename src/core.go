@@ -22,6 +22,6 @@ func Run(cfgPath string, bufferLeft string, bufferRight string) {
 		return
 	}
 	rule := resRules[0]
-	fmt.Print(rule.Command)
+	fmt.Print(rule.CommandExpanded)
 	return
 }
