@@ -15,6 +15,7 @@ type replaceMap map[string]string
 // Rule is a struct representing one rule
 type pmyRule struct {
 	Matcher         string `json:"matcher"`
+	Description     string `json:"description"`
 	RegexpLeft      string `json:"regexpLeft"`
 	RegexpRight     string `json:"regexpRight"`
 	Command         string `json:"command"`
@@ -57,11 +58,10 @@ func (rule *pmyRule) match(bufferLeft string, bufferRight string) (bool, error) 
 	}
 	rule.CommandExpanded = rule.Command
 	for name, value := range paramMap {
-		rule.CommandExpanded = strings.Replace(
+		rule.CommandExpanded = strings.ReplaceAll(
 			rule.CommandExpanded,
-			fmt.Sprintf("${%v}", name),
+			fmt.Sprintf("<%v>", name),
 			value,
-			-1,
 		)
 	}
 	log.Println(paramMap)

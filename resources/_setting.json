@@ -1,0 +1,6 @@
+[
+  {
+    "regexpLeft": "^cd +(?P<dir>.*?)(?P<base>[^/]+?)$",
+    "command": "\\ls --indicator-style=slash -1 <dir> | egrep '^<base>.*/$'"
+  }
+]

@@ -1,12 +1,16 @@
 [
   {
+    "regexpLeft": "^cd +(?P<path>.*)$",
+    "command": "\\ls --indicator-style=slash -1 <path> | egrep '/$'"
+  },
+  {
+    "regexpLeft": "^python.* ",
+    "command": "\\find . | egrep py$"
+  },
+  {
     "regexpLeft": "^make ",
     "regexpRight": "",
     "command": "cat Makefile"
-  },
-  {
-    "regexpLeft": "^cd +(?P<path>.+)$",
-    "command": "ls -1 ${path}"
   },
   {
     "regexpLeft": "git +add +",
