@@ -1,7 +1,6 @@
 package pmy
 
 import (
-	"fmt"
 	"log"
 	"os/exec"
 )
@@ -15,8 +14,14 @@ func checkJq() bool {
 	return true
 }
 
+// Input represents input from zsh
+type Input struct {
+	BufferLeft  string
+	BufferRight string
+}
+
 // Run runs the main process of pmy
-func Run(cfgPath string, bufferLeft string, bufferRight string) {
+func Run(cfgPath string, in Input) string {
 
 	// Load rules from config file
 	rules, err := loadAllRules(cfgPath)
@@ -27,18 +32,20 @@ func Run(cfgPath string, bufferLeft string, bufferRight string) {
 	// Fetch rule using LBUFFER and RBUFFER
 	var fetcher ruleFetcher
 	fetcher = &ruleFetcherImpl{}
-	resRules, err := fetcher.fetch(rules, bufferLeft, bufferRight)
+	resRules, err := fetcher.fetch(
+		rules,
+		in.BufferLeft,
+		in.BufferRight,
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 	if len(resRules) == 0 {
-		fmt.Print("")
-		return
+		return ""
 	}
 	rule := resRules[0]
 	out := newPmyOutFromRule(&rule)
 
 	// Ouput result
-	fmt.Println(out.serialize())
-	return
+	return out.serialize()
 }

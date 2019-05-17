@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 
 	pmy "github.com/relastle/pmy/src"
@@ -27,9 +28,12 @@ func main() {
 	if !ok {
 		cfgPath = DefaultPmyConfigPath
 	}
-	pmy.Run(
+	out := pmy.Run(
 		cfgPath,
-		bufferLeft,
-		bufferRight,
+		pmy.Input{
+			BufferLeft:  bufferLeft,
+			BufferRight: bufferRight,
+		},
 	)
+	fmt.Println(out)
 }
