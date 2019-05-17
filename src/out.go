@@ -31,10 +31,11 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 func expand(org string, paramMap map[string]string) string {
 	res := org
 	for name, value := range paramMap {
-		res = strings.ReplaceAll(
+		res = strings.Replace(
 			res,
 			fmt.Sprintf("<%v>", name),
 			value,
+			-1,
 		)
 	}
 	return res

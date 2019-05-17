@@ -57,15 +57,17 @@ func (rule *pmyRule) match(bufferLeft string, bufferRight string) (bool, error) 
 			paramMap[name] = matches[i]
 		}
 	}
-	rule.BufferLeft = strings.ReplaceAll(
+	rule.BufferLeft = strings.Replace(
 		rule.BufferLeft,
 		"[]",
 		bufferLeft,
+		-1,
 	)
-	rule.BufferRight = strings.ReplaceAll(
+	rule.BufferRight = strings.Replace(
 		rule.BufferRight,
 		"[]",
 		bufferRight,
+		-1,
 	)
 	rule.paramMap = paramMap
 	return true, nil
