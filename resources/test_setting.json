@@ -1,11 +1,15 @@
 [
   {
     "regexpLeft": "^cd +(?P<path>.*)$",
-    "command": "\\ls --indicator-style=slash -1 <path> | egrep '/$'"
+    "command": "\\ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'"
   },
   {
     "regexpLeft": "^python.* ",
     "command": "\\find . | egrep py$"
+  },
+  {
+    "regexpLeft": "^go ",
+    "command": "\\find . | egrep go$"
   },
   {
     "regexpLeft": "^make ",
@@ -19,6 +23,10 @@
   {
     "regexpLeft": "^export ",
     "command": "printenv"
+  },
+  {
+    "regexpLeft": "ls.for",
+    "command": "echo 'for file in $(ls); do something; done'"
   },
   {
     "regexpLeft": "^(vi||vim|nvim) ",
