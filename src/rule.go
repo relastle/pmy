@@ -2,9 +2,7 @@ package pmy
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"regexp"
 	"strings"
@@ -14,12 +12,14 @@ type replaceMap map[string]string
 
 // Rule is a struct representing one rule
 type pmyRule struct {
-	Matcher         string `json:"matcher"`
-	Description     string `json:"description"`
-	RegexpLeft      string `json:"regexpLeft"`
-	RegexpRight     string `json:"regexpRight"`
-	Command         string `json:"command"`
-	CommandExpanded string
+	Matcher     string `json:"matcher"`
+	Description string `json:"description"`
+	RegexpLeft  string `json:"regexpLeft"`
+	RegexpRight string `json:"regexpRight"`
+	Command     string `json:"command"`
+	BufferLeft  string `json:"bufferLeft"`
+	BufferRight string `json:"bufferRight"`
+	paramMap    map[string]string
 }
 
 type pmyRules []pmyRule
@@ -56,14 +56,16 @@ func (rule *pmyRule) match(bufferLeft string, bufferRight string) (bool, error) 
 			paramMap[name] = matches[i]
 		}
 	}
-	rule.CommandExpanded = rule.Command
-	for name, value := range paramMap {
-		rule.CommandExpanded = strings.ReplaceAll(
-			rule.CommandExpanded,
-			fmt.Sprintf("<%v>", name),
-			value,
-		)
-	}
-	log.Println(paramMap)
+	rule.BufferLeft = strings.ReplaceAll(
+		rule.BufferLeft,
+		"[]",
+		bufferLeft,
+	)
+	rule.BufferRight = strings.ReplaceAll(
+		rule.BufferRight,
+		"[]",
+		bufferRight,
+	)
+	rule.paramMap = paramMap
 	return true, nil
 }
