@@ -1,0 +1,9 @@
+[
+    {
+      "name": "num",
+      "regexpLeft": "^git.*add.* ",
+      "regexpRight": "t.*e.*s.*t",
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    }
+]
