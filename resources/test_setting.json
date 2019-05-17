@@ -1,35 +1,51 @@
 [
   {
     "regexpLeft": "^cd +(?P<path>.*)$",
-    "command": "\\ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'"
+    "command": "\\ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
+    "bufferLeft": "[]",
+    "bufferRight": "[]"
   },
   {
     "regexpLeft": "^python.* ",
-    "command": "\\find . | egrep py$"
+    "command": "\\find . | egrep py$",
+    "bufferLeft": "[]",
+    "bufferRight": "[]"
   },
   {
     "regexpLeft": "^go ",
-    "command": "\\find . | egrep go$"
+    "command": "\\find . | egrep go$",
+    "bufferLeft": "[]",
+    "bufferRight": "[]"
   },
   {
     "regexpLeft": "^make ",
     "regexpRight": "",
-    "command": "cat Makefile"
+    "command": "cat Makefile",
+    "bufferLeft": "[]",
+    "bufferRight": "[]"
   },
   {
     "regexpLeft": "git +add +",
-    "command": "git status --short | git status -s | grep -Ev \"^(A|C|D|M|R|T|U|X|B)\" | cut -c4-"
+    "command": "git status --short | git status -s | grep -Ev \"^(A|C|D|M|R|T|U|X|B)\" | cut -c4-",
+    "bufferLeft": "[]",
+    "bufferRight": "[]"
   },
   {
     "regexpLeft": "^export ",
-    "command": "printenv"
+    "command": "printenv",
+    "bufferLeft": "[]",
+    "bufferRight": "[]"
   },
   {
-    "regexpLeft": "ls.for",
-    "command": "echo 'for file in $(ls); do something; done'"
+    "regexpLeft": "(?P<cmd>.+)\\.for",
+    "command": "echo ''",
+    "bufferLeft": "for x in $(<cmd>); do ",
+    "bufferRight": "; done"
   },
   {
     "regexpLeft": "^(vi||vim|nvim) ",
-    "command": "find . -maxdepth 2"
+    "command": "find . -maxdepth 2",
+    "bufferLeft": "[]",
+    "bufferRight": "[]"
   }
 ]
