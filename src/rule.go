@@ -12,6 +12,7 @@ type replaceMap map[string]string
 
 // Rule is a struct representing one rule
 type pmyRule struct {
+	Name        string `json:"name"`
 	Matcher     string `json:"matcher"`
 	Description string `json:"description"`
 	RegexpLeft  string `json:"regexpLeft"`
