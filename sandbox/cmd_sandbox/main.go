@@ -13,7 +13,9 @@ func toLines(bs []byte) []string {
 }
 
 func main() {
-	out, err := exec.Command("ls", "-la").Output()
+	name := "ls"
+	args := []string{"-la"}
+	out, err := exec.Command(name, args...).Output()
 
 	if err != nil {
 		fmt.Println(err)
