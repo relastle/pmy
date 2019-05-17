@@ -1,6 +1,6 @@
 # test environment path variable
 export PATH="${GOPATH}/src/github.com/relastle/pmy:${PATH}"
-export PMY_CONFIG_PATH="${GOPATH}/src/github.com/relastle/pmy/resources/pmy_config.json"
+export PMY_CONFIG_PATH="${GOPATH}/src/github.com/relastle/pmy/resources/pmy_rules.json"
 
 pmy-widget() {
     local buffer_left=${LBUFFER}
