@@ -7,7 +7,7 @@
     },
     {
       "regexpLeft": "^(python|python|python3|pypy|pypy3) ",
-      "command": "\\find . | egrep py$",
+      "command": "\\find . | egrep '.py$'",
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },

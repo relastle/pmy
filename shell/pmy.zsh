@@ -6,9 +6,12 @@ pmy-widget() {
     local buffer_left=${LBUFFER}
     local buffer_right=${RBUFFER}
     local out=$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)
+    # local out=$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right})
+    echo $out
     local lbuffer=$(echo ${out} | awk -F ':::' '{print $1}')
     local rbuffer=$(echo ${out} | awk -F ':::' '{print $2}')
     local cmd=$(echo ${out} | awk -F ':::' '{print $3}')
+    # echo $cmd
     if [[ -z $out  ]] then
         echo "No rule was matched"
     else

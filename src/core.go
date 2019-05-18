@@ -47,5 +47,6 @@ func Run(cfgPath string, in Input) string {
 	out := newPmyOutFromRule(&rule)
 
 	// Ouput result
+	log.Print(out)
 	return out.serialize()
 }
