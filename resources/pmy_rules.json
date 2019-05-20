@@ -1,19 +1,19 @@
 [
     {
       "regexpLeft": "^(vi||vim|nvim) ",
-      "command": "find . -maxdepth 5",
+      "command": "command find . -maxdepth 4",
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },
     {
       "regexpLeft": "^(python|python|python3|pypy|pypy3) ",
-      "command": "\\find . | egrep '.py$'",
+      "command": "command find . -mindepth 1 | egrep '.py$'",
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },
     {
       "regexpLeft": "^cd +(?P<path>.*)$",
-      "command": "\\ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
+      "command": "command ls -a ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },
@@ -22,5 +22,11 @@
       "command": "echo ''",
       "bufferLeft": "for x in $(<cmd>); do ",
       "bufferRight": "; done"
+    },
+    {
+      "regexpLeft": " +(?P<path>.*)/$",
+      "command": "command ls -a ${PMY_LS_OPTION} -1 <path>",
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
     }
 ]
