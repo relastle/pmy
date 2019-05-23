@@ -13,7 +13,7 @@
     },
     {
       "regexpLeft": "^cd +(?P<path>.*)$",
-      "command": "command ls -a ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
+      "command": "command ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },
