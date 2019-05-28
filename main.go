@@ -14,7 +14,12 @@ const (
 	DefaultPmyConfigPath = ""
 	// PmyConfigEnvVarName defiens the variable name
 	// You should export this value
-	PmyConfigEnvVarName = "PMY_CONFIG_PATH"
+	PmyConfigEnvVarName string = "PMY_CONFIG_PATH"
+
+	// DefaultPmyDelimiter defiens the default delimiter
+	DefaultPmyDelimiter = ":::"
+	// PmyDelimiterEnvVarName defiens the variable name for delimiter
+	PmyDelimiterEnvVarName string = "PMY_DELIMITER"
 )
 
 func main() {
@@ -28,6 +33,11 @@ func main() {
 	if !ok {
 		cfgPath = DefaultPmyConfigPath
 	}
+	delimiter, ok := os.LookupEnv(PmyDelimiterEnvVarName)
+	if !ok {
+		delimiter = DefaultPmyDelimiter
+	}
+
 	out := pmy.Run(
 		cfgPath,
 		pmy.Input{
