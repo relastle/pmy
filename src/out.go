@@ -6,8 +6,6 @@ import (
 	"strings"
 )
 
-const delimiter string = ":::"
-
 // pmyOut represents Output of pmy against zsh routine.
 // This struct has strings exported to shell, whose embedded
 // variables are all expanded.
@@ -54,6 +52,6 @@ func (out *pmyOut) toJSON() string {
 	return str
 }
 
-func (out *pmyOut) serialize() string {
-	return out.BufferLeft + delimiter + out.BufferRight + delimiter + out.Command
-}
+// func (out *pmyOut) serialize() string {
+//     return out.BufferLeft + delimiter + out.BufferRight + delimiter + out.Command
+// }
