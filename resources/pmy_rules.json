@@ -18,7 +18,13 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "(?P<cmd>.+)\\.for",
+      "regexpLeft": "(?P<num>[1-9][0-9]+).for$",
+      "command": "echo ''",
+      "bufferLeft": "for x in $(seq 1 <num>); do ",
+      "bufferRight": "; done"
+    },
+    {
+      "regexpLeft": "(?P<cmd>.+)\\.for$",
       "command": "echo ''",
       "bufferLeft": "for x in $(<cmd>); do ",
       "bufferRight": "; done"
