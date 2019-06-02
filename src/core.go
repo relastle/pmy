@@ -20,7 +20,9 @@ type Input struct {
 	BufferRight string
 }
 
-// Run runs the main process of pmy
+// Run runs the main process of pmy.
+// It returns zsh statement, where resulting values will
+// be passed into zsh variables.
 func Run(cfgPath string, in Input) string {
 
 	// Load rules from config file
@@ -44,9 +46,9 @@ func Run(cfgPath string, in Input) string {
 		return ""
 	}
 	rule := resRules[0]
-	out := newPmyOutFromRule(&rule)
+	pmyOut := newPmyOutFromRule(&rule)
 
 	// Ouput result
 	// log.Print(out)
-	return out.serialize()
+	return pmyOut.toShellVariables()
 }
