@@ -33,17 +33,18 @@ func main() {
 	if !ok {
 		cfgPath = DefaultPmyConfigPath
 	}
-	delimiter, ok := os.LookupEnv(PmyDelimiterEnvVarName)
-	if !ok {
-		delimiter = DefaultPmyDelimiter
-	}
 
-	out := pmy.Run(
+	// delimiter, ok := os.LookupEnv(PmyDelimiterEnvVarName)
+	// if !ok {
+	//     delimiter = DefaultPmyDelimiter
+	// }
+
+	outString := pmy.Run(
 		cfgPath,
 		pmy.Input{
 			BufferLeft:  bufferLeft,
 			BufferRight: bufferRight,
 		},
 	)
-	fmt.Println(out)
+	fmt.Println(outString)
 }

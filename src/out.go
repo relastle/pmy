@@ -6,6 +6,12 @@ import (
 	"strings"
 )
 
+const (
+	shellBufferLeftVariableName  = "__pmy_out_buffer_left"
+	shellBufferRightVariableName = "__pmy_out_buffer_right"
+	shellCommandVariableName     = "__pmy_out_command"
+)
+
 // pmyOut represents Output of pmy against zsh routine.
 // This struct has strings exported to shell, whose embedded
 // variables are all expanded.
@@ -24,6 +30,16 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	out.BufferRight = rule.BufferRight
 	out.expandAll(rule.paramMap)
 	return out
+}
+
+// toShellVariables create zsh statement where pmyOut's attributes are
+// passed into shell variables
+func (out *pmyOut) toShellVariables() string {
+	res := ""
+	res += fmt.Sprintf("%v='%v';", shellBufferLeftVariableName, out.BufferLeft)
+	res += fmt.Sprintf("%v='%v';", shellBufferRightVariableName, out.BufferRight)
+	res += fmt.Sprintf("%v='%v';", shellCommandVariableName, out.Command)
+	return res
 }
 
 func expand(org string, paramMap map[string]string) string {
