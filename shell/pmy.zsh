@@ -6,7 +6,7 @@ export PMY_DELIMITER=':::'
 pmy-widget() {
     local buffer_left=${LBUFFER}
     local buffer_right=${RBUFFER}
-    local out=$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)
+    local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)"
     if [[ -z $out  ]] then
         echo "No rule was matched"
     else
