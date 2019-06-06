@@ -30,6 +30,12 @@
       "bufferRight": "; done"
     },
     {
+      "regexpLeft": "git (co|checkout) *$",
+      "command": "git branch --format=\"%(refname:short)\"",
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
       "regexpLeft": " +(?P<path>.*)/$",
       "command": "command ls -a ${PMY_LS_OPTION} -1 <path>",
       "bufferLeft": "[]",
