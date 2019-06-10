@@ -9,3 +9,7 @@ clean:
 .PHONY: bench
 bench:
 	go test -run=XXX -bench=.
+
+.PHONY: lint
+lint:
+	golint ./main.go
