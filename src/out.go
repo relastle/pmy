@@ -10,6 +10,7 @@ const (
 	shellBufferLeftVariableName  = "__pmy_out_buffer_left"
 	shellBufferRightVariableName = "__pmy_out_buffer_right"
 	shellCommandVariableName     = "__pmy_out_command"
+	shellSourcesVariableName     = "__pmy_out_sources"
 )
 
 // pmyOut represents Output of pmy against zsh routine.
@@ -18,14 +19,14 @@ const (
 type pmyOut struct {
 	BufferLeft  string `json:"bufferLeft"`
 	BufferRight string `json:"bufferRight"`
-	Command     string `json:"command"`
+	Sources     string `json:"source"`
 }
 
 // newPmyOutFromRule create new pmyOut from rule
 // which matches query and already has paramMap
 func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	out := pmyOut{}
-	out.Command = rule.Command
+	out.Sources, _ = rule.CmdGroups.GetSources()
 	out.BufferLeft = rule.BufferLeft
 	out.BufferRight = rule.BufferRight
 	out.expandAll(rule.paramMap)
@@ -38,7 +39,7 @@ func (out *pmyOut) toShellVariables() string {
 	res := ""
 	res += fmt.Sprintf("%v='%v';", shellBufferLeftVariableName, out.BufferLeft)
 	res += fmt.Sprintf("%v='%v';", shellBufferRightVariableName, out.BufferRight)
-	res += fmt.Sprintf("%v='%v';", shellCommandVariableName, out.Command)
+	res += fmt.Sprintf("%v='%v';", shellSourcesVariableName, out.Sources)
 	return res
 }
 
@@ -58,7 +59,6 @@ func expand(org string, paramMap map[string]string) string {
 func (out *pmyOut) expandAll(paramMap map[string]string) {
 	out.BufferLeft = expand(out.BufferLeft, paramMap)
 	out.BufferRight = expand(out.BufferRight, paramMap)
-	out.Command = expand(out.Command, paramMap)
 	return
 }
 
