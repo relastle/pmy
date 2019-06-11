@@ -21,12 +21,7 @@ func (cg *ruleFetcherMock) fetch(
 	bufferLeft string,
 	bufferRight string,
 ) (pmyRules, error) {
-	rule := pmyRule{
-		RegexpLeft:  "make ",
-		RegexpRight: "",
-		Command:     "ls",
-	}
-	return pmyRules{rule}, nil
+	return nil, nil
 }
 
 type ruleFetcherImpl struct {
