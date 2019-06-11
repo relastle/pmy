@@ -1,0 +1,17 @@
+[
+    {
+      "regexpLeft": "^(vi||vim|nvim) ",
+      "cmdGroups": [
+        {
+          "tag": "go",
+          "stmt": "find . -mindepth 2 -maxdepth 2 | egrep .go$ | grep -v test"
+        },
+        {
+          "tag": "go test",
+          "stmt": "find . -mindepth 2 -maxdepth 2 | egrep .go$ | grep test"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    }
+]
