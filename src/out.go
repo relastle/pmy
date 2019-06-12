@@ -25,32 +25,25 @@ type afterCmd struct {
 // This struct has strings exported to shell, whose embedded
 // variables are all expanded.
 type pmyOut struct {
-	BufferLeft  string `json:"bufferLeft"`
-	BufferRight string `json:"bufferRight"`
-	Sources     string `json:"source"`
-	afterCmds   []*afterCmd
+	bufferLeft  string
+	bufferRight string
+	cmdGroups   CmdGroups
+	sources     string
 }
 
 // newPmyOutFromRule create new pmyOut from rule
 // which matches query and already has paramMap
 func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	out := pmyOut{}
-	// pass sources
-	out.Sources, _ = rule.CmdGroups.GetSources()
 	// pass resulting buffer informaiton
-	out.BufferLeft = rule.BufferLeft
-	out.BufferRight = rule.BufferRight
+	out.bufferLeft = rule.BufferLeft
+	out.bufferRight = rule.BufferRight
+	// pass cmdGroups
+	out.cmdGroups = rule.CmdGroups
 	// expand all parameters
 	out.expandAll(rule.paramMap)
-	// set after commnad
-	out.afterCmds = []*afterCmd{}
-	for _, cg := range rule.CmdGroups {
-		ac := &afterCmd{
-			tag:   cg.Tag,
-			after: cg.After,
-		}
-		out.afterCmds = append(out.afterCmds, ac)
-	}
+	// get sources
+	out.sources, _ = out.cmdGroups.GetSources()
 	return out
 }
 
@@ -58,14 +51,14 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 // passed into shell variables
 func (out *pmyOut) toShellVariables() string {
 	res := ""
-	res += fmt.Sprintf("%v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.BufferLeft, "'"))
-	res += fmt.Sprintf("%v=$'%v';", shellBufferRightVariableName, utils.Escape(out.BufferRight, "'"))
-	res += fmt.Sprintf("%v=$'%v';", shellSourcesVariableName, utils.Escape(out.Sources, "'"))
-	for _, ac := range out.afterCmds {
+	res += fmt.Sprintf("%v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.bufferLeft, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellBufferRightVariableName, utils.Escape(out.bufferRight, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellSourcesVariableName, utils.Escape(out.sources, "'"))
+	for _, cg := range out.cmdGroups {
 		res += fmt.Sprintf(
 			"%v=$'%v';",
-			fmt.Sprintf(shellAfterVariableName, ac.tag),
-			utils.Escape(ac.after, "'"),
+			fmt.Sprintf(shellAfterVariableName, cg.Tag),
+			utils.Escape(cg.After, "'"),
 		)
 	}
 	return res
@@ -85,8 +78,11 @@ func expand(org string, paramMap map[string]string) string {
 }
 
 func (out *pmyOut) expandAll(paramMap map[string]string) {
-	out.BufferLeft = expand(out.BufferLeft, paramMap)
-	out.BufferRight = expand(out.BufferRight, paramMap)
+	out.bufferLeft = expand(out.bufferLeft, paramMap)
+	out.bufferRight = expand(out.bufferRight, paramMap)
+	for _, cg := range out.cmdGroups {
+		cg.Stmt = expand(cg.Stmt, paramMap)
+	}
 	return
 }
 
