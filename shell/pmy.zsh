@@ -11,7 +11,6 @@ pmy-widget() {
 
     # get output from pmy
     local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)"
-    echo $out
 
     if [[ -z $out  ]] then
         echo "No rule was matched"
