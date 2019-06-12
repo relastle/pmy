@@ -17,6 +17,18 @@
       "bufferRight": "[]"
     },
     {
+      "regexpLeft": "git merge *$",
+      "cmdGroups": [
+        {
+          "tag": "🌱:branch",
+          "stmt": "git branch --format=\"%(refname:short)\"",
+          "after": "awk '{print $0}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
       "regexpLeft": "^(vi|vim|nvim) ",
       "cmdGroups": [
         {
