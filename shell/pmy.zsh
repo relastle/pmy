@@ -26,10 +26,6 @@ pmy-widget() {
         # get after command
         local after_cmd_variable="__pmy_out_${tag}_after"
         local after_cmd=$(eval echo \$$after_cmd_variable)
-        echo ${tag}
-        echo ${after_cmd_variable}
-        echo ${fzf_res_rest}
-        echo ${after_cmd}
         local res=$(echo ${fzf_res_rest} | eval ${after_cmd})
         LBUFFER="${__pmy_out_buffer_left}${res}"
         RBUFFER="${__pmy_out_buffer_right}"
