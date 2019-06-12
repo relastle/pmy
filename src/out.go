@@ -13,7 +13,13 @@ const (
 	shellBufferRightVariableName = "__pmy_out_buffer_right"
 	shellCommandVariableName     = "__pmy_out_command"
 	shellSourcesVariableName     = "__pmy_out_sources"
+	shellAfterVariableName       = "__pmy_out_%s_after"
 )
+
+type afterCmd struct {
+	tag   string
+	after string
+}
 
 // pmyOut represents Output of pmy against zsh routine.
 // This struct has strings exported to shell, whose embedded
@@ -22,16 +28,29 @@ type pmyOut struct {
 	BufferLeft  string `json:"bufferLeft"`
 	BufferRight string `json:"bufferRight"`
 	Sources     string `json:"source"`
+	afterCmds   []*afterCmd
 }
 
 // newPmyOutFromRule create new pmyOut from rule
 // which matches query and already has paramMap
 func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	out := pmyOut{}
+	// pass sources
 	out.Sources, _ = rule.CmdGroups.GetSources()
+	// pass resulting buffer informaiton
 	out.BufferLeft = rule.BufferLeft
 	out.BufferRight = rule.BufferRight
+	// expand all parameters
 	out.expandAll(rule.paramMap)
+	// set after commnad
+	out.afterCmds = []*afterCmd{}
+	for _, cg := range rule.CmdGroups {
+		ac := &afterCmd{
+			tag:   cg.Tag,
+			after: cg.After,
+		}
+		out.afterCmds = append(out.afterCmds, ac)
+	}
 	return out
 }
 
@@ -42,6 +61,13 @@ func (out *pmyOut) toShellVariables() string {
 	res += fmt.Sprintf("%v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.BufferLeft, "'"))
 	res += fmt.Sprintf("%v=$'%v';", shellBufferRightVariableName, utils.Escape(out.BufferRight, "'"))
 	res += fmt.Sprintf("%v=$'%v';", shellSourcesVariableName, utils.Escape(out.Sources, "'"))
+	for _, ac := range out.afterCmds {
+		res += fmt.Sprintf(
+			"%v=$'%v';",
+			fmt.Sprintf(shellAfterVariableName, ac.tag),
+			utils.Escape(ac.after, "'"),
+		)
+	}
 	return res
 }
 

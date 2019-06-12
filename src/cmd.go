@@ -34,6 +34,7 @@ func (cu *CmdUnit) init() error {
 type CmdGroup struct {
 	Tag      string    `json:"tag"`
 	Stmt     string    `json:"stmt"`
+	After    string    `json:"after"`
 	CmdUnits []CmdUnit `json:"cmdUnits"`
 	Lines    []string  `json:"lines"`
 }
