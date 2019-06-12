@@ -3,12 +3,12 @@
       "regexpLeft": "git (co|checkout) *$",
       "cmdGroups": [
         {
-          "tag": "branch",
+          "tag": "🌱:branch",
           "stmt": "git branch --format=\"%(refname:short)\"",
           "after": "awk '{print $0}'"
         },
         {
-          "tag": "commit",
+          "tag": "🍺:commit",
           "stmt": "git log --oneline -10",
           "after": "awk '{print $1}'"
         }

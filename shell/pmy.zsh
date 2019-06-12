@@ -11,7 +11,6 @@ pmy-widget() {
 
     # get output from pmy
     local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)"
-    # echo $out
 
     if [[ -z $out  ]] then
         echo "No rule was matched"
@@ -21,7 +20,10 @@ pmy-widget() {
         # get result from fzf
         local fzf_res=$(echo "${__pmy_out_sources}" | fzf -0 -1)
         # get tag
-        local tag=$(echo ${fzf_res} | awk '{print $1}')
+        local tag="$(echo -n ${fzf_res} | awk 'BEGIN{ORS = ""}{print $1}' | base64)"
+        tag=${tag/\//a_a} # original escape of base64 `/`
+        tag=${tag/+/b_b} # original escape of base64 `+`
+        tag=${tag/=/c_c} # original escape of base64 `+`
         # get rest statement
         local fzf_res_rest=$(echo ${fzf_res} | awk '{for(i=2;i<NF;i++){printf("%s%s",$i,OFS=" ")}print $NF}')
         # get after command
