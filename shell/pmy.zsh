@@ -21,9 +21,10 @@ pmy-widget() {
         local fzf_res=$(echo "${__pmy_out_sources}" | fzf -0 -1)
         # get tag
         local tag="$(echo -n ${fzf_res} | awk 'BEGIN{ORS = ""}{print $1}' | base64)"
-        tag=${tag/\//a_a} # original escape of base64 `/`
-        tag=${tag/+/b_b} # original escape of base64 `+`
-        tag=${tag/=/c_c} # original escape of base64 `+`
+        tag=${tag//\//a_a} # original escape of base64 `/`
+        tag=${tag//+/b_b} # original escape of base64 `+`
+        tag=${tag//=/c_c} # original escape of base64 `+`
+        echo ${tag}
         # get rest statement
         local fzf_res_rest=$(echo ${fzf_res} | awk '{for(i=2;i<NF;i++){printf("%s%s",$i,OFS=" ")}print $NF}')
         # get after command
