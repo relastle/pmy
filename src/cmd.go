@@ -11,8 +11,7 @@ import (
 // CmdUnit represents a single command that does not have
 // pipe operation or have shell environment embeddings
 type CmdUnit struct {
-	Stmt string `json:"stmt"`
-	// Cmd  string   `json:"cmd"`
+	Stmt string   `json:"stmt"`
 	Args []string `json:"args"`
 }
 
