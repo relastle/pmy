@@ -1,6 +1,7 @@
 package pmy
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -47,6 +48,16 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	return out
 }
 
+// Encode with base64 and then replace `/` and `+`
+// into `a_a` and `b_b` respectively.
+func encodeTag(tag string) string {
+	sEnc := base64.StdEncoding.EncodeToString([]byte(tag))
+	sEnc = strings.ReplaceAll(sEnc, "/", "a_a")
+	sEnc = strings.ReplaceAll(sEnc, "+", "b_b")
+	sEnc = strings.ReplaceAll(sEnc, "=", "c_c")
+	return sEnc
+}
+
 // toShellVariables create zsh statement where pmyOut's attributes are
 // passed into shell variables
 func (out *pmyOut) toShellVariables() string {
@@ -57,7 +68,7 @@ func (out *pmyOut) toShellVariables() string {
 	for _, cg := range out.cmdGroups {
 		res += fmt.Sprintf(
 			"%v=$'%v';",
-			fmt.Sprintf(shellAfterVariableName, cg.Tag),
+			fmt.Sprintf(shellAfterVariableName, encodeTag(cg.Tag)),
 			utils.Escape(cg.After, "'"),
 		)
 	}
