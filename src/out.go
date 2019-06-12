@@ -52,9 +52,9 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 // into `a_a` and `b_b` respectively.
 func encodeTag(tag string) string {
 	sEnc := base64.StdEncoding.EncodeToString([]byte(tag))
-	sEnc = strings.ReplaceAll(sEnc, "/", "a_a")
-	sEnc = strings.ReplaceAll(sEnc, "+", "b_b")
-	sEnc = strings.ReplaceAll(sEnc, "=", "c_c")
+	sEnc = strings.Replace(sEnc, "/", "a_a", -1)
+	sEnc = strings.Replace(sEnc, "+", "b_b", -1)
+	sEnc = strings.Replace(sEnc, "=", "c_c", -1)
 	return sEnc
 }
 

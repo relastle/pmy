@@ -16,5 +16,5 @@ func MakeNString(n int, s string) string {
 
 // Escape escape cetrain string
 func Escape(target string, query string) string {
-	return strings.ReplaceAll(target, query, fmt.Sprintf("\\%s", query))
+	return strings.Replace(target, query, fmt.Sprintf("\\%s", query), -1)
 }
