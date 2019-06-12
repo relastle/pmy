@@ -5,7 +5,7 @@
         {
           "tag": "branch",
           "stmt": "git branch --format=\"%(refname:short)\"",
-          "after": "awk '{print $@}'"
+          "after": "awk '{print $0}'"
         },
         {
           "tag": "commit",
