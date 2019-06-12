@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	utils "github.com/relastle/pmy/src/utils"
 )
 
 const (
@@ -37,9 +39,9 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 // passed into shell variables
 func (out *pmyOut) toShellVariables() string {
 	res := ""
-	res += fmt.Sprintf("%v='%v';", shellBufferLeftVariableName, out.BufferLeft)
-	res += fmt.Sprintf("%v='%v';", shellBufferRightVariableName, out.BufferRight)
-	res += fmt.Sprintf("%v='%v';", shellSourcesVariableName, out.Sources)
+	res += fmt.Sprintf("%v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.BufferLeft, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellBufferRightVariableName, utils.Escape(out.BufferRight, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellSourcesVariableName, utils.Escape(out.Sources, "'"))
 	return res
 }
 
