@@ -1,7 +1,6 @@
 package pmy
 
 import (
-	"fmt"
 	"strings"
 
 	pipeline "github.com/mattn/go-pipeline"
@@ -76,7 +75,6 @@ type CmdGroups []*CmdGroup
 func (cgs CmdGroups) getMaxTagLen() int {
 	maxLen := 0
 	for _, cg := range cgs {
-		fmt.Println(cg.Tag)
 		if len(cg.Tag) > maxLen {
 			maxLen = len(cg.Tag)
 		}
