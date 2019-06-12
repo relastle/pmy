@@ -47,7 +47,7 @@ func (cg *CmdGroup) toPipeLine() []([]string) {
 }
 
 func (cg *CmdGroup) setLines(out []byte) {
-	strList := strings.Split(strings.TrimSuffix(string(out), "\n"), "\n")
+	strList := strings.Split(strings.Trim(string(out), "\n"), "\n")
 	cg.Lines = strList
 	return
 }
