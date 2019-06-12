@@ -21,7 +21,8 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt": "command find . -maxdepth 4"
+          "stmt": "command find . -maxdepth 4",
+          "after": "awk '{print $0}'"
         }
       ],
       "bufferLeft": "[]",
@@ -32,7 +33,8 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt": "command find . -mindepth 1 | egrep '.py$'"
+          "stmt": "command find . -mindepth 1 | egrep '.py$'",
+          "after": "awk '{print $0}'"
         }
       ],
       "bufferLeft": "[]",
@@ -42,8 +44,9 @@
       "regexpLeft": "^cd +(?P<path>.*)$",
       "cmdGroups": [
         {
-          "tag": "",
-          "stmt":  "command ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'"
+          "tag": "directory",
+          "stmt":  "command ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
+          "after": "awk '{print $0}'"
         }
       ],
       "bufferLeft": "[]",
@@ -54,7 +57,8 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt":  "echo ''"
+          "stmt":  "echo ''",
+          "after": "awk '{print $0}'"
         }
       ],
       "bufferLeft": "for x in $(seq 1 <num>); do ",
@@ -65,7 +69,8 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt":  "echo ''"
+          "stmt":  "echo ''",
+          "after": "awk '{print $0}'"
         }
       ],
       "bufferLeft": "for x in $(<cmd>); do ",
@@ -76,7 +81,8 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt":  "command ls -a ${PMY_LS_OPTION} -1 <path>"
+          "stmt":  "command ls -a ${PMY_LS_OPTION} -1 <path>",
+          "after": "awk '{print $0}'"
         }
       ],
       "bufferLeft": "[]",
