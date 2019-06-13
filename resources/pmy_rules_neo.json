@@ -56,7 +56,7 @@
       "regexpLeft": "^cd +(?P<path>.*)$",
       "cmdGroups": [
         {
-          "tag": "directory",
+          "tag": "",
           "stmt":  "command ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
           "after": "awk '{print $0}'"
         }
