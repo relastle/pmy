@@ -47,7 +47,7 @@ func (cg *CmdGroup) toPipeLine() []([]string) {
 }
 
 func (cg *CmdGroup) setLines(out []byte) {
-	strList := strings.Split(strings.TrimSuffix(string(out), "\n"), "\n")
+	strList := strings.Split(strings.Trim(string(out), "\n"), "\n")
 	cg.Lines = strList
 	return
 }
@@ -80,6 +80,13 @@ func (cgs CmdGroups) getMaxTagLen() int {
 		}
 	}
 	return maxLen
+}
+
+func (cgs CmdGroups) getImmCmdGroup() (*CmdGroup, bool) {
+	if len(cgs) == 1 && cgs[0].Tag == "" {
+		return cgs[0], true
+	}
+	return nil, false
 }
 
 func (cgs CmdGroups) organizeLines() string {

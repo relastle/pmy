@@ -15,6 +15,8 @@ const (
 	shellCommandVariableName     = "__pmy_out_command"
 	shellSourcesVariableName     = "__pmy_out_sources"
 	shellAfterVariableName       = "__pmy_out_%s_after"
+	shellImmCmdVariableName      = "__pmy_out_imm_cmd"
+	shellImmAfterCmdVariableName = "__pmy_out_imm_after_cmd"
 )
 
 type afterCmd struct {
@@ -30,6 +32,8 @@ type pmyOut struct {
 	bufferRight string
 	cmdGroups   CmdGroups
 	sources     string
+	immCmd      string
+	immAfterCmd string
 }
 
 // newPmyOutFromRule create new pmyOut from rule
@@ -44,7 +48,13 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	// expand all parameters
 	out.expandAll(rule.paramMap)
 	// get sources
-	out.sources, _ = out.cmdGroups.GetSources()
+	if immCmdGroup, ok := out.cmdGroups.getImmCmdGroup(); ok {
+		out.immCmd = immCmdGroup.Stmt
+		out.immAfterCmd = immCmdGroup.After
+	} else {
+		out.sources, _ = out.cmdGroups.GetSources()
+	}
+	// get sources
 	return out
 }
 
@@ -65,6 +75,8 @@ func (out *pmyOut) toShellVariables() string {
 	res += fmt.Sprintf("%v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.bufferLeft, "'"))
 	res += fmt.Sprintf("%v=$'%v';", shellBufferRightVariableName, utils.Escape(out.bufferRight, "'"))
 	res += fmt.Sprintf("%v=$'%v';", shellSourcesVariableName, utils.Escape(out.sources, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellImmCmdVariableName, utils.Escape(out.immCmd, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellImmAfterCmdVariableName, utils.Escape(out.immAfterCmd, "'"))
 	for _, cg := range out.cmdGroups {
 		res += fmt.Sprintf(
 			"%v=$'%v';",
