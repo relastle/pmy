@@ -1,7 +1,0 @@
-[
-  {
-    "bufferLeft": "git abcdef ad abcdef  ",
-    "bufferRight": "t aa e aa s aa t",
-    "exptectedName": "num"
-  }
-]
