@@ -34,7 +34,7 @@ func (cg *ruleFetcherImpl) fetch(
 ) (pmyRules, error) {
 	resRules := pmyRules{}
 	for _, rule := range rules {
-		ok, err := (&rule).match(
+		ok, err := rule.match(
 			bufferLeft,
 			bufferRight,
 		)

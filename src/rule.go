@@ -2,6 +2,7 @@ package pmy
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"regexp"
@@ -23,7 +24,7 @@ type pmyRule struct {
 	paramMap    map[string]string
 }
 
-type pmyRules []pmyRule
+type pmyRules []*pmyRule
 
 func loadAllRules(cfgPath string) (pmyRules, error) {
 	jsonFile, err := os.Open(cfgPath)
@@ -36,6 +37,34 @@ func loadAllRules(cfgPath string) (pmyRules, error) {
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &rules)
 	return rules, nil
+}
+
+// DumpDummyRulesJSON dumps arbitrary number of rules into given file path
+func DumpDummyRulesJSON(resultPath string, n int) error {
+	pmyRules := pmyRules{}
+	for i := 0; i < n; i++ {
+		cgs := CmdGroups{&CmdGroup{
+			Tag:   fmt.Sprintf("test%v", n),
+			Stmt:  "ls -alh",
+			After: "awk '{print $1}'",
+		}}
+		rule := &pmyRule{
+			Name:        fmt.Sprintf("test%v", n),
+			RegexpLeft:  ".*test.*",
+			RegexpRight: "",
+			CmdGroups:   cgs,
+			BufferLeft:  "[]",
+			BufferRight: "[]",
+		}
+		pmyRules = append(pmyRules, rule)
+	}
+
+	cgsJSON, _ := json.Marshal(pmyRules)
+	err := ioutil.WriteFile(resultPath, cgsJSON, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // match check if the query buffers(left and right) satisfies the concerned
