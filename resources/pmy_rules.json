@@ -1,43 +1,102 @@
 [
     {
-      "regexpLeft": "^(vi||vim|nvim) ",
-      "command": "command find . -maxdepth 4",
+      "regexpLeft": "git (co|checkout) *$",
+      "cmdGroups": [
+        {
+          "tag": "🌱:branch",
+          "stmt": "git branch --format=\"%(refname:short)\"",
+          "after": "awk '{print $0}'"
+        },
+        {
+          "tag": "🍺:commit",
+          "stmt": "git log --oneline -10",
+          "after": "awk '{print $1}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
+      "regexpLeft": "git merge *$",
+      "cmdGroups": [
+        {
+          "tag": "🌱:branch",
+          "stmt": "git branch --format=\"%(refname:short)\"",
+          "after": "awk '{print $0}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
+      "regexpLeft": "^(vi|vim|nvim) ",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt": "command find . -maxdepth 4",
+          "after": "awk '{print $0}'"
+        }
+      ],
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },
     {
       "regexpLeft": "^(python|python|python3|pypy|pypy3) ",
-      "command": "command find . -mindepth 1 | egrep '.py$'",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt": "command find . -mindepth 1 | egrep '.py$'",
+          "after": "awk '{print $0}'"
+        }
+      ],
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },
     {
       "regexpLeft": "^cd +(?P<path>.*)$",
-      "command": "command ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt":  "command ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
+          "after": "awk '{print $0}'"
+        }
+      ],
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },
     {
       "regexpLeft": "(?P<num>[1-9][0-9]+).for$",
-      "command": "echo ''",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt":  "echo ''",
+          "after": "awk '{print $0}'"
+        }
+      ],
       "bufferLeft": "for x in $(seq 1 <num>); do ",
       "bufferRight": "; done"
     },
     {
       "regexpLeft": "(?P<cmd>.+)\\.for$",
-      "command": "echo ''",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt":  "echo ''",
+          "after": "awk '{print $0}'"
+        }
+      ],
       "bufferLeft": "for x in $(<cmd>); do ",
       "bufferRight": "; done"
     },
     {
-      "regexpLeft": "git (co|checkout) *$",
-      "command": "git branch --format=\"%(refname:short)\"",
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
       "regexpLeft": " +(?P<path>.*)/$",
-      "command": "command ls -a ${PMY_LS_OPTION} -1 <path>",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt":  "command ls -a ${PMY_LS_OPTION} -1 <path>",
+          "after": "awk '{print $0}'"
+        }
+      ],
       "bufferLeft": "[]",
       "bufferRight": "[]"
     }
