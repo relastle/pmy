@@ -46,7 +46,7 @@ func Run(cfgPath string, in Input) string {
 		return ""
 	}
 	rule := resRules[0]
-	pmyOut := newPmyOutFromRule(&rule)
+	pmyOut := newPmyOutFromRule(rule)
 
 	// Ouput result
 	// log.Print(out)
