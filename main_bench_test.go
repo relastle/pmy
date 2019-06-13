@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 	"testing"
@@ -10,36 +8,23 @@ import (
 	pmy "github.com/relastle/pmy/src"
 )
 
-// BenchmarkLoadandFetchAll calculates time elapsed to load test input rules
-// and to fetch inputs to all of them
-func BenchmarkLoadandFetchAll(b *testing.B) {
-	inputJSONFile, err := os.Open("./resources/test/test_pmy_input_unmatch.json")
-	// if we os.Open returns an error then handle it
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer inputJSONFile.Close()
-	var inputs []pmy.Input
+// BenchmarkLoadLargeRules2 calculates time elapsed to load large rule file
+// and fetch them all
+func BenchmarkLoadLargeRules2(b *testing.B) {
+	filePath := "./resources/test/test_pmy_rules_large.json"
+	pmy.DumpDummyRulesJSON(filePath, 20000)
 	b.ResetTimer()
-	byteValue, _ := ioutil.ReadAll(inputJSONFile)
-	json.Unmarshal(byteValue, &inputs)
-	for _, input := range inputs {
-		pmy.Run(
-			"./resources/test/test_pmy_rules_large.json",
-			input,
-		)
-	}
-	return
-}
-
-// BenchmarkLoadLargeRules calculates time elapsed to load large rule file
-func BenchmarkLoadLargeRules(b *testing.B) {
-	pmy.Run(
-		"./resources/test/test_pmy_rules_large.json",
+	out := pmy.Run(
+		filePath,
 		pmy.Input{
-			BufferLeft:  "git abcdef add abcdef  ",
-			BufferRight: "t aa e aa s aa t",
+			BufferLeft:  "git abcdef tes abcdef  ",
+			BufferRight: "",
 		},
 	)
+	b.StopTimer()
+	os.Remove(filePath)
+	if out != "" {
+		log.Fatal("output is not empty")
+	}
 	return
 }
