@@ -11,7 +11,7 @@ import (
 // BenchmarkLoadLargeRules2 calculates time elapsed to load large rule file
 // and fetch them all
 func BenchmarkLoadLargeRules2(b *testing.B) {
-	filePath := "./resources/test/test_pmy_rules_large.json"
+	filePath := "./test_pmy_rules_large.json"
 	pmy.DumpDummyRulesJSON(filePath, 20000)
 	b.ResetTimer()
 	out := pmy.Run(
