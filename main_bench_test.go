@@ -20,6 +20,7 @@ func BenchmarkLoadandFetchAll(b *testing.B) {
 	}
 	defer inputJSONFile.Close()
 	var inputs []pmy.Input
+	b.ResetTimer()
 	byteValue, _ := ioutil.ReadAll(inputJSONFile)
 	json.Unmarshal(byteValue, &inputs)
 	for _, input := range inputs {
