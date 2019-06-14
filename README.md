@@ -38,11 +38,30 @@ You can also add the line into your ~/.zshrc if you want.
 
 #### git checkout(co)
 
-![pmy_git_checkout](https://user-images.githubusercontent.com/6816040/59522651-2c77bb80-8f0a-11e9-9c73-9b530ec58d75.gif)
+![pmy_git_checkout](https://user-images.githubusercontent.com/6816040/59523320-ef142d80-8f0b-11e9-9ec9-f957154dbf70.gif)
+
+#### git cherry-pick(cp)
+
+![pmy_git_cherry-pick](https://user-images.githubusercontent.com/6816040/59523324-f0455a80-8f0b-11e9-8dbb-b327b7c0af0e.gif)
 
 ### cd
 
+![pmy_cd](https://user-images.githubusercontent.com/6816040/59524373-a9a52f80-8f0e-11e9-91e5-00fbdb8c6784.gif)
+
+
 ### Postfix completion
+
+
+#### <number>.**for**
+    
+![pmy_postfix_10for](https://user-images.githubusercontent.com/6816040/59524893-f50c0d80-8f0f-11e9-859c-9dc89cb1f00a.gif)
+
+    
+#### <general command>.**for**
+    
+![pmy_postfix_general_for](https://user-images.githubusercontent.com/6816040/59525546-98115700-8f11-11e9-8a4f-26453e86feb8.gif)
+
+    
 
 [License](LICENSE)
 ------------------
