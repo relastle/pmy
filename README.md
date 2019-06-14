@@ -38,15 +38,15 @@ You can also add the line into your ~/.zshrc if you want.
 
 #### git checkout(co)
 
-![pmy_git_checkout](https://user-images.githubusercontent.com/6816040/59523320-ef142d80-8f0b-11e9-9ec9-f957154dbf70.gif)
+![pmy_git_checkout](https://user-images.githubusercontent.com/6816040/59527158-cdb83f00-8f15-11e9-84b1-807360610ad3.gif)
 
 #### git cherry-pick(cp)
 
-![pmy_git_cherry-pick](https://user-images.githubusercontent.com/6816040/59523324-f0455a80-8f0b-11e9-8dbb-b327b7c0af0e.gif)
+![pmy_git_cherry-pick](https://user-images.githubusercontent.com/6816040/59527161-cee96c00-8f15-11e9-9b8f-749a7997ced0.gif)
 
 ### cd
 
-![pmy_cd](https://user-images.githubusercontent.com/6816040/59524373-a9a52f80-8f0e-11e9-91e5-00fbdb8c6784.gif)
+![pmy_cd](https://user-images.githubusercontent.com/6816040/59527164-d0b32f80-8f15-11e9-97ac-0127bccea233.gif)
 
 
 ### Postfix completion
@@ -54,12 +54,13 @@ You can also add the line into your ~/.zshrc if you want.
 
 #### <number>.**for**
     
-![pmy_postfix_10for](https://user-images.githubusercontent.com/6816040/59524893-f50c0d80-8f0f-11e9-859c-9dc89cb1f00a.gif)
+![pmy_postfix_numfor](https://user-images.githubusercontent.com/6816040/59527168-d27cf300-8f15-11e9-9450-6a930b248f74.gif)
 
     
 #### <general command>.**for**
     
-![pmy_postfix_general_for](https://user-images.githubusercontent.com/6816040/59525546-98115700-8f11-11e9-8a4f-26453e86feb8.gif)
+
+![pmy_postfix_general](https://user-images.githubusercontent.com/6816040/59527179-d446b680-8f15-11e9-8d34-ffa3713c04e9.gif)
 
     
 
