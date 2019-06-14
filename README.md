@@ -52,14 +52,13 @@ You can also add the line into your ~/.zshrc if you want.
 ### Postfix completion
 
 
-#### <number>.**for**
+#### generate for loop iterating from 1 to a given number
     
 ![pmy_postfix_numfor](https://user-images.githubusercontent.com/6816040/59527168-d27cf300-8f15-11e9-9450-6a930b248f74.gif)
 
     
-#### <general command>.**for**
+#### generate for loop iterating each line of outputs from a given command
     
-
 ![pmy_postfix_general](https://user-images.githubusercontent.com/6816040/59527179-d446b680-8f15-11e9-8d34-ffa3713c04e9.gif)
 
     
