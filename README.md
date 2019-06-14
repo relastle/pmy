@@ -36,6 +36,10 @@ You can also add the line into your ~/.zshrc if you want.
 
 ### Git
 
+#### git checkout(co)
+
+![pmy_git_checkout](https://user-images.githubusercontent.com/6816040/59522651-2c77bb80-8f0a-11e9-9c73-9b530ec58d75.gif)
+
 ### cd
 
 ### Postfix completion
