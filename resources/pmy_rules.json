@@ -102,7 +102,7 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "(?P<num>[1-9][0-9]*).for$",
+      "regexpLeft": "^(?P<num>[1-9][0-9]*).for$",
       "cmdGroups": [
         {
           "tag": "",
