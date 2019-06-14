@@ -1,5 +1,17 @@
 [
     {
+      "regexpLeft": "(?P<body>.*) (?P<path>.*)/\\*\\*",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt":  "bfind <path>",
+          "after": "awk '{print $0}'"
+        }
+      ],
+      "bufferLeft": "<body> ",
+      "bufferRight": "[]"
+    },
+    {
       "regexpLeft": "git (co|checkout) *$",
       "cmdGroups": [
         {
@@ -29,12 +41,24 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "git merge *$",
+      "regexpLeft": "git (merge|rebase) *$",
       "cmdGroups": [
         {
           "tag": "🌱:branch",
           "stmt": "git branch --format=\"%(refname:short)\"",
           "after": "awk '{print $0}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
+      "regexpLeft": "git (cp|cherry-pick) *$",
+      "cmdGroups": [
+        {
+          "tag": "🍒:commit",
+          "stmt": "git log --oneline",
+          "after": "awk '{print $1}'"
         }
       ],
       "bufferLeft": "[]",
