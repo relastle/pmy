@@ -13,15 +13,16 @@ type replaceMap map[string]string
 
 // Rule is a struct representing one rule
 type pmyRule struct {
-	Name        string    `json:"name"`
-	Matcher     string    `json:"matcher"`
-	Description string    `json:"description"`
-	RegexpLeft  string    `json:"regexpLeft"`
-	RegexpRight string    `json:"regexpRight"`
-	CmdGroups   CmdGroups `json:"cmdGroups"`
-	BufferLeft  string    `json:"bufferLeft"`
-	BufferRight string    `json:"bufferRight"`
-	paramMap    map[string]string
+	Name           string    `json:"name"`
+	Matcher        string    `json:"matcher"`
+	Description    string    `json:"description"`
+	RegexpLeft     string    `json:"regexpLeft"`
+	RegexpRight    string    `json:"regexpRight"`
+	CmdGroups      CmdGroups `json:"cmdGroups"`
+	FuzzyFinderCmd string    `json:"fuzzyFinderCmd"`
+	BufferLeft     string    `json:"bufferLeft"`
+	BufferRight    string    `json:"bufferRight"`
+	paramMap       map[string]string
 }
 
 type pmyRules []*pmyRule
