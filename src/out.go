@@ -10,13 +10,14 @@ import (
 )
 
 const (
-	shellBufferLeftVariableName  = "__pmy_out_buffer_left"
-	shellBufferRightVariableName = "__pmy_out_buffer_right"
-	shellCommandVariableName     = "__pmy_out_command"
-	shellSourcesVariableName     = "__pmy_out_sources"
-	shellAfterVariableName       = "__pmy_out_%s_after"
-	shellImmCmdVariableName      = "__pmy_out_imm_cmd"
-	shellImmAfterCmdVariableName = "__pmy_out_imm_after_cmd"
+	shellBufferLeftVariableName     = "__pmy_out_buffer_left"
+	shellBufferRightVariableName    = "__pmy_out_buffer_right"
+	shellCommandVariableName        = "__pmy_out_command"
+	shellSourcesVariableName        = "__pmy_out_sources"
+	shellAfterVariableName          = "__pmy_out_%s_after"
+	shellImmCmdVariableName         = "__pmy_out_imm_cmd"
+	shellImmAfterCmdVariableName    = "__pmy_out_imm_after_cmd"
+	shellFuzzyFinderCmdVariableName = "__pmy_out_fuzzy_finder_cmd"
 )
 
 type afterCmd struct {
@@ -28,12 +29,13 @@ type afterCmd struct {
 // This struct has strings exported to shell, whose embedded
 // variables are all expanded.
 type pmyOut struct {
-	bufferLeft  string
-	bufferRight string
-	cmdGroups   CmdGroups
-	sources     string
-	immCmd      string
-	immAfterCmd string
+	bufferLeft     string
+	bufferRight    string
+	cmdGroups      CmdGroups
+	sources        string
+	fuzzyFinderCmd string
+	immCmd         string
+	immAfterCmd    string
 }
 
 // newPmyOutFromRule create new pmyOut from rule
@@ -45,6 +47,7 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	out.bufferRight = rule.BufferRight
 	// pass cmdGroups
 	out.cmdGroups = rule.CmdGroups
+	out.fuzzyFinderCmd = rule.FuzzyFinderCmd
 	// expand all parameters
 	out.expandAll(rule.paramMap)
 	// get sources
@@ -77,6 +80,7 @@ func (out *pmyOut) toShellVariables() string {
 	res += fmt.Sprintf("%v=$'%v';", shellSourcesVariableName, utils.Escape(out.sources, "'"))
 	res += fmt.Sprintf("%v=$'%v';", shellImmCmdVariableName, utils.Escape(out.immCmd, "'"))
 	res += fmt.Sprintf("%v=$'%v';", shellImmAfterCmdVariableName, utils.Escape(out.immAfterCmd, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(out.fuzzyFinderCmd, "'"))
 	for _, cg := range out.cmdGroups {
 		res += fmt.Sprintf(
 			"%v=$'%v';",
@@ -103,6 +107,7 @@ func expand(org string, paramMap map[string]string) string {
 func (out *pmyOut) expandAll(paramMap map[string]string) {
 	out.bufferLeft = expand(out.bufferLeft, paramMap)
 	out.bufferRight = expand(out.bufferRight, paramMap)
+	out.fuzzyFinderCmd = expand(out.fuzzyFinderCmd, paramMap)
 	for _, cg := range out.cmdGroups {
 		cg.Stmt = expand(cg.Stmt, paramMap)
 	}

@@ -12,7 +12,7 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "git (co|checkout) *$",
+      "regexpLeft": "(?P<body>git (co|checkout)) *(?P<query>.*)$",
       "cmdGroups": [
         {
           "tag": "🌱:branch",
@@ -25,7 +25,8 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "bufferLeft": "[]",
+      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "bufferLeft": "<body> ",
       "bufferRight": "[]"
     },
     {
