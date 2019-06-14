@@ -58,7 +58,7 @@
       "cmdGroups": [
         {
           "tag": "🍒:commit",
-          "stmt": "git log --oneline",
+          "stmt": "git log --oneline --branches --tags",
           "after": "awk '{print $1}'"
         }
       ],
