@@ -17,6 +17,18 @@
       "bufferRight": "[]"
     },
     {
+      "regexpLeft": "git (branch -d|brd) *$",
+      "cmdGroups": [
+        {
+          "tag": "🌱:branch",
+          "stmt": "git branch --format=\"%(refname:short)\" | grep feature/",
+          "after": "awk '{print $0}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
       "regexpLeft": "git merge *$",
       "cmdGroups": [
         {
