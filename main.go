@@ -3,18 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 
 	pmy "github.com/relastle/pmy/src"
-)
-
-const (
-	// DefaultPmyConfigPath defiens the default config path
-	// used when corresponding environment variable was not set.
-	DefaultPmyConfigPath = ""
-	// PmyConfigEnvVarName defiens the variable name
-	// You should export this value
-	PmyConfigEnvVarName string = "PMY_CONFIG_PATH"
 )
 
 func main() {
@@ -24,13 +14,10 @@ func main() {
 	flag.StringVar(&bufferRight, "bufferRight", "", "")
 	flag.Parse()
 
-	cfgPath, ok := os.LookupEnv(PmyConfigEnvVarName)
-	if !ok {
-		cfgPath = DefaultPmyConfigPath
-	}
+	pmy.SetConfigs()
 
 	outString := pmy.Run(
-		cfgPath,
+		pmy.PmyRulePath,
 		pmy.Input{
 			BufferLeft:  bufferLeft,
 			BufferRight: bufferRight,
