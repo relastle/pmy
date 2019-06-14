@@ -40,16 +40,20 @@ func loadAllRules(cfgPath string) (pmyRules, error) {
 }
 
 // DumpDummyRulesJSON dumps arbitrary number of rules into given file path
-func DumpDummyRulesJSON(resultPath string, n int) error {
+func DumpDummyRulesJSON(resultPath string, ruleNum int, cmdGroupNum int) error {
 	pmyRules := pmyRules{}
-	for i := 0; i < n; i++ {
-		cgs := CmdGroups{&CmdGroup{
-			Tag:   fmt.Sprintf("test%v", n),
-			Stmt:  "ls -alh",
-			After: "awk '{print $1}'",
-		}}
+	for i := 0; i < ruleNum; i++ {
+		cgs := CmdGroups{}
+		for j := 0; j < cmdGroupNum; j++ {
+			cg := &CmdGroup{
+				Tag:   fmt.Sprintf("test%v", ruleNum),
+				Stmt:  "find /Users/hkonishi/ -maxdepth 2",
+				After: "awk '{print $1}'",
+			}
+			cgs = append(cgs, cg)
+		}
 		rule := &pmyRule{
-			Name:        fmt.Sprintf("test%v", n),
+			Name:        fmt.Sprintf("test%v", ruleNum),
 			RegexpLeft:  ".*test.*",
 			RegexpRight: "",
 			CmdGroups:   cgs,
