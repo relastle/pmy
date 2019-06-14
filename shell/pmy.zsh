@@ -6,8 +6,7 @@ export PATH="${GOPATH}/src/github.com/relastle/pmy:${PATH}"
 # Export pmy configuration environment variable
 export PMY_RULE_PATH="${GOPATH}/src/github.com/relastle/pmy/resources/pmy_rules.json"
 export PMY_TAG_DELIMITER="\t"
-
-FF_CMD="fzf -0 -1"
+export PMY_FUZZY_FINDER_CMD="fzf -0 -1"
 
 pmy-widget() {
     # get current buffer information
@@ -24,7 +23,7 @@ pmy-widget() {
 
         if [[ -z ${__pmy_out_imm_cmd} ]] then
             # get result from fzf
-            local fzf_res=$(echo -n "${__pmy_out_sources}" | eval ${FF_CMD})
+            local fzf_res=$(echo -n "${__pmy_out_sources}" | eval ${PMY_FUZZY_FINDER_CMD})
             # get tag
             local tag="$(echo -n ${fzf_res} | awk -F ${PMY_TAG_DELIMITER} 'BEGIN{ORS = ""}{print $1}' | base64)"
             tag=${tag//\//a_a} # original escape of base64 `/`
@@ -38,7 +37,7 @@ pmy-widget() {
             local res=$(echo ${fzf_res_rest} | eval ${after_cmd})
         else
             # get result from fzf
-            local fzf_res=$(eval "${__pmy_out_imm_cmd}" | eval ${FF_CMD})
+            local fzf_res=$(eval "${__pmy_out_imm_cmd}" | eval ${PMY_FUZZY_FINDER_CMD})
             local after_cmd=${__pmy_out_imm_after_cmd}
             local res=$(echo ${fzf_res} | eval ${after_cmd})
         fi
