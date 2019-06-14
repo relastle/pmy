@@ -93,7 +93,7 @@ func (cgs CmdGroups) organizeLines() string {
 	resString := ""
 	maxTagLen := cgs.getMaxTagLen()
 	for _, cg := range cgs {
-		spacedTag := cg.Tag + utils.MakeNString(3+maxTagLen-len(cg.Tag), " ")
+		spacedTag := cg.Tag + PmyDelimiter + utils.MakeNString(maxTagLen-len(cg.Tag), " ")
 		for _, line := range cg.Lines {
 			resString += spacedTag + line + "\n"
 		}
