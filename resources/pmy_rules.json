@@ -90,7 +90,7 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "^cd +(?P<path>.*)$",
+      "regexpLeft": "^cd +(?P<path>([^/]*/)*)(?P<query>[^/]*)$",
       "cmdGroups": [
         {
           "tag": "",
@@ -98,7 +98,8 @@
           "after": "awk '{print $0}'"
         }
       ],
-      "bufferLeft": "[]",
+      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "bufferLeft": "cd <path>",
       "bufferRight": "[]"
     },
     {
