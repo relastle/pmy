@@ -1,0 +1,8 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: relastle/pmy:0.1.0
+    steps:
+      - checkout
+      - run: echo "A first hello"
