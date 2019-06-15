@@ -1,31 +1,94 @@
 package pmy
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	utils "github.com/relastle/pmy/src/utils"
 )
 
-const delimiter string = ":::"
+const (
+	shellBufferLeftVariableName     = "__pmy_out_buffer_left"
+	shellBufferRightVariableName    = "__pmy_out_buffer_right"
+	shellCommandVariableName        = "__pmy_out_command"
+	shellSourcesVariableName        = "__pmy_out_sources"
+	shellAfterVariableName          = "__pmy_out_%s_after"
+	shellImmCmdVariableName         = "__pmy_out_imm_cmd"
+	shellImmAfterCmdVariableName    = "__pmy_out_imm_after_cmd"
+	shellFuzzyFinderCmdVariableName = "__pmy_out_fuzzy_finder_cmd"
+)
+
+type afterCmd struct {
+	tag   string
+	after string
+}
 
 // pmyOut represents Output of pmy against zsh routine.
 // This struct has strings exported to shell, whose embedded
 // variables are all expanded.
 type pmyOut struct {
-	BufferLeft  string `json:"bufferLeft"`
-	BufferRight string `json:"bufferRight"`
-	Command     string `json:"command"`
+	bufferLeft     string
+	bufferRight    string
+	cmdGroups      CmdGroups
+	sources        string
+	fuzzyFinderCmd string
+	immCmd         string
+	immAfterCmd    string
 }
 
 // newPmyOutFromRule create new pmyOut from rule
 // which matches query and already has paramMap
 func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	out := pmyOut{}
-	out.Command = rule.Command
-	out.BufferLeft = rule.BufferLeft
-	out.BufferRight = rule.BufferRight
+	// pass resulting buffer informaiton
+	out.bufferLeft = rule.BufferLeft
+	out.bufferRight = rule.BufferRight
+	// pass cmdGroups
+	out.cmdGroups = rule.CmdGroups
+	out.fuzzyFinderCmd = rule.FuzzyFinderCmd
+	// expand all parameters
 	out.expandAll(rule.paramMap)
+	// get sources
+	if immCmdGroup, ok := out.cmdGroups.getImmCmdGroup(); ok {
+		out.immCmd = immCmdGroup.Stmt
+		out.immAfterCmd = immCmdGroup.After
+	} else {
+		out.sources, _ = out.cmdGroups.GetSources()
+	}
+	// get sources
 	return out
+}
+
+// Encode with base64 and then replace `/` and `+`
+// into `a_a` and `b_b` respectively.
+func encodeTag(tag string) string {
+	sEnc := base64.StdEncoding.EncodeToString([]byte(tag))
+	sEnc = strings.Replace(sEnc, "/", "a_a", -1)
+	sEnc = strings.Replace(sEnc, "+", "b_b", -1)
+	sEnc = strings.Replace(sEnc, "=", "c_c", -1)
+	return sEnc
+}
+
+// toShellVariables create zsh statement where pmyOut's attributes are
+// passed into shell variables
+func (out *pmyOut) toShellVariables() string {
+	res := ""
+	res += fmt.Sprintf("%v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.bufferLeft, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellBufferRightVariableName, utils.Escape(out.bufferRight, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellSourcesVariableName, utils.Escape(out.sources, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellImmCmdVariableName, utils.Escape(out.immCmd, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellImmAfterCmdVariableName, utils.Escape(out.immAfterCmd, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(out.fuzzyFinderCmd, "'"))
+	for _, cg := range out.cmdGroups {
+		res += fmt.Sprintf(
+			"%v=$'%v';",
+			fmt.Sprintf(shellAfterVariableName, encodeTag(cg.Tag)),
+			utils.Escape(cg.After, "'"),
+		)
+	}
+	return res
 }
 
 func expand(org string, paramMap map[string]string) string {
@@ -42,9 +105,12 @@ func expand(org string, paramMap map[string]string) string {
 }
 
 func (out *pmyOut) expandAll(paramMap map[string]string) {
-	out.BufferLeft = expand(out.BufferLeft, paramMap)
-	out.BufferRight = expand(out.BufferRight, paramMap)
-	out.Command = expand(out.Command, paramMap)
+	out.bufferLeft = expand(out.bufferLeft, paramMap)
+	out.bufferRight = expand(out.bufferRight, paramMap)
+	out.fuzzyFinderCmd = expand(out.fuzzyFinderCmd, paramMap)
+	for _, cg := range out.cmdGroups {
+		cg.Stmt = expand(cg.Stmt, paramMap)
+	}
 	return
 }
 
@@ -54,6 +120,6 @@ func (out *pmyOut) toJSON() string {
 	return str
 }
 
-func (out *pmyOut) serialize() string {
-	return out.BufferLeft + delimiter + out.BufferRight + delimiter + out.Command
-}
+// func (out *pmyOut) serialize() string {
+//     return out.BufferLeft + delimiter + out.BufferRight + delimiter + out.Command
+// }
