@@ -1,28 +1,11 @@
 [
     {
-      "regexpLeft": "(?P<body>.*) (\\*\\*|(?P<path>.*)/\\*\\*)",
-      "cmdGroups": [
-        {
-          "tag": "",
-          "stmt":  "bfind <path>",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "<body> ",
-      "bufferRight": "[]"
-    },
-    {
       "regexpLeft": "(?P<body>git (co|checkout)) *(?P<query>.*)$",
       "cmdGroups": [
         {
           "tag": "🌱:branch",
-          "stmt": "git branch --format=\"%(refname:short)\"",
+          "stmt": "echo master",
           "after": "awk '{print $0}'"
-        },
-        {
-          "tag": "🍺:commit",
-          "stmt": "git log --oneline -10",
-          "after": "awk '{print $1}'"
         }
       ],
       "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
@@ -34,7 +17,7 @@
       "cmdGroups": [
         {
           "tag": "🌱:branch",
-          "stmt": "git branch --format=\"%(refname:short)\" | grep feature/",
+          "stmt": "echo feature/test",
           "after": "awk '{print $0}'"
         }
       ],
@@ -46,7 +29,7 @@
       "cmdGroups": [
         {
           "tag": "🌱:branch",
-          "stmt": "git branch --format=\"%(refname:short)\"",
+          "stmt": "echo master",
           "after": "awk '{print $0}'"
         }
       ],
@@ -58,7 +41,7 @@
       "cmdGroups": [
         {
           "tag": "🍒:commit",
-          "stmt": "git log --oneline --branches --tags",
+          "stmt": "echo ef60c81 Update README.md",
           "after": "awk '{print $1}'"
         }
       ],
@@ -70,7 +53,7 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt": "command find . -maxdepth 4",
+          "stmt": "echo /path/to/test",
           "after": "awk '{print $0}'"
         }
       ],
@@ -82,7 +65,7 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt": "command find . -mindepth 1 | egrep '.py$'",
+          "stmt": "echo /path/to/test.py",
           "after": "awk '{print $0}'"
         }
       ],
@@ -94,7 +77,7 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt":  "command ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
+          "stmt":  "echo test_directory/",
           "after": "awk '{print $0}'"
         }
       ],
@@ -125,17 +108,5 @@
       ],
       "bufferLeft": "for x in $(<cmd>); do ",
       "bufferRight": "; done"
-    },
-    {
-      "regexpLeft": " +(?P<path>.*)/$",
-      "cmdGroups": [
-        {
-          "tag": "",
-          "stmt":  "command ls -a ${PMY_LS_OPTION} -1 <path>",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
     }
 ]

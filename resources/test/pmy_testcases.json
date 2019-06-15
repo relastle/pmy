@@ -1,0 +1,42 @@
+[
+  {
+    "lbuffer": "git checkout ",
+    "rbuffer": "",
+    "expected": "git checkout master"
+  },
+  {
+    "lbuffer": "git branch -d  ",
+    "rbuffer": "",
+    "expected": "git branch -d  feature/test"
+  },
+  {
+    "lbuffer": "git merge ",
+    "rbuffer": "",
+    "expected": "git merge master"
+  },
+  {
+    "lbuffer": "git cherry-pick ",
+    "rbuffer": "",
+    "expected": "git cherry-pick ef60c81"
+  },
+  {
+    "lbuffer": "vim ",
+    "rbuffer": "",
+    "expected": "vim /path/to/test"
+  },
+  {
+    "lbuffer": "python3 ",
+    "rbuffer": "",
+    "expected": "python3 /path/to/test.py"
+  },
+  {
+    "lbuffer": "10.for",
+    "rbuffer": "",
+    "expected": "for x in $(seq 1 10); do ; done"
+  },
+  {
+    "lbuffer": "find . -mindepth 2 -maxdepth 2.for",
+    "rbuffer": "",
+    "expected": "for x in $(find . -mindepth 2 -maxdepth 2); do ; done"
+  }
+]

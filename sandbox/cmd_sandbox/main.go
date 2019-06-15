@@ -2,9 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
+
+	pipeline "github.com/mattn/go-pipeline"
+	shellwords "github.com/mattn/go-shellwords"
 )
 
 func toLines(bs []byte) []string {
@@ -12,10 +16,28 @@ func toLines(bs []byte) []string {
 	return strList
 }
 
-func main() {
-	name := "ls"
-	args := []string{"-la"}
-	out, err := exec.Command(name, args...).Output()
+// pipeTest:
+func pipeTest() {
+	out, err := pipeline.Output(
+		[]string{"ls", "/Users/hkonishi", "-alh"},
+		[]string{"wc", "-l"},
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(out))
+	// Output:
+	// 1
+}
+
+// subprocessTest:
+func subprocessTest() {
+	shellwords.ParseBacktick = true
+	p := shellwords.NewParser()
+	p.ParseEnv = true
+	args, err := p.Parse("${HOME} -alh | fzf")
+	fmt.Println(args)
+	out, err := exec.Command("ls", args...).Output()
 
 	if err != nil {
 		fmt.Println(err)
@@ -26,4 +48,8 @@ func main() {
 	for _, line := range lines {
 		fmt.Println(line)
 	}
+}
+
+func main() {
+	pipeTest()
 }
