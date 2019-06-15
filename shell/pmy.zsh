@@ -4,9 +4,9 @@
 export PATH="${GOPATH}/src/github.com/relastle/pmy:${PATH}"
 
 # Export pmy configuration environment variable
-export PMY_RULE_PATH="${GOPATH}/src/github.com/relastle/pmy/resources/pmy_rules_test.json"
-export PMY_TAG_DELIMITER="\t"
-export PMY_FUZZY_FINDER_DEFAULT_CMD="fzf -0 -1"
+export PMY_RULE_PATH=${PMY_RULE_PATH:-"${GOPATH}/src/github.com/relastle/pmy/resources/pmy_rules.json"}
+export PMY_TAG_DELIMITER=${PMY_TAG_DELIMITER:-"\t"}
+export PMY_FUZZY_FINDER_DEFAULT_CMD=${PMY_FUZZY_FINDER_DEFAULT_CMD:-"fzf -0 -1"}
 
 # Main Function of Pmy
 # Args:
