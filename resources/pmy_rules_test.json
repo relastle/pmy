@@ -82,7 +82,7 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt":  "echo test_directory",
+          "stmt":  "echo test_directory/",
           "after": "awk '{print $0}'"
         }
       ],
