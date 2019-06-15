@@ -4,7 +4,7 @@
 export PATH="${GOPATH}/src/github.com/relastle/pmy:${PATH}"
 
 # Export pmy configuration environment variable
-export PMY_RULE_PATH="${GOPATH}/src/github.com/relastle/pmy/resources/pmy_rules.json"
+export PMY_RULE_PATH="${GOPATH}/src/github.com/relastle/pmy/resources/pmy_rules_test.json"
 export PMY_TAG_DELIMITER="\t"
 export PMY_FUZZY_FINDER_DEFAULT_CMD="fzf -0 -1"
 
@@ -19,6 +19,7 @@ _pmy_main() {
     # get current buffer information
     local buffer_left=${1:-""}
     local buffer_right=${2:-""}
+    local test_flag=${3:-""}
 
     # get output from pmy
     local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)"
@@ -54,6 +55,11 @@ _pmy_main() {
         fi
         __pmy_res_lbuffer="${__pmy_out_buffer_left}${res}"
         __pmy_res_rbuffer="${__pmy_out_buffer_right}"
+    fi
+
+    if ! [[ -z $test_flag  ]] then
+        echo $__pmy_res_lbuffer
+        echo $__pmy_res_rbuffer
     fi
 }
 
