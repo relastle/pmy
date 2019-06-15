@@ -38,29 +38,27 @@ You can also add the line into your ~/.zshrc if you want.
 
 #### git checkout(co)
 
-![pmy_git_checkout](https://user-images.githubusercontent.com/6816040/59527158-cdb83f00-8f15-11e9-84b1-807360610ad3.gif)
+![pmy_git_checkout_resized](https://user-images.githubusercontent.com/6816040/59544897-a5e6cc80-8f51-11e9-8b6a-656734d159b0.gif)
+
 
 #### git cherry-pick(cp)
 
-![pmy_git_cherry-pick](https://user-images.githubusercontent.com/6816040/59527161-cee96c00-8f15-11e9-9b8f-749a7997ced0.gif)
+![pmy_git_cherry-pick_resized](https://user-images.githubusercontent.com/6816040/59544901-a67f6300-8f51-11e9-91f9-16e668b25af7.gif)
 
 ### cd
 
-![pmy_cd](https://user-images.githubusercontent.com/6816040/59527164-d0b32f80-8f15-11e9-97ac-0127bccea233.gif)
-
+![pmy_cd_resized](https://user-images.githubusercontent.com/6816040/59544895-a54e3600-8f51-11e9-894a-22beac49014e.gif)
 
 ### Postfix completion
 
 
 #### generate for loop iterating from 1 to a given number
-    
-![pmy_postfix_numfor](https://user-images.githubusercontent.com/6816040/59527168-d27cf300-8f15-11e9-9450-6a930b248f74.gif)
 
+![pmy_postfix_numfor_resized](https://user-images.githubusercontent.com/6816040/59544899-a5e6cc80-8f51-11e9-82ca-a149620264cb.gif)
     
 #### generate for loop iterating each line of outputs from a given command
-    
-![pmy_postfix_general](https://user-images.githubusercontent.com/6816040/59527179-d446b680-8f15-11e9-8d34-ffa3713c04e9.gif)
 
+![pmy_postfix_general_resized](https://user-images.githubusercontent.com/6816040/59544900-a5e6cc80-8f51-11e9-8c86-1a88a417b11e.gif)
     
 
 [License](LICENSE)
