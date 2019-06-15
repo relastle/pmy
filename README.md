@@ -36,9 +36,30 @@ You can also add the line into your ~/.zshrc if you want.
 
 ### Git
 
+#### git checkout(co)
+
+![pmy_git_checkout_resized](https://user-images.githubusercontent.com/6816040/59544897-a5e6cc80-8f51-11e9-8b6a-656734d159b0.gif)
+
+
+#### git cherry-pick(cp)
+
+![pmy_git_cherry-pick_resized](https://user-images.githubusercontent.com/6816040/59544901-a67f6300-8f51-11e9-91f9-16e668b25af7.gif)
+
 ### cd
 
+![pmy_cd_resized](https://user-images.githubusercontent.com/6816040/59544895-a54e3600-8f51-11e9-894a-22beac49014e.gif)
+
 ### Postfix completion
+
+
+#### generate for loop iterating from 1 to a given number
+
+![pmy_postfix_numfor_resized](https://user-images.githubusercontent.com/6816040/59544899-a5e6cc80-8f51-11e9-82ca-a149620264cb.gif)
+    
+#### generate for loop iterating each line of outputs from a given command
+
+![pmy_postfix_general_resized](https://user-images.githubusercontent.com/6816040/59544900-a5e6cc80-8f51-11e9-8c86-1a88a417b11e.gif)
+    
 
 [License](LICENSE)
 ------------------
