@@ -8,16 +8,25 @@ export PMY_RULE_PATH="${GOPATH}/src/github.com/relastle/pmy/resources/pmy_rules.
 export PMY_TAG_DELIMITER="\t"
 export PMY_FUZZY_FINDER_DEFAULT_CMD="fzf -0 -1"
 
-pmy-widget() {
+# Main Function of Pmy
+# Args:
+#     - Left buffer string
+#     - Right buffer string
+# Returns:
+#     - Resulting left buffer string (by name of __pmy_res_lbuffer)
+#     - Resulting right buffer string (by name of __pmy_res_rbuffer)
+_pmy_main() {
     # get current buffer information
-    local buffer_left=${LBUFFER}
-    local buffer_right=${RBUFFER}
+    local buffer_left=${1:-""}
+    local buffer_right=${2:-""}
 
     # get output from pmy
     local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)"
 
     if [[ -z $out  ]] then
         echo "No rule was matched"
+        __pmy_res_lbuffer=${buffer_left}
+        __pmy_res_rbuffer=${buffer_right}
     else
         eval ${out}
 
@@ -43,10 +52,16 @@ pmy-widget() {
             local after_cmd=${__pmy_out_imm_after_cmd}
             local res=$(echo ${fzf_res} | eval ${after_cmd})
         fi
-        LBUFFER="${__pmy_out_buffer_left}${res}"
-        RBUFFER="${__pmy_out_buffer_right}"
+        __pmy_res_lbuffer="${__pmy_out_buffer_left}${res}"
+        __pmy_res_rbuffer="${__pmy_out_buffer_right}"
     fi
+}
+
+pmy-widget() {
+    _pmy_main ${LBUFFER} ${RBUFFER}
     zle reset-prompt
+    LBUFFER=${__pmy_res_lbuffer}
+    RBUFFER=${__pmy_res_rbuffer}
 }
 
 zle -N pmy-widget
