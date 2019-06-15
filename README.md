@@ -73,9 +73,7 @@ Rule unit is described as follows
 Here, some of examples of pmy's completion are provided as GIF with its rule(json format).
 They are just a few examples of all possible pattern-matching based completion, but I think it help you to create new pmy's rule.
 
-### Git
-
-#### git checkout(co)
+### git checkout(co)
 
 ![pmy_git_checkout_resized](https://user-images.githubusercontent.com/6816040/59544897-a5e6cc80-8f51-11e9-8b6a-656734d159b0.gif)
 
@@ -101,7 +99,7 @@ They are just a few examples of all possible pattern-matching based completion, 
 
 ```
 
-#### git cherry-pick(cp)
+### git cherry-pick(cp)
 
 ![pmy_git_cherry-pick_resized](https://user-images.githubusercontent.com/6816040/59544901-a67f6300-8f51-11e9-91f9-16e668b25af7.gif)
 
