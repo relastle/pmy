@@ -54,6 +54,11 @@ type pmyTestCases []*pmyTestCase
 // - pmy core runner (Go part)
 // - zsh-go interaction
 func TestIntegration(t *testing.T) {
+	gopath := os.Getenv("GOPATH")
+	os.Setenv(
+		"PMY_RULE_PATH",
+		fmt.Sprintf("%v/src/github.com/relastle/pmy/resources/test/pmy_rules_test.json", gopath),
+	)
 	jsonFile, err := os.Open("../resources/test/pmy_testcases.json")
 	// if we os.Open returns an error then handle it
 	if err != nil {
