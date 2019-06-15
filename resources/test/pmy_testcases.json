@@ -1,0 +1,7 @@
+[
+  {
+    "lbuffer": "cd ",
+    "rbuffer": "",
+    "expected": "cd test_directory/"
+  }
+]
