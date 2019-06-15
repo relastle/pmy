@@ -6,11 +6,6 @@
           "tag": "🌱:branch",
           "stmt": "echo master",
           "after": "awk '{print $0}'"
-        },
-        {
-          "tag": "🍺:commit",
-          "stmt": "echo ef60c81 Update README.md",
-          "after": "awk '{print $1}'"
         }
       ],
       "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
