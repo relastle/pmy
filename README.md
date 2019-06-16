@@ -61,12 +61,12 @@ Rule unit is described as follows
 |property name | description |
 | --- | --- |
 |***regexpLeft*** | If this regexp matches the current left buffer, this rule will be activated.|
-|***regexpRight*** | Same as left one. But in many cases it is not set as default value '' (becasue you usually work in line).|
+|***regexpRight*** | Same as left one. But in many cases it is not set as default value '' (becasue you usually work in line left to right).|
 |***cmdGroups.tag***  | tag string which will be inserted ahead of each line of outputs of the corresponding command. | 
 |***cmdGroups.stmt***  | command that will be executed to make sources for fuzzy-finder. |
 |***cmdGroups.after***  | command that will be executed against line after fuzzy-finder selection (using pipe). | 
-|***bufferLeft***  | Buffer left values after completion. [] denotes the original left buffer |
-|***bufferRight***  | Buffer right values after completion. [] denotes the original right buffer |
+|***bufferLeft***  | Buffer left values after completion. [] denotes the original left buffer. |
+|***bufferRight***  | Buffer right values after completion. [] denotes the original right buffer. |
 
 ## Demonstration
 
