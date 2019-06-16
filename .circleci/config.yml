@@ -1,18 +1,8 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: relastle/pmy:0.1.0
+    docker: # See https://docs.docker.com/get-started/#docker-concepts if you are new to Docker.
+      - image: circleci/ruby:2.4.1
     steps:
       - checkout
       - run: echo "A first hello"
-
-workflows:
-  version: 2
-  deploy:
-    jobs:
-      - deploy_job:
-        filters:
-          branches:
-            only:
-              - develop
