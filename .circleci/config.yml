@@ -6,3 +6,13 @@ jobs:
     steps:
       - checkout
       - run: echo "A first hello"
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy_job:
+        filters:
+          branches:
+            only:
+              - develop
