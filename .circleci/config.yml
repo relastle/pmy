@@ -30,7 +30,7 @@ jobs:
             source docker_tag
             # Replace with your repository name
             docker push relastle/pmy:${DOCKER_TAG}
-  test:
+  integration-test:
     docker:
       - image: relastle/pmy:${DOCKER_TAG}
     steps:
@@ -44,7 +44,7 @@ workflows:
   build_and_test: # workflow名
     jobs:
       - build
-      - test:
+      - integration-test:
         requires: # buildが成功したら実行する
           - build
 
