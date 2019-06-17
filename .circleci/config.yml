@@ -12,11 +12,7 @@ jobs:
       - run:
           name: Prepare suitable tag name
           command: |
-            if [ "$CIRCLE_TAG" ]; then
-              DOCKER_TAG="$CIRCLE_TAG"
-            else
-              DOCKER_TAG=$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
-            fi
+            DOCKER_TAG=$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
             echo "export DOCKER_TAG=$DOCKER_TAG" | tee docker_tag
             echo "export DOCKER_TAG=$DOCKER_TAG" >> $BASH_ENV
       - run:
@@ -33,7 +29,7 @@ jobs:
             docker push relastle/pmy:${DOCKER_TAG}
   integration-test:
     docker:
-      - image: relastle/pmy:${DOCKER_TAG}
+      - image: relastle/pmy:$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
     steps:
       - checkout
       - setup_remote_docker
