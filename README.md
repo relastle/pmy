@@ -37,7 +37,7 @@ You can also add the line into your ~/.zshrc if you want.
 ## Basic Usage
 
 Pmy can be invoked by <kbd>Ctrl</kbd> + <kbd>Space</kbd>.
-If the current left buffer (the part of the buffer that lies to the left of the cursor position) and the right buffer (the right part) match pre-defined rule (described below), fuzzy-finder launches against outputs of the corresponding command. 
+If the current left buffer (the part of the buffer that lies to the left of the cursor position) and the right buffer (the right part) match pre-defined rule (described below), fuzzy-finder launches against outputs of the corresponding command.
 
 ## Basic Configuration
 
@@ -131,7 +131,7 @@ They are just a few examples of all possible pattern-matching based completion, 
   "cmdGroups": [
     {
       "tag": "",
-      "stmt":  "command ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
+      "stmt":  "command ls -F -1 <path> | egrep '/$'",
       "after": "awk '{print $0}'"
     }
   ],
@@ -139,7 +139,6 @@ They are just a few examples of all possible pattern-matching based completion, 
   "bufferLeft": "cd <path>",
   "bufferRight": "[]"
 }
-
 ```
 
 ### Postfix completion
