@@ -19,6 +19,6 @@ RUN go get \
         github.com/fatih/color
 COPY . .
 RUN go build
-RUN ln -s /go/src/github.com/relastle/pmy/shell/zshrc.minimal $HOME/.zshrc
+RUN ln -s "/go/src/github.com/relastle/pmy/shell/zshrc.minimal" "${HOME}/.zshrc"
 
 
