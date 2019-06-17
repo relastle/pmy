@@ -37,7 +37,7 @@ You can also add the line into your ~/.zshrc if you want.
 ## Basic Usage
 
 Pmy can be invoked by <kbd>Ctrl</kbd> + <kbd>Space</kbd>.
-If the current left buffer (the part of the buffer that lies to the left of the cursor position) and the right buffer (the right part) match pre-defined rule (described below), fuzzy-finder launches against outputs of the corresponding command. 
+If the current left buffer (the part of the buffer that lies to the left of the cursor position) and the right buffer (the right part) match pre-defined rule (described below), fuzzy-finder launches against outputs of the corresponding command.
 
 ## Basic Configuration
 
