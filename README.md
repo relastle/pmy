@@ -186,6 +186,5 @@ Pmy's completion rule is highly customizable and flexible, you can easily create
 ```
 
 ## [License](LICENSE)
-------------------
 
 The MIT License (MIT)
