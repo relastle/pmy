@@ -30,3 +30,18 @@ jobs:
             source docker_tag
             # Replace with your repository name
             docker push relastle/pmy:${DOCKER_TAG}
+  test:
+    docker:
+      - image: relastle/pmy:${DOCKER_TAG}
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: integration_test
+          command: zsh ./test.zsh
+workflows:
+  test-workflow:
+    test:
+      requires:
+        - build
+
