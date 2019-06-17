@@ -1,5 +1,6 @@
 # pmy
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/42aa6748b7c8449a8f92c38f9a56c385)](https://app.codacy.com/app/relastle/pmy?utm_source=github.com&utm_medium=referral&utm_content=relastle/pmy&utm_campaign=Badge_Grade_Dashboard)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 [![CircleCI](https://circleci.com/gh/relastle/pmy.svg?style=svg)](https://circleci.com/gh/relastle/pmy)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frelastle%2Fpmy.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frelastle%2Fpmy?ref=badge_shield)
