@@ -23,7 +23,7 @@ jobs:
           command: |
             source docker_tag
             # Replace with your repository name
-            docker build -t relastle/pmy:${DOCKER_TAG} .
+            docker build -t relastle/pmy:${DOCKER_TAG} -f ./docker/Dockerfile .
       - run:
           name: Push
           command: |
