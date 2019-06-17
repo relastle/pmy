@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 [![CircleCI](https://circleci.com/gh/relastle/pmy.svg?style=svg)](https://circleci.com/gh/relastle/pmy)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frelastle%2Fpmy.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frelastle%2Fpmy?ref=badge_shield)
 
 pmy is a highly customizable context-aware shell(zsh)-completion scheme utilizing fuzzy finder such as 
 [fzf](https://github.com/junegunn/fzf).
