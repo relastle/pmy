@@ -131,7 +131,7 @@ They are just a few examples of all possible pattern-matching based completion, 
   "cmdGroups": [
     {
       "tag": "",
-      "stmt":  "command ls ${PMY_LS_OPTION} -1 <path> | egrep '/$'",
+      "stmt":  "command ls -F -1 <path> | egrep '/$'",
       "after": "awk '{print $0}'"
     }
   ],
@@ -139,7 +139,6 @@ They are just a few examples of all possible pattern-matching based completion, 
   "bufferLeft": "cd <path>",
   "bufferRight": "[]"
 }
-
 ```
 
 ### Postfix completion
