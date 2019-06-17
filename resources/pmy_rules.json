@@ -12,97 +12,6 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "(?P<body>git (co|checkout)) *(?P<query>.*)$",
-      "cmdGroups": [
-        {
-          "tag": "🌱:branch",
-          "stmt": "git branch --format=\"%(refname:short)\"",
-          "after": "awk '{print $0}'"
-        },
-        {
-          "tag": "🍺:commit",
-          "stmt": "git log --oneline -10",
-          "after": "awk '{print $1}'"
-        }
-      ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
-      "bufferLeft": "<body> ",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "git (branch -d|brd) *$",
-      "cmdGroups": [
-        {
-          "tag": "🌱:branch",
-          "stmt": "git branch --format=\"%(refname:short)\" | grep feature/",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "git (merge|rebase) *$",
-      "cmdGroups": [
-        {
-          "tag": "🌱:branch",
-          "stmt": "git branch --format=\"%(refname:short)\"",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "git (cp|cherry-pick) *$",
-      "cmdGroups": [
-        {
-          "tag": "🍒:commit",
-          "stmt": "git log --oneline --branches --tags",
-          "after": "awk '{print $1}'"
-        }
-      ],
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "^(vi|vim|nvim) ",
-      "cmdGroups": [
-        {
-          "tag": "",
-          "stmt": "command find . -maxdepth 4",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "^(python|python|python3|pypy|pypy3) ",
-      "cmdGroups": [
-        {
-          "tag": "",
-          "stmt": "command find . -mindepth 1 | egrep '.py$'",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "^cd +(?P<path>([^/]*/)*)(?P<query>[^/]*)$",
-      "cmdGroups": [
-        {
-          "tag": "",
-          "stmt":  "command ls -F -1 <path> | egrep '/$'",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
-      "bufferLeft": "cd <path>",
-      "bufferRight": "[]"
-    },
-    {
       "regexpLeft": "^(?P<num>[1-9][0-9]*).for$",
       "cmdGroups": [
         {
@@ -127,7 +36,7 @@
       "bufferRight": "; done"
     },
     {
-      "regexpLeft": " +(?P<path>.*)/$",
+      "regexpLeft": " (?P<path>.*)/$",
       "cmdGroups": [
         {
           "tag": "",
