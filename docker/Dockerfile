@@ -1,5 +1,5 @@
 FROM golang:alpine
-MAINTAINER Hiroki Konishi (relastle@gmail.com)
+LABEL maintainer "Hiroki Konishi <relastle@gmail.com>"
 
 # Install zsh
 RUN apk update && \
