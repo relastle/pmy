@@ -18,6 +18,7 @@ jobs:
               DOCKER_TAG=$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
             fi
             echo "export DOCKER_TAG=$DOCKER_TAG" | tee docker_tag
+            echo 'export DOCKER_TAG=$DOCKER_TAG" >> $BASH_ENV
       - run:
           name: Build image
           command: |
