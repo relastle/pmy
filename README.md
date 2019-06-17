@@ -76,6 +76,7 @@ They are just a few examples of all possible pattern-matching based completion, 
 ### git checkout(co)
 
 ![pmy_git_checkout_resized](https://user-images.githubusercontent.com/6816040/59544897-a5e6cc80-8f51-11e9-8b6a-656734d159b0.gif)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Frelastle%2Fpmy.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Frelastle%2Fpmy?ref=badge_shield)
 
 ```json
 {
@@ -187,3 +188,7 @@ Pmy's completion rule is highly customizable and flexible, you can easily create
 ------------------
 
 The MIT License (MIT)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Frelastle%2Fpmy.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Frelastle%2Fpmy?ref=badge_large)
