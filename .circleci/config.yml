@@ -39,11 +39,11 @@ jobs:
       - run:
           name: integration_test
           command: zsh ./test.zsh
-# workflows:
-#   version: 2
-#   build_and_test: # workflow名
-#     jobs:
-#       - build
-#       - integration-test:
-#         requires: # buildが成功したら実行する
-#           - build
+workflows:
+  version: 2
+  build_and_test: # workflow名
+    jobs:
+      - build
+      - integration-test:
+          requires: # buildが成功したら実行する
+            - build
