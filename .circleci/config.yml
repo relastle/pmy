@@ -3,8 +3,6 @@ jobs:
   build:
     docker:
       - image: docker:17.07.0-ce-git
-    machine:
-      docker_layer_caching: true
     steps:
       - checkout
       - setup_remote_docker:
