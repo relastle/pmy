@@ -3,16 +3,19 @@ jobs:
   build:
     docker:
       - image: docker:17.07.0-ce-git
+    machine:
+      docker_layer_caching: true
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+         docker_layer_caching: true
       - run:
           name: Login
           command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run:
           name: Prepare suitable tag name
           command: |
-            DOCKER_TAG=$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
+            DOCKER_TAG=$(echo "$CIRCLE_BRANCH")
             echo "export DOCKER_TAG=$DOCKER_TAG" | tee docker_tag
             echo "export DOCKER_TAG=$DOCKER_TAG" >> $BASH_ENV
       - run:
@@ -29,10 +32,11 @@ jobs:
             docker push relastle/pmy:${DOCKER_TAG}
   integration-test:
     docker:
-      - image: relastle/pmy:$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
+      - image: relastle/pmy:${CIRCLE_BRANCH}
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+         docker_layer_caching: true
       - run:
           name: integration_test
           command: zsh ./test.zsh
