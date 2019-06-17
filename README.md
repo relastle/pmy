@@ -1,5 +1,7 @@
 # pmy
 
+[![CircleCI](https://circleci.com/gh/relastle/pmy.svg?style=svg)](https://circleci.com/gh/relastle/pmy)
+
 pmy is a highly customizable context-aware shell(zsh)-completion scheme utilizing fuzzy finder such as 
 [fzf](https://github.com/junegunn/fzf).
 I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Completion-System) is so complicated (I admit it is very powerful), so I developed this system.
