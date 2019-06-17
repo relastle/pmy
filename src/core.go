@@ -49,7 +49,7 @@ func Run(cfgPath string, in Input) string {
 		// Load command specific rules from config file
 		cmdRules, err := loadAllRules(cmdCfgPath)
 		if err == nil {
-			rules = append(rules, cmdRules...)
+			rules = append(cmdRules, rules...)
 		}
 	}
 
