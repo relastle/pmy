@@ -1,54 +1,5 @@
 [
     {
-      "regexpLeft": "(?P<body>git (co|checkout)) *(?P<query>.*)$",
-      "cmdGroups": [
-        {
-          "tag": "🌱:branch",
-          "stmt": "echo master",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
-      "bufferLeft": "<body> ",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "git (branch -d|brd) *$",
-      "cmdGroups": [
-        {
-          "tag": "🌱:branch",
-          "stmt": "echo feature/test",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "git (merge|rebase) *$",
-      "cmdGroups": [
-        {
-          "tag": "🌱:branch",
-          "stmt": "echo master",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "git (cp|cherry-pick) *$",
-      "cmdGroups": [
-        {
-          "tag": "🍒:commit",
-          "stmt": "echo ef60c81 Update README.md",
-          "after": "awk '{print $1}'"
-        }
-      ],
-      "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
       "regexpLeft": "^(vi|vim|nvim) ",
       "cmdGroups": [
         {
@@ -70,19 +21,6 @@
         }
       ],
       "bufferLeft": "[]",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "^cd +(?P<path>([^/]*/)*)(?P<query>[^/]*)$",
-      "cmdGroups": [
-        {
-          "tag": "",
-          "stmt":  "echo test_directory/",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
-      "bufferLeft": "cd <path>",
       "bufferRight": "[]"
     },
     {
