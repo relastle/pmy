@@ -4,19 +4,19 @@
 [![CircleCI](https://circleci.com/gh/relastle/pmy.svg?style=svg)](https://circleci.com/gh/relastle/pmy)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frelastle%2Fpmy.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frelastle%2Fpmy?ref=badge_shield)
 
-pmy is a highly customizable context-aware shell(zsh)-completion scheme utilizing fuzzy finder such as 
+pmy is a highly customizable context-aware shell(zsh)-completion scheme utilizing fuzzy finder such as
 [fzf](https://github.com/junegunn/fzf).
 I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Completion-System) is so complicated (I admit it is very powerful), so I developed this system.
 
 ## Dependency
 
--   [fzf](https://github.com/junegunn/fzf) (You can of course use other fuzzy finder such as [peco](https://github.com/peco/peco) and [fzy](https://github.com/jhawthorn/fzy) instead of fzf)
+-   [fzf](https://github.com/junegunn/fzf) (You can of course use other fuzzy finder such as [peco](https://github.com/peco/peco) and [fzy](https://github.com/jhawthorn/fzy) instead of fzf.)
 -   [go](https://github.com/golang/go)
     -   [go-shellwords](https://github.com/mattn/go-shellwords)
     -   [go-pipeline](https://github.com/mattn/go-pipeline)
     -   [color](https://github.com/fatih/color) (Used in test)
 
--   awk (available in almost all environment)
+-   awk (available in almost all environment.)
 
 ## Installation
 
