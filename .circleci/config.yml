@@ -1,8 +1,32 @@
 version: 2
 jobs:
   build:
-    docker: # See https://docs.docker.com/get-started/#docker-concepts if you are new to Docker.
-      - image: relastle/pmy:0.1.0
+    docker:
+      - image: docker:17.07.0-ce-git
     steps:
       - checkout
-      - run: echo "A first hello"
+      - setup_remote_docker
+      - run:
+          name: Login
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run:
+          name: Prepare suitable tag name
+          command: |
+            if [ "$CIRCLE_TAG" ]; then
+              DOCKER_TAG="$CIRCLE_TAG"
+            else
+              DOCKER_TAG=$(echo "$CIRCLE_BRANCH" | sed 's/[^[:alnum:]._-]/_/g' | sed -e 's/^master$/latest/')
+            fi
+            echo "export DOCKER_TAG=$DOCKER_TAG" | tee docker_tag
+      - run:
+          name: Build image
+          command: |
+            source docker_tag
+            # Replace with your repository name
+            docker build -t relastle/pmy:${DOCKER_TAG} .
+      - run:
+          name: Push
+          command: |
+            source docker_tag
+            # Replace with your repository name
+            docker push relastle/pmy:${DOCKER_TAG}
