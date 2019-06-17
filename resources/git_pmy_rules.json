@@ -1,0 +1,56 @@
+[
+    {
+      "regexpLeft": "(?P<body>git (co|checkout)) *(?P<query>.*)$",
+      "cmdGroups": [
+        {
+          "tag": "🌱:branch",
+          "stmt": "git branch --format=\"%(refname:short)\"",
+          "after": "awk '{print $0}'"
+        },
+        {
+          "tag": "🍺:commit",
+          "stmt": "git log --oneline -10",
+          "after": "awk '{print $1}'"
+        }
+      ],
+      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "bufferLeft": "<body> ",
+      "bufferRight": "[]"
+    },
+    {
+      "regexpLeft": "git (branch -d|brd) *$",
+      "cmdGroups": [
+        {
+          "tag": "🌱:branch",
+          "stmt": "git branch --format=\"%(refname:short)\" | grep feature/",
+          "after": "awk '{print $0}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
+      "regexpLeft": "git (merge|rebase) *$",
+      "cmdGroups": [
+        {
+          "tag": "🌱:branch",
+          "stmt": "git branch --format=\"%(refname:short)\"",
+          "after": "awk '{print $0}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
+      "regexpLeft": "git (cp|cherry-pick) *$",
+      "cmdGroups": [
+        {
+          "tag": "🍒:commit",
+          "stmt": "git log --oneline --branches --tags",
+          "after": "awk '{print $1}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    }
+]
