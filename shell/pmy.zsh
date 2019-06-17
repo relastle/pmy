@@ -7,6 +7,7 @@ export PATH="${GOPATH}/src/github.com/relastle/pmy:${PATH}"
 export PMY_RULE_PATH=${PMY_RULE_PATH:-"${GOPATH}/src/github.com/relastle/pmy/resources/pmy_rules.json"}
 export PMY_TAG_DELIMITER=${PMY_TAG_DELIMITER:-"\t"}
 export PMY_FUZZY_FINDER_DEFAULT_CMD=${PMY_FUZZY_FINDER_DEFAULT_CMD:-"fzf -0 -1"}
+export PMY_TRIGGER_KEY=${PMY_TRIGGER_KEY:-'^ '}
 
 # Main Function of Pmy
 # Args:
@@ -71,4 +72,4 @@ pmy-widget() {
 }
 
 zle -N pmy-widget
-bindkey '^ ' pmy-widget
+bindkey ${PMY_TRIGGER_KEY} pmy-widget
