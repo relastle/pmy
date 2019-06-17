@@ -131,7 +131,7 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt":  "command ls -a ${PMY_LS_OPTION} -1 <path>",
+          "stmt":  "command ls -aF -1 <path>",
           "after": "awk '{print $0}'"
         }
       ],
