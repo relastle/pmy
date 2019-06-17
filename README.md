@@ -29,7 +29,7 @@ go get -u github.com/relastle/pmy
 Then, source a zsh script which simply configure brief settings.
 
 ```zsh
-source "${GOPATH}/src/github.com/relastle/pmy/shell/pmy.zsh"
+source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
 ```
 
 You can also add the line into your ~/.zshrc if you want.
