@@ -1,0 +1,14 @@
+[
+    {
+      "regexpLeft": "^cf logs ",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt": "cf apps | tail -n +5",
+          "after": "awk '{print $1}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    }
+]
