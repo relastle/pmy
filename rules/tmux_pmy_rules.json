@@ -1,10 +1,10 @@
 [
     {
-      "regexpLeft": "^cf logs ",
+      "regexpLeft": "^tmux $",
       "cmdGroups": [
         {
           "tag": "",
-          "stmt": "cf apps | tail -n +5",
+          "stmt":  "%tmux_sub",
           "after": "awk '{print $1}'"
         }
       ],
