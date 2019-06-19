@@ -42,7 +42,7 @@ If the current left buffer (the part of the buffer that lies to the left of the 
 ## Basic Configuration
 
 Basically, pmy's compleion behavior is solely based on one json file specified with `${PMY_RULE_PATH}`.
-Default setting is [here](https://github.com/relastle/pmy/blob/master/resources/pmy_rules.json).
+Default setting is [here](https://github.com/relastle/pmy/blob/master/rules/pmy_rules.json).
 
 Rule unit is described as follows
 
