@@ -9,7 +9,7 @@
         },
         {
           "tag": "🍺:commit",
-          "stmt": "git log --oneline -10",
+          "stmt": "git log --oneline -30",
           "after": "awk '{print $1}'"
         }
       ],
