@@ -8,6 +8,10 @@ import (
 	utils "github.com/relastle/pmy/src/utils"
 )
 
+// Magic represents a magic command
+type Magic struct {
+}
+
 // CmdUnit represents a single command that does not have
 // pipe operation or have shell environment embeddings
 type CmdUnit struct {
@@ -82,8 +86,14 @@ func (cgs CmdGroups) getMaxTagLen() int {
 	return maxLen
 }
 
+// getImmCmdGroup detemines whether the given gommand groups
+// can be excecuted in an immediate way. Immediate execution
+// requires the following
+// - tag is empty
+// - only one command group
+// - has not magic prefix('%')
 func (cgs CmdGroups) getImmCmdGroup() (*CmdGroup, bool) {
-	if len(cgs) == 1 && cgs[0].Tag == "" {
+	if len(cgs) == 1 && cgs[0].Tag == "" && !strings.HasPrefix(cgs[0].Stmt, "%") {
 		return cgs[0], true
 	}
 	return nil, false
@@ -101,9 +111,21 @@ func (cgs CmdGroups) organizeLines() string {
 	return resString
 }
 
+func (cgs CmdGroups) magic() (string, bool) {
+	if len(cgs) == 0 || !strings.HasPrefix(cgs[0].Stmt, "%") {
+		return "", false
+	}
+	snippetBaseName := strings.TrimPrefix(cgs[0].Stmt, "%")
+	out := getMagicSources(snippetBaseName)
+	return out, true
+}
+
 // GetSources get lines(fzf-sources) output by multiple command
-// execution.
+// execution or sources from magic command execution
 func (cgs CmdGroups) GetSources() (string, error) {
+	if res, ok := cgs.magic(); ok {
+		return res, nil
+	}
 	// Prepare shellwords parser
 	shellwords.ParseBacktick = true
 	p := shellwords.NewParser()

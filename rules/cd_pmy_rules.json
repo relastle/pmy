@@ -1,6 +1,6 @@
 [
     {
-      "regexpLeft": "^cd +(?P<path>([^/]*/)*)(?P<query>[^/]*)$",
+      "regexpLeft": "^cd +(?P<path>([A-Za-z_\\-.]*/)*)(?P<query>[A-Za-z_\\-.]*)$",
       "cmdGroups": [
         {
           "tag": "",
