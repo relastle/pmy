@@ -1,6 +1,6 @@
 [
     {
-      "regexpLeft": "^tmux ",
+      "regexpLeft": "^tmux $",
       "cmdGroups": [
         {
           "tag": "",

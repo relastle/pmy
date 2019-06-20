@@ -12,7 +12,7 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "^cf ",
+      "regexpLeft": "^cf $",
       "cmdGroups": [
         {
           "tag": "",
