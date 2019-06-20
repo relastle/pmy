@@ -38,5 +38,10 @@
     "lbuffer": "find . -mindepth 2 -maxdepth 2.for",
     "rbuffer": "",
     "expected": "for x in $(find . -mindepth 2 -maxdepth 2); do ; done"
+  },
+  {
+    "lbuffer": "magic ",
+    "rbuffer": "",
+    "expected": "magic magic_1column"
   }
 ]

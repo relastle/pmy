@@ -59,6 +59,10 @@ func TestIntegration(t *testing.T) {
 		"PMY_RULE_PATH",
 		fmt.Sprintf("%v/src/github.com/relastle/pmy/rules/test/pmy_rules_test.json", gopath),
 	)
+	os.Setenv(
+		"PMY_SNIPPET_ROOT",
+		fmt.Sprintf("%v/src/github.com/relastle/pmy/snippets/test", gopath),
+	)
 	jsonFile, err := os.Open("../rules/test/pmy_testcases.json")
 	// if we os.Open returns an error then handle it
 	if err != nil {

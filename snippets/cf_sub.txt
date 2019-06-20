@@ -1,0 +1,59 @@
+config                        Write default values to the config
+login                         Log user in
+target                        Set or view the targeted org or space
+help                          Show help
+logout                        Log user out
+apps                          List all apps in the target space
+run-task                      Run a one-off task on an app
+events                        Show recent app events
+push                          Push a new app or sync changes to an existing app
+logs                          Tail or show recent logs for an app
+set-env                       Set an env variable for an app
+start                         Start an app
+ssh                           SSH to an application container instance
+create-app-manifest           Create an app manifest for an app that has been pushed successfully
+stop                          Stop an app
+app                           Display health and status for an app
+delete                        Delete an app
+restart                       Stop all instances of the app, then start them again. This causes downtime.
+env                           Show all env variables for an app
+restage                       Recreate the app's executable artifact using the latest pushed app files and the latest environment (variables, service bindings, buildpack, stack, etc.). This action will cause app downtime.
+scale                         Change or view the instance count, disk space limit, and memory limit for an app
+marketplace                   List available offerings in the marketplace
+create-user-provided-service  Make a user-provided service instance available to CF apps
+services                      List all service instances in the target space
+update-user-provided-service  Update user-provided service instance
+create-service                Create a service instance
+create-service-key            Create key for a service instance
+update-service                Update a service instance
+delete-service-key            Delete a service key
+delete-service                Delete a service instance
+service-keys                  List keys for a service instance
+service                       Show service instance info
+service-key                   Show service key info
+bind-service                  Bind a service instance to an app
+bind-route-service            Bind a service instance to an HTTP route
+unbind-service                Unbind a service instance from an app
+unbind-route-service          Unbind a service instance from an HTTP route
+routes                        List all routes in the current space or the current organization
+delete-route                  Delete a route
+create-domain                 Create a domain in an org for later use
+domains                       List domains in the target org
+map-route                     Add a url route to an app
+create-route                  Create a url route in a space for later use
+unmap-route                   Remove a url route from an app
+spaces                        List all spaces in an org
+create-space                  Create a space
+set-space-role                Assign a space role to a user
+space-users                   Show space users by role
+delete-space                  Delete a space
+unset-space-role              Remove a space role from a user
+orgs                          List all orgs
+set-org-role                  Assign an org role to a user
+org-users                     Show org users by role
+unset-org-role                Remove an org role from a user
+plugins                       List commands of installed plugins
+add-plugin-repo               Add a new plugin repository
+repo-plugins                  List all available plugins in specified repository or in all added repositories
+install-plugin                Install CLI plugin
+list-plugin-repos             List all the added plugin repositories
