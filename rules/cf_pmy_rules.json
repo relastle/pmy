@@ -1,5 +1,17 @@
 [
     {
+      "regexpLeft": "^cf ",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt": "%cf_sub",
+          "after": "awk '{print $1}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
       "regexpLeft": "^cf logs ",
       "cmdGroups": [
         {
