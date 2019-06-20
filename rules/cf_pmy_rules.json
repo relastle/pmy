@@ -1,10 +1,10 @@
 [
     {
-      "regexpLeft": "^cf ",
+      "regexpLeft": "^cf (env|logs|delete -r) ",
       "cmdGroups": [
         {
           "tag": "",
-          "stmt": "%cf_sub",
+          "stmt": "cf apps | tail -n +5",
           "after": "awk '{print $1}'"
         }
       ],
@@ -12,11 +12,11 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "^cf logs ",
+      "regexpLeft": "^cf ",
       "cmdGroups": [
         {
           "tag": "",
-          "stmt": "cf apps | tail -n +5",
+          "stmt": "%cf_sub",
           "after": "awk '{print $1}'"
         }
       ],
