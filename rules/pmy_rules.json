@@ -1,6 +1,6 @@
 [
     {
-      "regexpLeft": "(?P<body>.*) (\\*\\*|(?P<path>.*)/\\*\\*)",
+      "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([A-Za-z_\\-.]*/)*)\\*\\*$",
       "cmdGroups": [
         {
           "tag": "",
