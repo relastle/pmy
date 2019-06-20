@@ -8,6 +8,20 @@
           "after": "awk '{print $1}'"
         }
       ],
+      "fuzzyFinderCmd": "fzf -0",
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
+      "regexpLeft": "^cf delete-service ",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt": "cf services | tail -n +4",
+          "after": "awk '{print $1}'"
+        }
+      ],
+      "fuzzyFinderCmd": "fzf -0",
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },
