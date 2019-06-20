@@ -1,6 +1,6 @@
 [
     {
-      "regexpLeft": "^cf (env|logs|delete -r) ",
+      "regexpLeft": "(?P<body>^cf (env|logs|delete -r)) (?P<query>[^-\\s]*)",
       "cmdGroups": [
         {
           "tag": "",
@@ -8,8 +8,8 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0",
-      "bufferLeft": "[]",
+      "fuzzyFinderCmd": "fzf -0 -q \"<query>\"",
+      "bufferLeft": "<body> ",
       "bufferRight": "[]"
     },
     {
@@ -26,7 +26,7 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "^cf $",
+      "regexpLeft": "^cf (?P<query>[^-\\s]*)$",
       "cmdGroups": [
         {
           "tag": "",
@@ -34,7 +34,8 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "bufferLeft": "[]",
+      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "bufferLeft": "cf ",
       "bufferRight": "[]"
     }
 ]
