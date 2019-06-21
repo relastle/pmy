@@ -1,5 +1,18 @@
 [
     {
+      "regexpLeft": "^git $",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt": "%git_sub",
+          "after": "awk '{print $1}'"
+        }
+      ],
+      "fuzzyFinderCmd": "fzf -0 -1 ",
+      "bufferLeft": "git ",
+      "bufferRight": "[]"
+    },
+    {
       "regexpLeft": "(?P<body>git (co|checkout)) *(?P<query>.*)$",
       "cmdGroups": [
         {
@@ -9,7 +22,7 @@
         },
         {
           "tag": "🍺:commit",
-          "stmt": "git log --oneline -10",
+          "stmt": "git log --oneline -30",
           "after": "awk '{print $1}'"
         }
       ],

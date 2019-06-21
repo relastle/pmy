@@ -24,6 +24,18 @@
       "bufferRight": "[]"
     },
     {
+      "regexpLeft": "^magic ",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt":  "%magic",
+          "after": "awk '{print $1}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    },
+    {
       "regexpLeft": "^(?P<num>[1-9][0-9]*).for$",
       "cmdGroups": [
         {
