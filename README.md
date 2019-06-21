@@ -83,7 +83,7 @@ which means that setting such rules into a single one file will increase searchi
 Therefore, you can define command specific rule by putting command-specific rules in the same directory as
 ${PMY_RULE_PATH} with an appropriate file name as follows.
 
-```
+```bash
 ├── pmy_rules.json
 ├── git_pmy_rules.json
 ├── cd_pmy_rules.json
@@ -92,7 +92,6 @@ ${PMY_RULE_PATH} with an appropriate file name as follows.
 
 In this case, if your current left buffer starts with git command and pmy is invoked,
 it searched for matched rule first in git_pmy_rules.json, and then pmy_rules.json.
-
 
 ### Magic command
 
@@ -141,7 +140,7 @@ You can define such completion (with sub command description) in an very readabl
 | ---                          | ---                                                                                                  | ---                                                                      |
 | PMY_RULE_PATH                | It defines the path of main rule json file. Command specific json files are also defined by its path | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/rules/pmy_rules.json" |
 | PMY_TAG_DELIMITER            | Delimiter between tag and a line of sources.                                                         | tab character ("\t")                                                     |
-| PMY_FUZZY_FINDER_DEFAULT_CMD | Default fuzzy finder command used when "fuzzyFinderCmd" is not set in a rule                         | "fzf -0 -1"
+| PMY_FUZZY_FINDER_DEFAULT_CMD | Default fuzzy finder command used when "fuzzyFinderCmd" is not set in a rule                         | "fzf -0 -1"                                                              |
 | PMY_TRIGGER_KEY              | Trigger key that invokes pmy completion                                                              | '^ '                                                                     |
 | PMY_SNIPPET_ROOT             | The root directory in which pmy's snippets for magic command is located                              | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets"             |
 
