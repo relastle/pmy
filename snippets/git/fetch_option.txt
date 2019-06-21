@@ -1,0 +1,29 @@
+-v  --verbose                         be more verbose
+-q  --quiet                           be more quiet
+--all                                 fetch from all remotes
+-a  --append                          append to .git/FETCH_HEAD instead of overwriting
+--upload-pack <path>                  path to upload pack on remote end
+-f  --force                           force overwrite of local reference
+-m  --multiple                        fetch from multiple remotes
+-t  --tags                            fetch all tags and associated objects
+-n                                    do not fetch all tags (--no-tags)
+-j  --jobs <n>                        number of submodules fetched in parallel
+-p  --prune                           prune remote-tracking branches no longer on remote
+-P  --prune-tags                      prune local tags no longer on remote and clobber changed tags
+--recurse-submodules [=<on-demand>]   control recursive fetching of submodules
+--dry-run                             dry run
+-k  --keep                            keep downloaded pack
+-u  --update-head-ok                  allow updating of HEAD ref
+--progress                            force progress reporting
+--depth <depth>                       deepen history of shallow clone
+--shallow-since <time>                deepen history of shallow repository based on time
+--shallow-exclude <revision>          deepen history of shallow clone, excluding rev
+--deepen <n>                          deepen history of shallow clone
+--unshallow                           convert to a complete repository
+--update-shallow                      accept refs that update .git/shallow
+--refmap <refmap>                     specify fetch refmap
+-o  --server-option <server-specific> option to transmit
+-4  --ipv4                            use IPv4 addresses only
+-6  --ipv6                            use IPv6 addresses only
+--negotiation-tip <revision>          report that we have only objects reachable from this object
+--filter <args>                       object filtering
