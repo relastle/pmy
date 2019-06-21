@@ -47,5 +47,17 @@
       "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
       "bufferLeft": "<body><path>",
       "bufferRight": "[]"
+    },
+    {
+      "regexpLeft": "^(?P<body>.*?) $",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt":  "bfind .",
+          "after": "awk '{print $0}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
     }
 ]
