@@ -40,7 +40,7 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt":  "command ls -aF -1 <path>",
+          "stmt":  "command ls -AF -1 <path>",
           "after": "awk '{print $0}'"
         }
       ],
@@ -53,7 +53,7 @@
       "cmdGroups": [
         {
           "tag": "",
-          "stmt":  "command ls -aF -1",
+          "stmt":  "command ls -AF -1",
           "after": "awk '{print $0}'"
         }
       ],
