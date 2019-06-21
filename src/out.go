@@ -17,6 +17,8 @@ const (
 	shellAfterVariableName          = "__pmy_out_%s_after"
 	shellImmCmdVariableName         = "__pmy_out_imm_cmd"
 	shellImmAfterCmdVariableName    = "__pmy_out_imm_after_cmd"
+	shellMagicOutVariableName       = "__pmy_out_magic_out"
+	shellMagicAfterCmdVariableName  = "__pmy_out_magic_after_cmd"
 	shellFuzzyFinderCmdVariableName = "__pmy_out_fuzzy_finder_cmd"
 )
 
@@ -36,6 +38,8 @@ type pmyOut struct {
 	fuzzyFinderCmd string
 	immCmd         string
 	immAfterCmd    string
+	magicOut       string
+	magicAfterCmd  string
 }
 
 // newPmyOutFromRule create new pmyOut from rule
@@ -48,12 +52,18 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	// pass cmdGroups
 	out.cmdGroups = rule.CmdGroups
 	out.fuzzyFinderCmd = rule.FuzzyFinderCmd
-	// expand all parameters
+	// expand all regexp parameters
 	out.expandAll(rule.paramMap)
+
 	// get sources
+	// if command can be executed and can be directly
+	// passed to fzf, GetSources will not be invoked.
 	if immCmdGroup, ok := out.cmdGroups.getImmCmdGroup(); ok {
 		out.immCmd = immCmdGroup.Stmt
 		out.immAfterCmd = immCmdGroup.After
+	} else if magicOut, ok := out.cmdGroups.magic(); ok {
+		out.magicOut = magicOut
+		out.magicAfterCmd = out.cmdGroups[0].After
 	} else {
 		out.sources, _ = out.cmdGroups.GetSources()
 	}
@@ -80,6 +90,8 @@ func (out *pmyOut) toShellVariables() string {
 	res += fmt.Sprintf("%v=$'%v';", shellSourcesVariableName, utils.Escape(out.sources, "'"))
 	res += fmt.Sprintf("%v=$'%v';", shellImmCmdVariableName, utils.Escape(out.immCmd, "'"))
 	res += fmt.Sprintf("%v=$'%v';", shellImmAfterCmdVariableName, utils.Escape(out.immAfterCmd, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellMagicOutVariableName, utils.Escape(out.magicOut, "'"))
+	res += fmt.Sprintf("%v=$'%v';", shellMagicAfterCmdVariableName, utils.Escape(out.magicAfterCmd, "'"))
 	res += fmt.Sprintf("%v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(out.fuzzyFinderCmd, "'"))
 	for _, cg := range out.cmdGroups {
 		res += fmt.Sprintf(

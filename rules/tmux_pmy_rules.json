@@ -1,0 +1,14 @@
+[
+    {
+      "regexpLeft": "^tmux $",
+      "cmdGroups": [
+        {
+          "tag": "",
+          "stmt":  "%tmux_sub",
+          "after": "awk '{print $1}'"
+        }
+      ],
+      "bufferLeft": "[]",
+      "bufferRight": "[]"
+    }
+]

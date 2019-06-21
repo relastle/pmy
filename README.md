@@ -9,7 +9,7 @@ pmy is a highly customizable context-aware shell(zsh)-completion scheme utilizin
 [fzf](https://github.com/junegunn/fzf).
 I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Completion-System) is so complicated (I admit it is very powerful), so I developed this system.
 
-## Dependency
+## :bulb: Dependency
 
 -   [fzf](https://github.com/junegunn/fzf) (You can of course use other fuzzy finder such as [peco](https://github.com/peco/peco) and [fzy](https://github.com/jhawthorn/fzy) instead of fzf.)
 -   [go](https://github.com/golang/go)
@@ -19,7 +19,7 @@ I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sou
 
 -   awk (available in almost all environment.)
 
-## Installation
+## :hammer: Installation
 
 First, please get pmy(backend system written in Go) using go get.
 ```sh
@@ -34,21 +34,24 @@ source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
 
 You can also add the line into your ~/.zshrc if you want.
 
-## Basic Usage
+## :black_nib: Basic Usage
 
 Pmy can be invoked by <kbd>Ctrl</kbd> + <kbd>Space</kbd>.
 If the current left buffer (the part of the buffer that lies to the left of the cursor position) and the right buffer (the right part) match pre-defined rule (described below), fuzzy-finder launches against outputs of the corresponding command.
 
-## Basic Configuration
+## :gear: Basic Configuration
+
+### pmy's rule
 
 Basically, pmy's compleion behavior is solely based on one json file specified with `${PMY_RULE_PATH}`.
-Default setting is [here](https://github.com/relastle/pmy/blob/master/resources/pmy_rules.json).
+Default setting is [here](https://github.com/relastle/pmy/blob/master/rules/pmy_rules.json).
 
 Rule unit is described as follows
 
 ```json
 {
   "regexpLeft": "git (cp|cherry-pick) *$",
+  "regexpRight": "",
   "cmdGroups": [
     {
       "tag": "🍒:commit",
@@ -56,21 +59,98 @@ Rule unit is described as follows
       "after": "awk '{print $1}'"
      }
    ],
+   "fuzzyFinderCmd": "fzf -0 -1",
+   "bufferLeft": "[]",
    "bufferLeft": "[]",
    "bufferRight": "[]"
 }
 ```
-| property name         | description                                                                                                             |
-| ---                   | ---                                                                                                                     |
-| ***regexpLeft***      | If this regexp matches the current left buffer, this rule will be activated.                                            |
-| ***regexpRight***     | Same as left one. But in many cases it is not set as default value '' (becasue you usually work in line left to right). |
-| ***cmdGroups.tag***   | tag string which will be inserted ahead of each line of outputs of the corresponding command.                           |
-| ***cmdGroups.stmt***  | command that will be executed to make sources for fuzzy-finder.                                                         |
-| ***cmdGroups.after*** | command that will be executed against line after fuzzy-finder selection (using pipe).                                   |
-| ***bufferLeft***      | Buffer left values after completion. [] denotes the original left buffer.                                               |
-| ***bufferRight***     | Buffer right values after completion. [] denotes the original right buffer.                                             |
+| property name         | description                                                                                                  |
+| ---                   | ---                                                                                                          |
+| ***regexpLeft***      | If this regexp matches the current left buffer, this rule will be activated.                                 |
+| ***regexpRight***     | Same as left one, but in many cases you don't have to set it becasue you usually work in line left to right. |
+| ***cmdGroups.tag***   | tag string which will be inserted ahead of each line of outputs of the corresponding command.                |
+| ***cmdGroups.stmt***  | command that will be executed to make sources for fuzzy-finder.                                              |
+| ***cmdGroups.after*** | command that will be executed against line after fuzzy-finder selection (using pipe).                        |
+| ***fuzzyFinderCmd***  | Fuzzy finder command that will be excecuted (piped) against obtained command                                 |
+| ***bufferLeft***      | Buffer left values after completion. [] denotes the original left buffer.                                    |
+| ***bufferRight***     | Buffer right values after completion. [] denotes the original right buffer.                                  |
 
-## Demonstration
+### command specific rule
+
+In many cases, your own rule would be command specific ones (i.g. git-specific rule and cd-spefici-rule),
+which means that setting such rules into a single one file will increase searching time and slow pmy unreasonably.
+Therefore, you can define command specific rule by putting command-specific rules in the same directory as
+${PMY_RULE_PATH} with an appropriate file name as follows.
+
+```bash
+├── pmy_rules.json
+├── git_pmy_rules.json
+├── cd_pmy_rules.json
+└── tmux_pmy_rules.json
+```
+
+In this case, if your current left buffer starts with git command and pmy is invoked,
+it searched for matched rule first in git_pmy_rules.json, and then pmy_rules.json.
+
+### Magic command
+
+You sometimes want to define the fizzy-finder sources as while content of a file.
+pmy supports such function by a magic command "%".
+Suppose that your rule below is defined.
+
+```json
+{
+  "regexpLeft": "^git $",
+  "cmdGroups": [
+    {
+      "tag": "",
+      "stmt": "%git_sub",
+      "after": "awk '{print $1}'"
+    }
+  ],
+  "fuzzyFinderCmd": "fzf -0 -1 ",
+  "bufferLeft": "git ",
+  "bufferRight": "[]"
+}
+```
+
+Then the sources is defined as content of file
+
+```bash
+${PMY_SNIPPET_ROOT}/git_sub.txt
+```
+
+This file's content is as follows
+
+```txt
+clone      Clone a repository into a new directory
+init       Create an empty Git repository or reinitialize an existing one
+add        Add file contents to the index
+.
+.
+.
+```
+
+You can define such completion (with sub command description) in an very readable way :smile:.
+
+### Environment variables
+
+| variable name                | description                                                                                          | default values                                                           |
+| ---                          | ---                                                                                                  | ---                                                                      |
+| PMY_RULE_PATH                | It defines the path of main rule json file. Command specific json files are also defined by its path | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/rules/pmy_rules.json" |
+| PMY_TAG_DELIMITER            | Delimiter between tag and a line of sources.                                                         | tab character ("\t")                                                     |
+| PMY_FUZZY_FINDER_DEFAULT_CMD | Default fuzzy finder command used when "fuzzyFinderCmd" is not set in a rule                         | "fzf -0 -1"                                                              |
+| PMY_TRIGGER_KEY              | Trigger key that invokes pmy completion                                                              | '^ '                                                                     |
+| PMY_SNIPPET_ROOT             | The root directory in which pmy's snippets for magic command is located                              | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets"             |
+
+If you want to change these values, you should export them in .zshrc before you excecute
+
+```zsh
+source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
+```
+
+## :trumpet: Demonstration
 
 Here, some of examples of pmy's completion are provided as GIF with its rule(json format).
 They are just a few examples of all possible pattern-matching based completion, but I think it help you to create new pmy's rule.
@@ -184,6 +264,8 @@ Pmy's completion rule is highly customizable and flexible, you can easily create
 }
 ```
 
-## [License](LICENSE)
+## :memo: [License](LICENSE)
 
 The MIT License (MIT)
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frelastle%2Fpmy.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frelastle%2Fpmy?ref=badge_large)
