@@ -1,2 +1,5 @@
 pmy
 tags
+
+# Mypy cache directory
+.mypy_cache/
