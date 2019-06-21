@@ -268,3 +268,5 @@ Pmy's completion rule is highly customizable and flexible, you can easily create
 ## :memo: [License](LICENSE)
 
 The MIT License (MIT)
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frelastle%2Fpmy.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frelastle%2Fpmy?ref=badge_large)
