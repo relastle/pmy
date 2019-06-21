@@ -44,20 +44,21 @@
           "after": "awk '{print $0}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "fuzzyFinderCmd": "fzf -0 -1 -q \"^<query> \"",
       "bufferLeft": "<body><path>",
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "^(?P<body>.*?) $",
+      "regexpLeft": "^(?P<body>.*?) (?P<query>[A-Za-z_\\-.]*)$",
       "cmdGroups": [
         {
           "tag": "",
-          "stmt":  "bfind .",
+          "stmt":  "command ls -aF -1",
           "after": "awk '{print $0}'"
         }
       ],
-      "bufferLeft": "[]",
+      "fuzzyFinderCmd": "fzf -0 -1 -q \"^<query> \"",
+      "bufferLeft": "<body> ",
       "bufferRight": "[]"
     }
 ]
