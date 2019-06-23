@@ -4,6 +4,7 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frelastle%2Fpmy.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frelastle%2Fpmy?ref=badge_shield)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b4d31630d2f64ef1892d74dcc2e3105e)](https://www.codacy.com/app/relastle/pmy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=relastle/pmy&amp;utm_campaign=Badge_Grade)
 [![CircleCI](https://circleci.com/gh/relastle/pmy.svg?style=shield)](https://circleci.com/gh/relastle/pmy)
+[![Go Report Card](https://goreportcard.com/badge/github.com/relastle/pmy)](https://goreportcard.com/report/github.com/relastle/pmy)
 
 pmy is a highly customizable context-aware shell(zsh)-completion scheme utilizing fuzzy finder such as
 [fzf](https://github.com/junegunn/fzf).
