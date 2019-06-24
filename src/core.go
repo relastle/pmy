@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// ccheckJq checks whether `jq` command is available
+// checkJq checks whether `jq` command is available
 func checkJq() bool {
 	_, err := exec.LookPath("jq")
 	if err != nil {
