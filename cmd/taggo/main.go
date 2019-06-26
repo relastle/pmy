@@ -9,7 +9,12 @@ import (
 	"github.com/fatih/color"
 )
 
+func asItIs(format string, a ...interface{}) string {
+	return format
+}
+
 var colorFuncMap = map[string](func(format string, a ...interface{}) string){
+	"":        asItIs,
 	"balck":   color.BlackString,
 	"red":     color.RedString,
 	"green":   color.BlueString,

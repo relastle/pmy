@@ -44,7 +44,7 @@ func (c *pmyTestCase) testSelf(t *testing.T) (bool, error) {
 		return true, nil
 	}
 	fmt.Printf(
-		"[%v] fail\nexpected: %v\nactual: %v\n",
+		"[%v] fail\nexpected: %v\nactual  : %v\n",
 		color.RedString("✘"),
 		c.Expected,
 		res,
