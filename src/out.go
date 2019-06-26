@@ -58,18 +58,18 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 // buildMainCommand builds main command that concatenate
 // all results of given command groups
 func (out *pmyOut) buildMainCommand() string {
-	res := "cat "
+	res := ""
 	pmyDelimiter := os.Getenv("PMY_TAG_DELIMITER")
 	for _, cg := range out.cmdGroups {
 		// if there is no tag, no need to use taggo
 		if out.allEmptyTag {
 			res += fmt.Sprintf(
-				"<(%v)",
+				"%v ;",
 				cg.Stmt,
 			)
 		} else {
 			res += fmt.Sprintf(
-				"<(%v | taggo --color '%v' --tag '%v' --delimiter '%v') ",
+				"%v | taggo --color '%v' --tag '%v' --delimiter '%v' ;",
 				cg.Stmt,
 				cg.TagColor,
 				cg.tagAligned,
