@@ -32,6 +32,11 @@
           "after": "awk '{print $0}'"
         },
         {
+          "tag": "🔖:tag",
+          "stmt": "git tag",
+          "after": "awk '{print $0}'"
+        },
+        {
           "tag": "🍺:commit",
           "stmt": "git log --oneline -30 --color",
           "after": "awk '{print $1}'"
