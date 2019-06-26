@@ -8,7 +8,7 @@
           "after": "awk '{print $1}' | sed -e 's/=.*/=/g'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"<query>\"",
       "bufferLeft": "fzf <body>",
       "bufferRight": "[]"
     }
