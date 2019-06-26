@@ -20,9 +20,10 @@ I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sou
 
 ## :hammer: Installation
 
-First, please get pmy(backend system written in Go) using go get.
+First, please get pmy(backend system written in Go)
+and its dependency tool `taggo` using go get.
 ```sh
-go get -u github.com/relastle/pmy
+go get -u github.com/relastle/pmy github.com/relastle/taggo
 ```
 
 Then, source a zsh script which simply configure brief settings.
