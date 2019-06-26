@@ -3,7 +3,6 @@
       "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([A-Za-z_\\-.]*/)*)\\*\\*$",
       "cmdGroups": [
         {
-          "tag": "",
           "stmt":  "bfind <path>",
           "after": "awk '{print $0}'"
         }
@@ -15,7 +14,6 @@
       "regexpLeft": "^(?P<num>[1-9][0-9]*).for$",
       "cmdGroups": [
         {
-          "tag": "",
           "stmt":  "echo ''",
           "after": "awk '{print $0}'"
         }
@@ -27,7 +25,6 @@
       "regexpLeft": "(?P<cmd>.+)\\.for$",
       "cmdGroups": [
         {
-          "tag": "",
           "stmt":  "echo ''",
           "after": "awk '{print $0}'"
         }
@@ -39,7 +36,6 @@
       "regexpLeft": "^(?P<body>.*?)(?P<path>~{0,1}([A-Za-z_\\-.]*/)+)(?P<query>[A-Za-z_\\-.]*)$",
       "cmdGroups": [
         {
-          "tag": "",
           "stmt":  "command ls -AF -1 <path>",
           "after": "awk '{print $0}'"
         }
@@ -52,7 +48,6 @@
       "regexpLeft": "^(?P<body>.*?) (?P<query>[A-Za-z_\\-.]*)$",
       "cmdGroups": [
         {
-          "tag": "",
           "stmt":  "command ls -AF -1",
           "after": "awk '{print $0}'"
         }
