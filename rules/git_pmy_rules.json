@@ -8,7 +8,6 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 ",
       "bufferLeft": "git ",
       "bufferRight": "[]"
     },
@@ -21,7 +20,6 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 ",
       "bufferLeft": "git <sub_cmd><body>",
       "bufferRight": "[]"
     },
@@ -35,7 +33,7 @@
         },
         {
           "tag": "🍺:commit",
-          "stmt": "git ls --color",
+          "stmt": "git log --oneline -30 --color",
           "after": "awk '{print $1}'"
         }
       ],

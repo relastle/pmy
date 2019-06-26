@@ -44,7 +44,7 @@
           "after": "awk '{print $0}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"^<query> \"",
+      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
       "bufferLeft": "<body><path>",
       "bufferRight": "[]"
     },
@@ -57,7 +57,7 @@
           "after": "awk '{print $0}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"^<query> \"",
+      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
       "bufferLeft": "<body> ",
       "bufferRight": "[]"
     }
