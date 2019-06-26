@@ -14,9 +14,7 @@ I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sou
 
 -   [fzf](https://github.com/junegunn/fzf) (You can of course use other fuzzy finder such as [peco](https://github.com/peco/peco) and [fzy](https://github.com/jhawthorn/fzy) instead of fzf.)
 -   [go](https://github.com/golang/go)
-    -   [go-shellwords](https://github.com/mattn/go-shellwords)
-    -   [go-pipeline](https://github.com/mattn/go-pipeline)
-    -   [color](https://github.com/fatih/color) (Used in test)
+    -   [color](https://github.com/fatih/color)
 
 -   awk (available in almost all environment.)
 
