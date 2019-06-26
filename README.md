@@ -72,7 +72,7 @@ Rule unit is described as follows
 | ***cmdGroups.tag***   | tag string which will be inserted ahead of each line of outputs of the corresponding command.                |
 | ***cmdGroups.stmt***  | command that will be executed to make sources for fuzzy-finder.                                              |
 | ***cmdGroups.after*** | command that will be executed against line after fuzzy-finder selection (using pipe).                        |
-| ***fuzzyFinderCmd***  | Fuzzy finder command that will be excecuted (piped) against obtained command                                 |
+| ***fuzzyFinderCmd***  | Fuzzy finder command that will be executed (piped) against obtained command                                 |
 | ***bufferLeft***      | Buffer left values after completion. [] denotes the original left buffer.                                    |
 | ***bufferRight***     | Buffer right values after completion. [] denotes the original right buffer.                                  |
 
@@ -144,7 +144,7 @@ You can define such completion (with sub command description) in an very readabl
 | PMY_TRIGGER_KEY              | Trigger key that invokes pmy completion                                                              | '^ '                                                                     |
 | PMY_SNIPPET_ROOT             | The root directory in which pmy's snippets for magic command is located                              | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets"             |
 
-If you want to change these values, you should export them in .zshrc before you excecute
+If you want to change these values, you should export them in .zshrc before you execute
 
 ```zsh
 source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
