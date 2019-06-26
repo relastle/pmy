@@ -35,11 +35,11 @@
         },
         {
           "tag": "🍺:commit",
-          "stmt": "git log --oneline -30",
+          "stmt": "git ls --color",
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"<query>\"",
       "bufferLeft": "<body> ",
       "bufferRight": "[]"
     },
