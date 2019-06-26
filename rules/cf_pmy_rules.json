@@ -8,7 +8,7 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -q \"<query>\"",
+      "fuzzyFinderCmd": "fzf -0 --ansi -q \"<query>\"",
       "bufferLeft": "<body> ",
       "bufferRight": "[]"
     },
@@ -21,7 +21,7 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0",
+      "fuzzyFinderCmd": "fzf -0 --ansi",
       "bufferLeft": "[]",
       "bufferRight": "[]"
     },
@@ -34,7 +34,7 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"<query>\"",
       "bufferLeft": "cf ",
       "bufferRight": "[]"
     }

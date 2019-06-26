@@ -1,6 +1,6 @@
 [
   {
-    "lbuffer": "git checkout ",
+    "lbuffer": "git checkout mas",
     "rbuffer": "",
     "expected": "git checkout master"
   },
