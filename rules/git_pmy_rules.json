@@ -28,17 +28,17 @@
       "cmdGroups": [
         {
           "tag": "🌱:branch",
-          "stmt": "git branch --format=\"%(refname:short)\"",
+          "stmt": "git branch --format=\"%(refname:short)\" 2>/dev/null",
           "after": "awk '{print $0}'"
         },
         {
           "tag": "🔖:tag",
-          "stmt": "git tag",
+          "stmt": "git tag 2>/dev/null",
           "after": "awk '{print $0}'"
         },
         {
           "tag": "🍺:commit",
-          "stmt": "git log --oneline -30 --color",
+          "stmt": "git log --oneline -30 --color 2>/dev/null",
           "after": "awk '{print $1}'"
         }
       ],
