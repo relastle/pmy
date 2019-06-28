@@ -4,6 +4,7 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frelastle%2Fpmy.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frelastle%2Fpmy?ref=badge_shield)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b4d31630d2f64ef1892d74dcc2e3105e)](https://www.codacy.com/app/relastle/pmy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=relastle/pmy&amp;utm_campaign=Badge_Grade)
 [![CircleCI](https://circleci.com/gh/relastle/pmy.svg?style=shield)](https://circleci.com/gh/relastle/pmy)
+[![Go Report Card](https://goreportcard.com/badge/github.com/relastle/pmy)](https://goreportcard.com/report/github.com/relastle/pmy)
 
 pmy is a highly customizable context-aware shell(zsh)-completion scheme utilizing fuzzy finder such as
 [fzf](https://github.com/junegunn/fzf).
@@ -13,17 +14,16 @@ I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sou
 
 -   [fzf](https://github.com/junegunn/fzf) (You can of course use other fuzzy finder such as [peco](https://github.com/peco/peco) and [fzy](https://github.com/jhawthorn/fzy) instead of fzf.)
 -   [go](https://github.com/golang/go)
-    -   [go-shellwords](https://github.com/mattn/go-shellwords)
-    -   [go-pipeline](https://github.com/mattn/go-pipeline)
-    -   [color](https://github.com/fatih/color) (Used in test)
+    -   [color](https://github.com/fatih/color)
 
 -   awk (available in almost all environment.)
 
 ## :hammer: Installation
 
-First, please get pmy(backend system written in Go) using go get.
+First, please get pmy(backend system written in Go)
+and its dependency tool `taggo` using go get.
 ```sh
-go get -u github.com/relastle/pmy
+go get -u github.com/relastle/pmy github.com/relastle/taggo
 ```
 
 Then, source a zsh script which simply configure brief settings.
@@ -72,7 +72,7 @@ Rule unit is described as follows
 | ***cmdGroups.tag***   | tag string which will be inserted ahead of each line of outputs of the corresponding command.                |
 | ***cmdGroups.stmt***  | command that will be executed to make sources for fuzzy-finder.                                              |
 | ***cmdGroups.after*** | command that will be executed against line after fuzzy-finder selection (using pipe).                        |
-| ***fuzzyFinderCmd***  | Fuzzy finder command that will be excecuted (piped) against obtained command                                 |
+| ***fuzzyFinderCmd***  | Fuzzy finder command that will be executed (piped) against obtained command                                 |
 | ***bufferLeft***      | Buffer left values after completion. [] denotes the original left buffer.                                    |
 | ***bufferRight***     | Buffer right values after completion. [] denotes the original right buffer.                                  |
 
@@ -144,7 +144,7 @@ You can define such completion (with sub command description) in an very readabl
 | PMY_TRIGGER_KEY              | Trigger key that invokes pmy completion                                                              | '^ '                                                                     |
 | PMY_SNIPPET_ROOT             | The root directory in which pmy's snippets for magic command is located                              | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets"             |
 
-If you want to change these values, you should export them in .zshrc before you excecute
+If you want to change these values, you should export them in .zshrc before you execute
 
 ```zsh
 source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"

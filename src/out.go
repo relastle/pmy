@@ -1,9 +1,9 @@
 package pmy
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"os"
 	"strings"
 
 	utils "github.com/relastle/pmy/src/utils"
@@ -13,13 +13,9 @@ const (
 	shellBufferLeftVariableName     = "__pmy_out_buffer_left"
 	shellBufferRightVariableName    = "__pmy_out_buffer_right"
 	shellCommandVariableName        = "__pmy_out_command"
-	shellSourcesVariableName        = "__pmy_out_sources"
 	shellAfterVariableName          = "__pmy_out_%s_after"
-	shellImmCmdVariableName         = "__pmy_out_imm_cmd"
-	shellImmAfterCmdVariableName    = "__pmy_out_imm_after_cmd"
-	shellMagicOutVariableName       = "__pmy_out_magic_out"
-	shellMagicAfterCmdVariableName  = "__pmy_out_magic_after_cmd"
 	shellFuzzyFinderCmdVariableName = "__pmy_out_fuzzy_finder_cmd"
+	shellTagAllEmptyVariableName    = "__pmy_out_tag_all_empty"
 )
 
 type afterCmd struct {
@@ -36,10 +32,7 @@ type pmyOut struct {
 	cmdGroups      CmdGroups
 	sources        string
 	fuzzyFinderCmd string
-	immCmd         string
-	immAfterCmd    string
-	magicOut       string
-	magicAfterCmd  string
+	allEmptyTag    bool
 }
 
 // newPmyOutFromRule create new pmyOut from rule
@@ -51,52 +44,58 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 	out.bufferRight = rule.BufferRight
 	// pass cmdGroups
 	out.cmdGroups = rule.CmdGroups
+	out.cmdGroups.alignTag()
 	out.fuzzyFinderCmd = rule.FuzzyFinderCmd
-	// expand all regexp parameters
-	out.expandAll(rule.paramMap)
-
-	// get sources
-	// if command can be executed and can be directly
-	// passed to fzf, GetSources will not be invoked.
-	if immCmdGroup, ok := out.cmdGroups.getImmCmdGroup(); ok {
-		out.immCmd = immCmdGroup.Stmt
-		out.immAfterCmd = immCmdGroup.After
-	} else if magicOut, ok := out.cmdGroups.magic(); ok {
-		out.magicOut = magicOut
-		out.magicAfterCmd = out.cmdGroups[0].After
-	} else {
-		out.sources, _ = out.cmdGroups.GetSources()
-	}
-	// get sources
+	// expand magic command
+	out.expandAllMagics()
+	// expand magic command
+	out.expandAllParams(rule.paramMap)
+	// check if all tag is empty string
+	out.allEmptyTag = out.cmdGroups.allEmpty()
 	return out
 }
 
-// Encode with base64 and then replace `/` and `+`
-// into `a_a` and `b_b` respectively.
-func encodeTag(tag string) string {
-	sEnc := base64.StdEncoding.EncodeToString([]byte(tag))
-	sEnc = strings.Replace(sEnc, "/", "a_a", -1)
-	sEnc = strings.Replace(sEnc, "+", "b_b", -1)
-	sEnc = strings.Replace(sEnc, "=", "c_c", -1)
-	return sEnc
+// buildMainCommand builds main command that concatenate
+// all results of given command groups
+func (out *pmyOut) buildMainCommand() string {
+	res := ""
+	pmyDelimiter := os.Getenv("PMY_TAG_DELIMITER")
+	for _, cg := range out.cmdGroups {
+		// if there is no tag, no need to use taggo
+		if out.allEmptyTag {
+			res += fmt.Sprintf(
+				"%v ;",
+				cg.Stmt,
+			)
+		} else {
+			res += fmt.Sprintf(
+				"%v | taggo --color '%v' --tag '%v' --delimiter '%v' ;",
+				cg.Stmt,
+				cg.TagColor,
+				cg.tagAligned,
+				pmyDelimiter,
+			)
+		}
+	}
+	return res
 }
 
 // toShellVariables create zsh statement where pmyOut's attributes are
 // passed into shell variables
 func (out *pmyOut) toShellVariables() string {
 	res := ""
-	res += fmt.Sprintf("%v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.bufferLeft, "'"))
-	res += fmt.Sprintf("%v=$'%v';", shellBufferRightVariableName, utils.Escape(out.bufferRight, "'"))
-	res += fmt.Sprintf("%v=$'%v';", shellSourcesVariableName, utils.Escape(out.sources, "'"))
-	res += fmt.Sprintf("%v=$'%v';", shellImmCmdVariableName, utils.Escape(out.immCmd, "'"))
-	res += fmt.Sprintf("%v=$'%v';", shellImmAfterCmdVariableName, utils.Escape(out.immAfterCmd, "'"))
-	res += fmt.Sprintf("%v=$'%v';", shellMagicOutVariableName, utils.Escape(out.magicOut, "'"))
-	res += fmt.Sprintf("%v=$'%v';", shellMagicAfterCmdVariableName, utils.Escape(out.magicAfterCmd, "'"))
-	res += fmt.Sprintf("%v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(out.fuzzyFinderCmd, "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellCommandVariableName, utils.Escape(out.buildMainCommand(), "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.bufferLeft, "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellBufferRightVariableName, utils.Escape(out.bufferRight, "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(out.fuzzyFinderCmd, "'"))
+	if out.allEmptyTag {
+		res += fmt.Sprintf("local %v=$'%v';", shellTagAllEmptyVariableName, "empty")
+	}
+
 	for _, cg := range out.cmdGroups {
 		res += fmt.Sprintf(
-			"%v=$'%v';",
-			fmt.Sprintf(shellAfterVariableName, encodeTag(cg.Tag)),
+			"local %v=$'%v';",
+			fmt.Sprintf(shellAfterVariableName, utils.EncodeTag(cg.Tag)),
 			utils.Escape(cg.After, "'"),
 		)
 	}
@@ -116,7 +115,25 @@ func expand(org string, paramMap map[string]string) string {
 	return res
 }
 
-func (out *pmyOut) expandAll(paramMap map[string]string) {
+// expandAllMagics expands all magic commnad in Stmt
+// written in `%hoge` format
+func (out *pmyOut) expandAllMagics() {
+	for _, cg := range out.cmdGroups {
+		if !strings.HasPrefix(cg.Stmt, "%") {
+			continue
+		}
+		snippetBaseName := strings.Replace(cg.Stmt, "%", "", -1)
+		snippetPath := fmt.Sprintf("%v/%v.txt", PmySnippetRoot, snippetBaseName)
+		cg.Stmt = fmt.Sprintf(
+			"cat %v | taggo --index 0 --color yellow --delimiter ' '",
+			snippetPath,
+		)
+	}
+	return
+}
+
+// expandAllParams expands all params that refer to regexp parameters
+func (out *pmyOut) expandAllParams(paramMap map[string]string) {
 	out.bufferLeft = expand(out.bufferLeft, paramMap)
 	out.bufferRight = expand(out.bufferRight, paramMap)
 	out.fuzzyFinderCmd = expand(out.fuzzyFinderCmd, paramMap)

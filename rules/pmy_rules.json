@@ -3,7 +3,6 @@
       "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([A-Za-z_\\-.]*/)*)\\*\\*$",
       "cmdGroups": [
         {
-          "tag": "",
           "stmt":  "bfind <path>",
           "after": "awk '{print $0}'"
         }
@@ -15,7 +14,6 @@
       "regexpLeft": "^(?P<num>[1-9][0-9]*).for$",
       "cmdGroups": [
         {
-          "tag": "",
           "stmt":  "echo ''",
           "after": "awk '{print $0}'"
         }
@@ -27,7 +25,6 @@
       "regexpLeft": "(?P<cmd>.+)\\.for$",
       "cmdGroups": [
         {
-          "tag": "",
           "stmt":  "echo ''",
           "after": "awk '{print $0}'"
         }
@@ -39,25 +36,24 @@
       "regexpLeft": "^(?P<body>.*?)(?P<path>~{0,1}([A-Za-z_\\-.]*/)+)(?P<query>[A-Za-z_\\-.]*)$",
       "cmdGroups": [
         {
-          "tag": "",
-          "stmt":  "command ls -aF -1 <path>",
+          "stmt":  "command ls -AF -1 <path>",
           "after": "awk '{print $0}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
       "bufferLeft": "<body><path>",
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "^(?P<body>.*?) $",
+      "regexpLeft": "^(?P<body>.*?) (?P<query>[A-Za-z_\\-.]*)$",
       "cmdGroups": [
         {
-          "tag": "",
-          "stmt":  "bfind .",
+          "stmt":  "command ls -AF -1",
           "after": "awk '{print $0}'"
         }
       ],
-      "bufferLeft": "[]",
+      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
+      "bufferLeft": "<body> ",
       "bufferRight": "[]"
     }
 ]
