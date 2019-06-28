@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/fatih/color"
 )
@@ -19,7 +20,8 @@ type pmyTestCase struct {
 	Expected string `json:"expected"`
 }
 
-func (c *pmyTestCase) testSelf() (bool, error) {
+func (c *pmyTestCase) testSelf(t *testing.T) (bool, error) {
+	start := time.Now()
 	out, err := exec.Command(
 		"../shell/pmy_wrapper.zsh",
 		c.Lbuffer,
@@ -32,15 +34,17 @@ func (c *pmyTestCase) testSelf() (bool, error) {
 
 	res := strings.Replace(string(out), "\n", "", -1)
 	if res == c.Expected {
+		elapsed := time.Since(start)
 		fmt.Printf(
-			"[%v] pass; res: %v\n",
+			"[%v] pass; {res: %v, elapsed: %v}\n",
 			color.GreenString("●"),
 			res,
+			elapsed,
 		)
 		return true, nil
 	}
 	fmt.Printf(
-		"[%v] fail\nexpectd: %v\nactual: %v\n",
+		"[%v] fail\nexpected: %v\nactual  : %v\n",
 		color.RedString("✘"),
 		c.Expected,
 		res,
@@ -73,7 +77,7 @@ func TestIntegration(t *testing.T) {
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &cases)
 	for _, c := range cases {
-		if ok, err := c.testSelf(); ok {
+		if ok, err := c.testSelf(t); ok {
 			continue
 		} else if err == nil {
 			t.Fail()

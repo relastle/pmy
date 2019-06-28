@@ -8,7 +8,6 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 ",
       "bufferLeft": "git ",
       "bufferRight": "[]"
     },
@@ -21,7 +20,6 @@
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 ",
       "bufferLeft": "git <sub_cmd><body>",
       "bufferRight": "[]"
     },
@@ -30,16 +28,21 @@
       "cmdGroups": [
         {
           "tag": "🌱:branch",
-          "stmt": "git branch --format=\"%(refname:short)\"",
+          "stmt": "git branch --format=\"%(refname:short)\" 2>/dev/null",
+          "after": "awk '{print $0}'"
+        },
+        {
+          "tag": "🔖:tag",
+          "stmt": "git tag 2>/dev/null",
           "after": "awk '{print $0}'"
         },
         {
           "tag": "🍺:commit",
-          "stmt": "git log --oneline -30",
+          "stmt": "git log --oneline -30 --color 2>/dev/null",
           "after": "awk '{print $1}'"
         }
       ],
-      "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
+      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"<query>\"",
       "bufferLeft": "<body> ",
       "bufferRight": "[]"
     },

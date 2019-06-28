@@ -7,9 +7,12 @@ import (
 	pmy "github.com/relastle/pmy/src"
 )
 
+var (
+	bufferLeft  string
+	bufferRight string
+)
+
 func main() {
-	var bufferLeft string
-	var bufferRight string
 	flag.StringVar(&bufferLeft, "bufferLeft", "", "")
 	flag.StringVar(&bufferRight, "bufferRight", "", "")
 	flag.Parse()

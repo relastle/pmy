@@ -6,7 +6,7 @@ export PATH="${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy:${PATH}"
 # Export pmy configuration environment variable
 export PMY_RULE_PATH="${PMY_RULE_PATH:-${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/rules/pmy_rules.json}"
 export PMY_TAG_DELIMITER=${PMY_TAG_DELIMITER:-"\t"}
-export PMY_FUZZY_FINDER_DEFAULT_CMD=${PMY_FUZZY_FINDER_DEFAULT_CMD:-"fzf -0 -1"}
+export PMY_FUZZY_FINDER_DEFAULT_CMD=${PMY_FUZZY_FINDER_DEFAULT_CMD:-"fzf -0 -1 --ansi"}
 export PMY_TRIGGER_KEY=${PMY_TRIGGER_KEY:-'^ '}
 export PMY_SNIPPET_ROOT="${PMY_SNIPPET_ROOT:-${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets}"
 
@@ -27,7 +27,7 @@ _pmy_main() {
     # local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)"
     local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right})"
 
-    if [[ -z $out  ]] then
+    if [[ -z $out  ]] ; then
         echo "No rule was matched"
         __pmy_res_lbuffer=${buffer_left}
         __pmy_res_rbuffer=${buffer_right}
@@ -35,31 +35,24 @@ _pmy_main() {
         eval ${out}
 
         local fuzzy_finder_cmd=${__pmy_out_fuzzy_finder_cmd:-${PMY_FUZZY_FINDER_DEFAULT_CMD}}
-
-        if [[ -z ${__pmy_out_imm_cmd} && -z ${__pmy_out_magic_out}  ]] then
-            # get result from fzf
-            local fzf_res=$(echo -n "${__pmy_out_sources}" | eval ${fuzzy_finder_cmd})
-            # get tag
-            local tag="$(echo -n ${fzf_res} | awk -F ${PMY_TAG_DELIMITER} 'BEGIN{ORS = ""}{print $1}' | base64)"
+        local fzf_res_tag_included=$(eval ${__pmy_out_command} | eval ${fuzzy_finder_cmd})
+        # get result from fzf
+        # get tag
+        if [[ -z ${__pmy_out_tag_all_empty} ]] ; then
+            local tag="$(echo -n ${fzf_res_tag_included} | awk -F ${PMY_TAG_DELIMITER} 'BEGIN{ORS = ""}{print $1}' | base64)"
             tag=${tag//\//a_a} # original escape of base64 `/`
             tag=${tag//+/b_b} # original escape of base64 `+`
             tag=${tag//=/c_c} # original escape of base64 `+`
             # get rest statement
-            local fzf_res_rest=$(echo ${fzf_res} | awk -F ${PMY_TAG_DELIMITER} '{for(i=2;i<NF;i++){printf("%s%s",$i,OFS=" ")}print $NF}')
-            # get after command
-            local after_cmd_variable="__pmy_out_${tag}_after"
-            local after_cmd=$(eval echo \$$after_cmd_variable)
-            local res=$(echo ${fzf_res_rest} | eval ${after_cmd})
-        elif [[ -z ${__pmy_out_magic_out} ]] then
-            # get result from fzf
-            local fzf_res=$(eval "${__pmy_out_imm_cmd}" | eval ${fuzzy_finder_cmd})
-            local after_cmd=${__pmy_out_imm_after_cmd}
-            local res=$(echo ${fzf_res} | eval ${after_cmd})
+            local fzf_res=$(echo ${fzf_res_tag_included} | awk -F ${PMY_TAG_DELIMITER} '{for(i=2;i<NF;i++){printf("%s%s",$i,OFS=" ")}print $NF}')
         else
-            local fzf_res=$(echo "${__pmy_out_magic_out}" | eval ${fuzzy_finder_cmd})
-            local after_cmd=${__pmy_out_magic_after_cmd}
-            local res=$(echo ${fzf_res} | eval ${after_cmd})
+            local fzf_res=${fzf_res_tag_included}
+            local tag=""
         fi
+        # get after command
+        local after_cmd_variable="__pmy_out_${tag}_after"
+        local after_cmd=$(eval echo \$$after_cmd_variable)
+        local res=$(echo ${fzf_res} | eval ${after_cmd})
         __pmy_res_lbuffer="${__pmy_out_buffer_left}${res}"
         __pmy_res_rbuffer="${__pmy_out_buffer_right}"
     fi
