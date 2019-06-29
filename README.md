@@ -72,7 +72,7 @@ Rule unit is described as follows
 | ***cmdGroups.tag***   | tag string which will be inserted ahead of each line of outputs of the corresponding command.                |
 | ***cmdGroups.stmt***  | command that will be executed to make sources for fuzzy-finder.                                              |
 | ***cmdGroups.after*** | command that will be executed against line after fuzzy-finder selection (using pipe).                        |
-| ***fuzzyFinderCmd***  | Fuzzy finder command that will be executed (piped) against obtained command                                 |
+| ***fuzzyFinderCmd***  | Fuzzy finder command that will be executed (piped) against obtained command                                  |
 | ***bufferLeft***      | Buffer left values after completion. [] denotes the original left buffer.                                    |
 | ***bufferRight***     | Buffer right values after completion. [] denotes the original right buffer.                                  |
 
