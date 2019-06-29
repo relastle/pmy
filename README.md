@@ -20,9 +20,10 @@ I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sou
 
 ## :hammer: Installation
 
-First, please get pmy(backend system written in Go) using go get.
+First, please get pmy(backend system written in Go)
+and its dependency tool `taggo` using go get.
 ```sh
-go get -u github.com/relastle/pmy
+go get -u github.com/relastle/pmy github.com/relastle/taggo
 ```
 
 Then, source a zsh script which simply configure brief settings.
@@ -71,7 +72,7 @@ Rule unit is described as follows
 | ***cmdGroups.tag***   | tag string which will be inserted ahead of each line of outputs of the corresponding command.                |
 | ***cmdGroups.stmt***  | command that will be executed to make sources for fuzzy-finder.                                              |
 | ***cmdGroups.after*** | command that will be executed against line after fuzzy-finder selection (using pipe).                        |
-| ***fuzzyFinderCmd***  | Fuzzy finder command that will be excecuted (piped) against obtained command                                 |
+| ***fuzzyFinderCmd***  | Fuzzy finder command that will be executed (piped) against obtained command                                  |
 | ***bufferLeft***      | Buffer left values after completion. [] denotes the original left buffer.                                    |
 | ***bufferRight***     | Buffer right values after completion. [] denotes the original right buffer.                                  |
 
@@ -143,7 +144,7 @@ You can define such completion (with sub command description) in an very readabl
 | PMY_TRIGGER_KEY              | Trigger key that invokes pmy completion                                                              | '^ '                                                                     |
 | PMY_SNIPPET_ROOT             | The root directory in which pmy's snippets for magic command is located                              | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets"             |
 
-If you want to change these values, you should export them in .zshrc before you excecute
+If you want to change these values, you should export them in .zshrc before you execute
 
 ```zsh
 source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"

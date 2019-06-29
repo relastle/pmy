@@ -58,21 +58,21 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 // buildMainCommand builds main command that concatenate
 // all results of given command groups
 func (out *pmyOut) buildMainCommand() string {
-	res := "cat "
+	res := ""
 	pmyDelimiter := os.Getenv("PMY_TAG_DELIMITER")
 	for _, cg := range out.cmdGroups {
 		// if there is no tag, no need to use taggo
 		if out.allEmptyTag {
 			res += fmt.Sprintf(
-				"<(%v)",
+				"%v ;",
 				cg.Stmt,
 			)
 		} else {
 			res += fmt.Sprintf(
-				"<(%v | taggo --color '%v' --tag '%v' --delimiter '%v') ",
+				"%v | taggo --tag '%v' --tagColor '%v' --tagDelimiter '%v' ;",
 				cg.Stmt,
-				cg.TagColor,
 				cg.tagAligned,
+				cg.TagColor,
 				pmyDelimiter,
 			)
 		}
@@ -125,7 +125,7 @@ func (out *pmyOut) expandAllMagics() {
 		snippetBaseName := strings.Replace(cg.Stmt, "%", "", -1)
 		snippetPath := fmt.Sprintf("%v/%v.txt", PmySnippetRoot, snippetBaseName)
 		cg.Stmt = fmt.Sprintf(
-			"cat %v | taggo --index 0 --color yellow --delimiter ' '",
+			"cat %v | taggo --colorizeQuery '0:yellow' --delimiter ' '",
 			snippetPath,
 		)
 	}
