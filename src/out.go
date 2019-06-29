@@ -69,10 +69,10 @@ func (out *pmyOut) buildMainCommand() string {
 			)
 		} else {
 			res += fmt.Sprintf(
-				"%v | taggo --color '%v' --tag '%v' --delimiter '%v' ;",
+				"%v | taggo --tag '%v' --tagColor '%v' --tagDelimiter '%v' ;",
 				cg.Stmt,
-				cg.TagColor,
 				cg.tagAligned,
+				cg.TagColor,
 				pmyDelimiter,
 			)
 		}
@@ -125,7 +125,7 @@ func (out *pmyOut) expandAllMagics() {
 		snippetBaseName := strings.Replace(cg.Stmt, "%", "", -1)
 		snippetPath := fmt.Sprintf("%v/%v.txt", PmySnippetRoot, snippetBaseName)
 		cg.Stmt = fmt.Sprintf(
-			"cat %v | taggo --index 0 --color yellow --delimiter ' '",
+			"cat %v | taggo --colorizeQuery '0:yellow' --delimiter ' '",
 			snippetPath,
 		)
 	}
