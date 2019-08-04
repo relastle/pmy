@@ -1,6 +1,6 @@
 [
     {
-      "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([A-Za-z_\\-.]*/)*)\\*\\*$",
+      "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\\-.]*/)*)\\*\\*$",
       "cmdGroups": [
         {
           "stmt":  "bfind <path>",
@@ -33,7 +33,7 @@
       "bufferRight": "; done"
     },
     {
-      "regexpLeft": "^(?P<body>.*?)(?P<path>~{0,1}([A-Za-z_\\-.]*/)+)(?P<query>[A-Za-z_\\-.]*)$",
+      "regexpLeft": "^(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\\-.]*/)+)(?P<query>[0-9A-Za-z_\\-.]*)$",
       "cmdGroups": [
         {
           "stmt":  "command ls -AF -1 <path>",
@@ -45,7 +45,7 @@
       "bufferRight": "[]"
     },
     {
-      "regexpLeft": "^(?P<body>.*?) (?P<query>[A-Za-z_\\-.]*)$",
+      "regexpLeft": "^(?P<body>.*?) (?P<query>[0-9A-Za-z_\\-.]*)$",
       "cmdGroups": [
         {
           "stmt":  "command ls -AF -1",
