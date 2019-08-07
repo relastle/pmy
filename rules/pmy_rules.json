@@ -1,59 +1,59 @@
 [
-    {
-      "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\\-.]*/)*)\\*\\*$",
-      "cmdGroups": [
-        {
-          "stmt":  "bfind <path>",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "<body>",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "^(?P<num>[1-9][0-9]*).for$",
-      "cmdGroups": [
-        {
-          "stmt":  "echo ''",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "for x in $(seq 1 <num>); do ",
-      "bufferRight": "; done"
-    },
-    {
-      "regexpLeft": "(?P<cmd>.+)\\.for$",
-      "cmdGroups": [
-        {
-          "stmt":  "echo ''",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "bufferLeft": "for x in $(<cmd>); do ",
-      "bufferRight": "; done"
-    },
-    {
-      "regexpLeft": "^(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\\-.]*/)+)(?P<query>[0-9A-Za-z_\\-.]*)$",
-      "cmdGroups": [
-        {
-          "stmt":  "command ls -AF -1 <path>",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
-      "bufferLeft": "<body><path>",
-      "bufferRight": "[]"
-    },
-    {
-      "regexpLeft": "^(?P<body>.*?) (?P<query>[0-9A-Za-z_\\-.]*)$",
-      "cmdGroups": [
-        {
-          "stmt":  "command ls -AF -1",
-          "after": "awk '{print $0}'"
-        }
-      ],
-      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
-      "bufferLeft": "<body> ",
-      "bufferRight": "[]"
-    }
+  {
+    "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\\-.]*/)*)\\*\\*$",
+    "cmdGroups": [
+      {
+        "stmt":  "bfind <path>",
+        "after": "awk '{print $0}'"
+      }
+    ],
+    "bufferLeft": "<body>",
+    "bufferRight": "[]"
+  },
+  {
+    "regexpLeft": "^(?P<num>[1-9][0-9]*).for$",
+    "cmdGroups": [
+      {
+        "stmt":  "echo ''",
+        "after": "awk '{print $0}'"
+      }
+    ],
+    "bufferLeft": "for x in $(seq 1 <num>); do ",
+    "bufferRight": "; done"
+  },
+  {
+    "regexpLeft": "(?P<cmd>.+)\\.for$",
+    "cmdGroups": [
+      {
+        "stmt":  "echo ''",
+        "after": "awk '{print $0}'"
+      }
+    ],
+    "bufferLeft": "for x in $(<cmd>); do ",
+    "bufferRight": "; done"
+  },
+  {
+    "regexpLeft": "^(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\\-.]*/)+)(?P<query>[0-9A-Za-z_\\-.]*)$",
+    "cmdGroups": [
+      {
+        "stmt":  "command ls -AF -1 <path>",
+        "after": "awk '{print $0}'"
+      }
+    ],
+    "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
+    "bufferLeft": "<body><path>",
+    "bufferRight": "[]"
+  },
+  {
+    "regexpLeft": "^(?P<body>.*?) (?P<query>[0-9A-Za-z_\\-.]*)$",
+    "cmdGroups": [
+      {
+        "stmt":  "command ls -AF -1",
+        "after": "awk '{print $0}'"
+      }
+    ],
+    "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
+    "bufferLeft": "<body> ",
+    "bufferRight": "[]"
+  }
 ]
