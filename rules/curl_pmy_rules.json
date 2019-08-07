@@ -1,0 +1,14 @@
+[
+  {
+    "regexpLeft": "^curl [^@]*$",
+    "cmdGroups": [
+      {
+        "tag": "",
+        "stmt": "%curl/methods",
+        "after": "awk '{print $0}'"
+      }
+    ],
+    "bufferLeft": "[]",
+    "bufferRight": "[]"
+  }
+]
