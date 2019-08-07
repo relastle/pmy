@@ -1,0 +1,4 @@
+-X POST -H "Content-type: application/json" --data
+-X PATCH -H "Content-type: application/json" --data
+-X GET
+-X DELETE
