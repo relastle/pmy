@@ -1,9 +1,9 @@
 [
   {
-    "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\\-.]*/)*)\\*\\*$",
+    "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([\\w\\-.]*/)*)\\*\\*$",
     "cmdGroups": [
       {
-        "stmt":  "bfind <path>",
+        "stmt":  "eval ${FZF_DEFAULT_COMMAND}",
         "after": "awk '{print $0}'"
       }
     ],
