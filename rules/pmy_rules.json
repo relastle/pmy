@@ -1,9 +1,9 @@
 [
   {
-    "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([\\w\\-.]*/)*)\\*\\*$",
+    "regexpLeft": "(?P<body>.*?)(?P<path>~{0,1}([\\w\\-.]*/)*)\\*(?P<query>.*)\\*$",
     "cmdGroups": [
       {
-        "stmt":  "eval ${FZF_DEFAULT_COMMAND}",
+        "stmt":  "fd --full-path --color always \"<query>\" <path>",
         "after": "awk '{print $0}'"
       }
     ],
