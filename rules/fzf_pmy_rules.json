@@ -1,15 +1,15 @@
 [
-    {
-      "regexpLeft": "^fzf (?P<body>.*)(-|--)(?P<query>.*)$",
-      "cmdGroups": [
-        {
-          "tag": "",
-          "stmt": "%fzf/option",
-          "after": "awk '{print $1}' | sed -e 's/=.*/=/g'"
-        }
-      ],
-      "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"<query>\"",
-      "bufferLeft": "fzf <body>",
-      "bufferRight": "[]"
-    }
+  {
+    "regexpLeft": "^fzf (?P<body>.*)(-|--)(?P<query>.*)$",
+    "cmdGroups": [
+      {
+        "tag": "",
+        "stmt": "%fzf/option",
+        "after": "awk '{print $1}' | sed -e 's/=.*/=/g'"
+      }
+    ],
+    "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"<query>\"",
+    "bufferLeft": "fzf <body>",
+    "bufferRight": "[]"
+  }
 ]
