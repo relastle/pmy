@@ -1,11 +1,11 @@
 [
   {
-    "regexpLeft": "^tmux $",
+    "regexpLeft": "^curl [^@]*$",
     "cmdGroups": [
       {
         "tag": "",
-        "stmt":  "%tmux_sub",
-        "after": "awk '{print $1}'"
+        "stmt": "%curl/methods",
+        "after": "awk '{print $0}'"
       }
     ],
     "bufferLeft": "[]",
