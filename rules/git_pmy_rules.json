@@ -51,7 +51,7 @@
     "cmdGroups": [
       {
         "tag": "🌱:branch",
-        "stmt": "git branch --format=\"%(refname:short)\" | grep feature/",
+        "stmt": "git branch --format=\"%(refname:short)\" | egrep -v \"(master|develop|dev)\"",
         "after": "awk '{print $0}'"
       }
     ],

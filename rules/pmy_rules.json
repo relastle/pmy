@@ -36,11 +36,11 @@
     "regexpLeft": "^(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\\-.]*/)+)(?P<query>[0-9A-Za-z_\\-.]*)$",
     "cmdGroups": [
       {
-        "stmt":  "command ls -AF -1 <path>",
+        "stmt":  "command ls -AF -1 <path> | rg --color always \"<query>\"",
         "after": "awk '{print $0}'"
       }
     ],
-    "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
+    "fuzzyFinderCmd": "fzf -0 -1 --ansi",
     "bufferLeft": "<body><path>",
     "bufferRight": "[]"
   },
@@ -48,11 +48,11 @@
     "regexpLeft": "^(?P<body>.*?) (?P<query>[0-9A-Za-z_\\-.]*)$",
     "cmdGroups": [
       {
-        "stmt":  "command ls -AF -1",
+        "stmt":  "command ls -AF -1 | rg --color always \"<query>\"",
         "after": "awk '{print $0}'"
       }
     ],
-    "fuzzyFinderCmd": "fzf -0 -1 --ansi -q \"^<query> \"",
+    "fuzzyFinderCmd": "fzf -0 -1 --ansi",
     "bufferLeft": "<body> ",
     "bufferRight": "[]"
   }
