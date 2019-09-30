@@ -15,6 +15,7 @@ RUN go get -u github.com/relastle/taggo
 # Install pmy
 WORKDIR /go/src/github.com/relastle/pmy
 RUN go get github.com/fatih/color
+RUN go get github.com/relastle/colorflag
 COPY . .
 RUN go install
 RUN ln -s "/go/src/github.com/relastle/pmy/shell/zshrc.minimal" "${HOME}/.zshrc"
