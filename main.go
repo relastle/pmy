@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/relastle/colorflag"
 	pmy "github.com/relastle/pmy/src"
 )
 
@@ -13,9 +14,10 @@ var (
 )
 
 func main() {
-	flag.StringVar(&bufferLeft, "bufferLeft", "", "")
-	flag.StringVar(&bufferRight, "bufferRight", "", "")
-	flag.Parse()
+	flag.StringVar(&bufferLeft, "bufferLeft", "", "Current left buffer string of zsh prompt")
+	flag.StringVar(&bufferRight, "bufferRight", "", "Current right buffer string of zsh prompt")
+
+	colorflag.Parse([]*flag.FlagSet{})
 
 	pmy.SetConfigs()
 
