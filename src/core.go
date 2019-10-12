@@ -41,12 +41,12 @@ func Run(cfgPath string, in Input) string {
 		log.Fatal(err)
 	}
 
+	// Load command specific rules from config file
 	if cmdName := in.getCmdName(); cmdName != "" {
 		cmdCfgPath := filepath.Join(
 			filepath.Dir(cfgPath),
 			fmt.Sprintf("%v_%v", cmdName, filepath.Base(cfgPath)),
 		)
-		// Load command specific rules from config file
 		cmdRules, err := loadAllRules(cmdCfgPath)
 		if err == nil {
 			rules = append(cmdRules, rules...)
