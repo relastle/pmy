@@ -1,5 +1,10 @@
 .PHONY: main
 main:
+	# Remove comments from zsh source code
+	sed '/^[[:blank:]]*#/d;s/#.*//' ./shell/pmy.zsh > ./_shell/_pmy.zsh
+	# Make statik files
+	statik -src=./_shell
+	# build
 	go build
 
 .PHONY: clean
