@@ -10,7 +10,7 @@ pmy is a highly customizable context-aware shell(zsh)-completion scheme utilizin
 [fzf](https://github.com/junegunn/fzf).
 I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Completion-System) is so complicated (I admit it is very powerful), so I developed this system.
 
-## :bulb: Dependency
+## Dependency
 
 -   [fzf](https://github.com/junegunn/fzf) (You can of course use other fuzzy finder such as [peco](https://github.com/peco/peco) and [fzy](https://github.com/jhawthorn/fzy) instead of fzf.)
 -   [go](https://github.com/golang/go)
@@ -18,7 +18,7 @@ I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sou
 
 -   awk (available in almost all environment.)
 
-## :hammer: Installation
+## Installation
 
 First, please get pmy(backend system written in Go)
 and its dependency tool `taggo` using go get.
@@ -34,12 +34,12 @@ source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
 
 You can also add the line into your ~/.zshrc if you want.
 
-## :black_nib: Basic Usage
+## Basic Usage
 
 Pmy can be invoked by <kbd>Ctrl</kbd> + <kbd>Space</kbd>.
 If the current left buffer (the part of the buffer that lies to the left of the cursor position) and the right buffer (the right part) match pre-defined rule (described below), fuzzy-finder launches against outputs of the corresponding command.
 
-## :gear: Basic Configuration
+## Basic Configuration
 
 ### pmy's rule
 
@@ -150,7 +150,7 @@ If you want to change these values, you should export them in .zshrc before you 
 source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
 ```
 
-## :trumpet: Demonstration
+## Demonstration
 
 Here, some of examples of pmy's completion are provided as GIF with its rule(json format).
 They are just a few examples of all possible pattern-matching based completion, but I think it help you to create new pmy's rule.
@@ -264,7 +264,7 @@ Pmy's completion rule is highly customizable and flexible, you can easily create
 }
 ```
 
-## :memo: [License](LICENSE)
+## [License](LICENSE)
 
 The MIT License (MIT)
 
