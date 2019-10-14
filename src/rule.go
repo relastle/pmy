@@ -2,7 +2,6 @@ package pmy
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"regexp"
@@ -38,38 +37,6 @@ func loadAllRules(cfgPath string) (pmyRules, error) {
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &rules)
 	return rules, nil
-}
-
-// DumpDummyRulesJSON dumps arbitrary number of rules into given file path
-func DumpDummyRulesJSON(resultPath string, ruleNum int, cmdGroupNum int) error {
-	pmyRules := pmyRules{}
-	for i := 0; i < ruleNum; i++ {
-		cgs := CmdGroups{}
-		for j := 0; j < cmdGroupNum; j++ {
-			cg := &CmdGroup{
-				Tag:   fmt.Sprintf("test%v", ruleNum),
-				Stmt:  "find /Users/hkonishi/ -maxdepth 2",
-				After: "awk '{print $1}'",
-			}
-			cgs = append(cgs, cg)
-		}
-		rule := &pmyRule{
-			Name:        fmt.Sprintf("test%v", ruleNum),
-			RegexpLeft:  ".*test.*",
-			RegexpRight: "",
-			CmdGroups:   cgs,
-			BufferLeft:  "[]",
-			BufferRight: "[]",
-		}
-		pmyRules = append(pmyRules, rule)
-	}
-
-	cgsJSON, _ := json.Marshal(pmyRules)
-	err := ioutil.WriteFile(resultPath, cgsJSON, 0644)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // match check if the query buffers(left and right) satisfies the concerned

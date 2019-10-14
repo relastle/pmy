@@ -45,6 +45,13 @@ func initCmdRoutine() {
 	fmt.Printf(string(bs))
 }
 
+func ruleListCmdRoutine() {
+
+}
+
+func snippetListCmdRoutine() {
+}
+
 func main() {
 	flag.StringVar(&bufferLeft, "bufferLeft", "", "Current left buffer string of zsh prompt")
 	flag.StringVar(&bufferRight, "bufferRight", "", "Current right buffer string of zsh prompt")
