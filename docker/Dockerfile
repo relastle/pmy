@@ -3,7 +3,7 @@ LABEL maintainer "Hiroki Konishi <relastle@gmail.com>"
 
 # Install zsh
 RUN apk update && \
-    apk add --no-cache zsh git && \
+    apk add --no-cache zsh git gcc make && \
     rm -f /tmp/* /etc/apk/cache/*
 ENV SHELL /bin/zsh
 
