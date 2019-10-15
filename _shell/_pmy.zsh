@@ -1,0 +1,57 @@
+
+export PATH="${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy:${PATH}"
+
+export PMY_RULE_PATH="${PMY_RULE_PATH:-${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/rules/pmy_rules.json}"
+export PMY_TAG_DELIMITER=${PMY_TAG_DELIMITER:-"\t"}
+export PMY_FUZZY_FINDER_DEFAULT_CMD=${PMY_FUZZY_FINDER_DEFAULT_CMD:-"fzf -0 -1 --ansi"}
+export PMY_TRIGGER_KEY=${PMY_TRIGGER_KEY:-'^ '}
+export PMY_SNIPPET_ROOT="${PMY_SNIPPET_ROOT:-${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets}"
+
+_pmy_main() {
+    local buffer_left=${1:-""}
+    local buffer_right=${2:-""}
+    local test_flag=${3:-""}
+
+    local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right})"
+
+    if [[ -z $out  ]] ; then
+        echo "No rule was matched"
+        __pmy_res_lbuffer=${buffer_left}
+        __pmy_res_rbuffer=${buffer_right}
+    else
+        eval ${out}
+
+        local fuzzy_finder_cmd=${__pmy_out_fuzzy_finder_cmd:-${PMY_FUZZY_FINDER_DEFAULT_CMD}}
+        local fzf_res_tag_included=$(eval ${__pmy_out_command} | eval ${fuzzy_finder_cmd})
+        if [[ -z ${__pmy_out_tag_all_empty} ]] ; then
+            local tag="$(echo -n ${fzf_res_tag_included} | awk -F ${PMY_TAG_DELIMITER} 'BEGIN{ORS = ""}{print $1}' | base64)"
+            tag=${tag//\//a_a} 
+            tag=${tag//+/b_b} 
+            tag=${tag//=/c_c} 
+            local fzf_res=$(echo ${fzf_res_tag_included} | awk -F ${PMY_TAG_DELIMITER} '{for(i=2;i<NF;i++){printf("%s%s",$i,OFS=" ")}print $NF}')
+        else
+            local fzf_res=${fzf_res_tag_included}
+            local tag=""
+        fi
+        local after_cmd_variable="__pmy_out_${tag}_after"
+        local after_cmd=$(eval echo \$$after_cmd_variable)
+        local res=$(echo ${fzf_res} | eval ${after_cmd})
+        __pmy_res_lbuffer="${__pmy_out_buffer_left}${res}"
+        __pmy_res_rbuffer="${__pmy_out_buffer_right}"
+    fi
+
+    if ! [[ -z $test_flag  ]] then
+        echo $__pmy_res_lbuffer
+        echo $__pmy_res_rbuffer
+    fi
+}
+
+pmy-widget() {
+    _pmy_main ${LBUFFER} ${RBUFFER}
+    zle reset-prompt
+    LBUFFER=${__pmy_res_lbuffer}
+    RBUFFER=${__pmy_res_rbuffer}
+}
+
+zle -N pmy-widget
+bindkey ${PMY_TRIGGER_KEY} pmy-widget
