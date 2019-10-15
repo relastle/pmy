@@ -1,6 +1,6 @@
 [
   {
-    "regexpLeft": "(?P<body>^cf (env|logs|delete -r)) (?P<query>[^-\\s]*)",
+    "regexpLeft": "(?P<body>^cf (app|env|logs|delete -r)) (?P<query>[^-\\s]*)",
     "cmdGroups": [
       {
         "tag": "",
