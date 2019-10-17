@@ -23,10 +23,10 @@ type afterCmd struct {
 	after string
 }
 
-// pmyOut represents Output of pmy against zsh routine.
+// Out represents Output of pmy against zsh routine.
 // This struct has strings exported to shell, whose embedded
 // variables are all expanded.
-type pmyOut struct {
+type Out struct {
 	bufferLeft     string
 	bufferRight    string
 	cmdGroups      CmdGroups
@@ -35,10 +35,10 @@ type pmyOut struct {
 	allEmptyTag    bool
 }
 
-// newPmyOutFromRule create new pmyOut from rule
+// newOutFromRule create new Out from rule
 // which matches query and already has paramMap
-func newPmyOutFromRule(rule *pmyRule) pmyOut {
-	out := pmyOut{}
+func newOutFromRule(rule *Rule) Out {
+	out := Out{}
 	// pass resulting buffer informaiton
 	out.bufferLeft = rule.BufferLeft
 	out.bufferRight = rule.BufferRight
@@ -57,7 +57,7 @@ func newPmyOutFromRule(rule *pmyRule) pmyOut {
 
 // buildMainCommand builds main command that concatenate
 // all results of given command groups
-func (out *pmyOut) buildMainCommand() string {
+func (out *Out) buildMainCommand() string {
 	res := ""
 	pmyDelimiter := os.Getenv("PMY_TAG_DELIMITER")
 	for _, cg := range out.cmdGroups {
@@ -80,9 +80,9 @@ func (out *pmyOut) buildMainCommand() string {
 	return res
 }
 
-// toShellVariables create zsh statement where pmyOut's attributes are
+// toShellVariables create zsh statement where Out's attributes are
 // passed into shell variables
-func (out *pmyOut) toShellVariables() string {
+func (out *Out) toShellVariables() string {
 	res := ""
 	res += fmt.Sprintf("local %v=$'%v';", shellCommandVariableName, utils.Escape(out.buildMainCommand(), "'"))
 	res += fmt.Sprintf("local %v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.bufferLeft, "'"))
@@ -115,15 +115,19 @@ func expand(org string, paramMap map[string]string) string {
 	return res
 }
 
+func fetchSnippetJSONPath(snippetRelPath string) string {
+	return ""
+}
+
 // expandAllMagics expands all magic commnad in Stmt
 // written in `%hoge` format
-func (out *pmyOut) expandAllMagics() {
+func (out *Out) expandAllMagics() {
 	for _, cg := range out.cmdGroups {
 		if !strings.HasPrefix(cg.Stmt, "%") {
 			continue
 		}
-		snippetBaseName := strings.Replace(cg.Stmt, "%", "", -1)
-		snippetPath := fmt.Sprintf("%v/%v.txt", PmySnippetRoot, snippetBaseName)
+		snippetRelPath := strings.Replace(cg.Stmt, "%", "", -1)
+		snippetPath := fetchSnippetJSONPath(snippetRelPath)
 		cg.Stmt = fmt.Sprintf(
 			"cat %v | taggo -q '0:yellow' -d ' '",
 			snippetPath,
@@ -133,7 +137,7 @@ func (out *pmyOut) expandAllMagics() {
 }
 
 // expandAllParams expands all params that refer to regexp parameters
-func (out *pmyOut) expandAllParams(paramMap map[string]string) {
+func (out *Out) expandAllParams(paramMap map[string]string) {
 	out.bufferLeft = expand(out.bufferLeft, paramMap)
 	out.bufferRight = expand(out.bufferRight, paramMap)
 	out.fuzzyFinderCmd = expand(out.fuzzyFinderCmd, paramMap)
@@ -143,12 +147,12 @@ func (out *pmyOut) expandAllParams(paramMap map[string]string) {
 	return
 }
 
-func (out *pmyOut) toJSON() string {
+func (out *Out) toJSON() string {
 	bytes, _ := json.Marshal(out)
 	str := string(bytes)
 	return str
 }
 
-// func (out *pmyOut) serialize() string {
+// func (out *Out) serialize() string {
 //     return out.BufferLeft + delimiter + out.BufferRight + delimiter + out.Command
 // }

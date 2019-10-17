@@ -11,7 +11,7 @@ import (
 
 // DumpDummyRulesJSON dumps arbitrary number of rules into given file path
 func DumpDummyRulesJSON(resultPath string, ruleNum int, cmdGroupNum int) error {
-	pmyRules := pmyRules{}
+	Rules := Rules{}
 	for i := 0; i < ruleNum; i++ {
 		cgs := CmdGroups{}
 		for j := 0; j < cmdGroupNum; j++ {
@@ -22,7 +22,7 @@ func DumpDummyRulesJSON(resultPath string, ruleNum int, cmdGroupNum int) error {
 			}
 			cgs = append(cgs, cg)
 		}
-		rule := &pmyRule{
+		rule := &Rule{
 			Name:        fmt.Sprintf("test%v", ruleNum),
 			RegexpLeft:  ".*test.*",
 			RegexpRight: "",
@@ -30,10 +30,10 @@ func DumpDummyRulesJSON(resultPath string, ruleNum int, cmdGroupNum int) error {
 			BufferLeft:  "[]",
 			BufferRight: "[]",
 		}
-		pmyRules = append(pmyRules, rule)
+		Rules = append(Rules, rule)
 	}
 
-	cgsJSON, _ := json.Marshal(pmyRules)
+	cgsJSON, _ := json.Marshal(Rules)
 	err := ioutil.WriteFile(resultPath, cgsJSON, 0644)
 	if err != nil {
 		return err
