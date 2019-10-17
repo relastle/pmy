@@ -16,7 +16,7 @@ RUN go get -u github.com/relastle/taggo
 # Install pmy
 WORKDIR /go/src/github.com/relastle/pmy
 COPY . .
-RUN go install
+RUN go get && go build && go install
 RUN ln -s "/go/src/github.com/relastle/pmy/shell/zshrc.minimal" "${HOME}/.zshrc"
 
 
