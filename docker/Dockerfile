@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM golang:1.12-alpine3.9
 LABEL maintainer "Hiroki Konishi <relastle@gmail.com>"
 
 # Install zsh
