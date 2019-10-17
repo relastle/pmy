@@ -23,32 +23,38 @@ _pmy_main() {
     # local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)"
     local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right})"
 
+
     if [[ -z $out  ]] ; then
         echo "No rule was matched"
         __pmy_res_lbuffer=${buffer_left}
         __pmy_res_rbuffer=${buffer_right}
     else
         eval ${out}
+        # Check if error occurred.
+        if [[ ${__pmy_out_error_message} != '' ]] ; then
+            echo ${__pmy_out_error_message}
+            return
+        fi
 
         local fuzzy_finder_cmd=${__pmy_out_fuzzy_finder_cmd:-${PMY_FUZZY_FINDER_DEFAULT_CMD}}
-        local fzf_res_tag_included=$(eval ${__pmy_out_command} | eval ${fuzzy_finder_cmd})
+        local fzf_res_tag_included="$(eval ${__pmy_out_command} | eval ${fuzzy_finder_cmd})"
         # get result from fzf
         # get tag
         if [[ -z ${__pmy_out_tag_all_empty} ]] ; then
-            local tag="$(echo -n ${fzf_res_tag_included} | awk -F ${PMY_TAG_DELIMITER} 'BEGIN{ORS = ""}{print $1}' | base64)"
+            local tag="$(echo -n ${fzf_res_tag_included} | awk -F ${__pmy_out_tag_delimiter} 'BEGIN{ORS = ""}{print $1}' | base64)"
             tag=${tag//\//a_a} # original escape of base64 `/`
             tag=${tag//+/b_b} # original escape of base64 `+`
             tag=${tag//=/c_c} # original escape of base64 `+`
             # get rest statement
-            local fzf_res=$(echo ${fzf_res_tag_included} | awk -F ${PMY_TAG_DELIMITER} '{for(i=2;i<NF;i++){printf("%s%s",$i,OFS=" ")}print $NF}')
+            local fzf_res="$(echo ${fzf_res_tag_included} | awk -F ${__pmy_out_tag_delimiter} '{for(i=2;i<NF;i++){printf("%s%s",$i,OFS=" ")}print $NF}')"
         else
-            local fzf_res=${fzf_res_tag_included}
+            local fzf_res="${fzf_res_tag_included}"
             local tag=""
         fi
         # get after command
         local after_cmd_variable="__pmy_out_${tag}_after"
-        local after_cmd=$(eval echo \$$after_cmd_variable)
-        local res=$(echo ${fzf_res} | eval ${after_cmd})
+        local after_cmd="$(eval echo \$$after_cmd_variable)"
+        local res="$(echo ${fzf_res} | eval ${after_cmd})"
         __pmy_res_lbuffer="${__pmy_out_buffer_left}${res}"
         __pmy_res_rbuffer="${__pmy_out_buffer_right}"
     fi

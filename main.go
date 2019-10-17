@@ -57,9 +57,9 @@ func ruleListCmdRoutine() {
 
 func snippetListCmdRoutine() {
 	pmy.SetConfigs()
-	paths := pmy.GetAllSnippetJSONPaths()
-	for _, path := range paths {
-		fmt.Println(path)
+	snippetFiles := pmy.GetAllSnippetFiles()
+	for _, snippetFile := range snippetFiles {
+		fmt.Println(snippetFile.Path)
 	}
 }
 
