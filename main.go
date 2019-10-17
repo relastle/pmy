@@ -20,7 +20,6 @@ var (
 
 func mainRoutine() {
 	outString := pmy.Run(
-		pmy.RulePath,
 		pmy.Input{
 			BufferLeft:  bufferLeft,
 			BufferRight: bufferRight,
@@ -42,7 +41,7 @@ func initCmdRoutine() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf(string(bs))
+	fmt.Printf("%s", string(bs))
 }
 
 func debug() {
@@ -50,9 +49,9 @@ func debug() {
 
 func ruleListCmdRoutine() {
 	pmy.SetConfigs()
-	paths := pmy.GetAllRuleJSONPaths()
-	for _, path := range paths {
-		fmt.Println(path)
+	ruleFiles := pmy.GetAllRuleFiles()
+	for _, ruleFile := range ruleFiles {
+		fmt.Println(ruleFile.Path)
 	}
 }
 

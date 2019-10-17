@@ -2,16 +2,84 @@ package pmy
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
+	"path"
 	"regexp"
 	"strings"
+
+	"github.com/mattn/go-zglob"
 )
 
+const pmyRuleSuffix = "pmy_rules.json"
+
+// RuleFile represents one Rule Json file
+// information
 type RuleFile struct {
+	Path     string
+	Basename string
 }
 
-type replaceMap map[string]string
+func (rf RuleFile) loadRules() (Rules, error) {
+	jsonFile, err := os.Open(rf.Path)
+	// if we os.Open returns an error then handle it
+	if err != nil {
+		return nil, err
+	}
+	defer jsonFile.Close()
+	var rules Rules
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	err = json.Unmarshal(byteValue, &rules)
+	if err != nil {
+		return nil, err
+	}
+	return rules, nil
+}
+
+func (rf RuleFile) isApplicable(cmd string) bool {
+	if rf.Basename == pmyRuleSuffix {
+		return true
+	}
+	if rf.Basename == fmt.Sprintf(
+		"%s_%s",
+		cmd,
+		pmyRuleSuffix,
+	) {
+		return true
+	}
+	return false
+}
+
+// GetAllRuleFiles get all pmy rules json paths
+// configured by environment variable
+func GetAllRuleFiles() []*RuleFile {
+	ruleRoots := []string{defaultRulePath}
+	ruleRoots = append(ruleRoots, strings.Split(RulePath, ":")...)
+	res := []*RuleFile{}
+	for _, ruleRoot := range ruleRoots {
+		globPattern := fmt.Sprintf(
+			`%v/**/*%v`,
+			os.ExpandEnv(ruleRoot),
+			pmyRuleSuffix,
+		)
+		matches, err := zglob.Glob(globPattern)
+		if err != nil {
+			panic(err)
+		}
+		for _, rulePath := range matches {
+			res = append(
+				res,
+				&RuleFile{
+					Path:     rulePath,
+					Basename: path.Base(rulePath),
+				},
+			)
+		}
+
+	}
+	return res
+}
 
 // Rule is a struct representing one rule
 type Rule struct {
@@ -27,20 +95,8 @@ type Rule struct {
 	paramMap       map[string]string
 }
 
+// Rules represents slice of `Rule` struct
 type Rules []*Rule
-
-func loadAllRules(cfgPath string) (Rules, error) {
-	jsonFile, err := os.Open(cfgPath)
-	// if we os.Open returns an error then handle it
-	if err != nil {
-		return nil, err
-	}
-	defer jsonFile.Close()
-	var rules Rules
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	json.Unmarshal(byteValue, &rules)
-	return rules, nil
-}
 
 // match check if the query buffers(left and right) satisfies the concerned
 // rule. if the rule regexp contains parametrized subgroups, this function expand

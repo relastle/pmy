@@ -1,14 +1,10 @@
 #!/usr/bin/env zsh
 
 # Export runnable pmy path
-export PATH="${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy:${PATH}"
 
 # Export pmy configuration environment variable
-export PMY_RULE_PATH="${PMY_RULE_PATH:-${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/rules/pmy_rules.json}"
-export PMY_TAG_DELIMITER=${PMY_TAG_DELIMITER:-"\t"}
 export PMY_FUZZY_FINDER_DEFAULT_CMD=${PMY_FUZZY_FINDER_DEFAULT_CMD:-"fzf -0 -1 --ansi"}
 export PMY_TRIGGER_KEY=${PMY_TRIGGER_KEY:-'^ '}
-export PMY_SNIPPET_ROOT="${PMY_SNIPPET_ROOT:-${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets}"
 
 # Main Function of Pmy
 # Args:

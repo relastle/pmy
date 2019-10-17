@@ -2,28 +2,6 @@ package pmy
 
 import "log"
 
-type ruleFetcher interface {
-	// GetCommand returns the command to be executed
-	// given the
-	fetch(
-		rules Rules,
-		bufferLeft string,
-		bufferRight string,
-	) (Rules, error)
-}
-
-// Mock of rruleFetcher
-type ruleFetcherMock struct {
-}
-
-func (cg *ruleFetcherMock) fetch(
-	rules Rules,
-	bufferLeft string,
-	bufferRight string,
-) (Rules, error) {
-	return nil, nil
-}
-
 type ruleFetcherImpl struct {
 }
 

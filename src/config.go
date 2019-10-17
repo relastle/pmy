@@ -2,7 +2,6 @@ package pmy
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strings"
 
@@ -12,19 +11,19 @@ import (
 const (
 	defaultRulePath     string = "${HOME}/.pmy/rules"
 	defaultSnippetPath  string = "${HOME}/.pmy/snippets"
-	RulesPathVarName    string = "PMY_RULE_PATH"
-	SnippetPathVarName  string = "PMY_SNIPPET_PATH"
-	TagDelimiterVarName string = "PMY_TAG_DELIMITER"
+	rulesPathVarName    string = "PMY_RULE_PATH"
+	snippetPathVarName  string = "PMY_SNIPPET_PATH"
+	tagDelimiterVarName string = "PMY_TAG_DELIMITER"
 )
 
 var (
 	// RulePath is a json path contining rules
-	RulePath string
+	RulePath string = ""
+	// SnippetPath defines snippet root directry path
+	SnippetPath string = ""
 	// Delimiter defines delimiter string
 	// that divide `tag` and one line of source
-	Delimiter string
-	// SnippetPath defines snippet root directry path
-	SnippetPath string
+	Delimiter string = "\t"
 )
 
 // setConfig set go varible from the given environment variable
@@ -34,7 +33,7 @@ func setConfig(
 ) {
 	envVar, ok := os.LookupEnv(varName)
 	if !ok {
-		log.Fatalf("env var %v is not set", varName)
+		return
 	}
 	*target = envVar
 }
@@ -42,26 +41,9 @@ func setConfig(
 // SetConfigs set all Pmy config variable from shell's
 // environment variables.
 func SetConfigs() {
-	setConfig(&RulePath, RulesPathVarName)
-	setConfig(&Delimiter, TagDelimiterVarName)
-	setConfig(&SnippetPath, SnippetPathVarName)
-}
-
-// GetAllRuleJSONPaths get all pmy rules json paths
-// configured by environment variable
-func GetAllRuleJSONPaths() []string {
-	ruleRoots := []string{defaultRulePath}
-	ruleRoots = append(ruleRoots, strings.Split(RulePath, ":")...)
-	res := []string{}
-	for _, ruleRoot := range ruleRoots {
-		globPattern := fmt.Sprintf(`%v/**/*pmy_rules.json`, os.ExpandEnv(ruleRoot))
-		matches, err := zglob.Glob(globPattern)
-		if err != nil {
-			panic(err)
-		}
-		res = append(res, matches...)
-	}
-	return res
+	setConfig(&RulePath, rulesPathVarName)
+	setConfig(&SnippetPath, snippetPathVarName)
+	setConfig(&Delimiter, tagDelimiterVarName)
 }
 
 // GetAllSnippetJSONPaths get all pmy rules json paths
