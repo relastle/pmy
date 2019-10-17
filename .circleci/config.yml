@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-         docker_layer_caching: true
+         docker_layer_caching: false
       - run:
           name: Login
           command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
@@ -34,7 +34,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-         docker_layer_caching: true
+         docker_layer_caching: false
       - run:
           name: integration_test
           command: zsh ./test.zsh
