@@ -1,16 +1,15 @@
-FROM golang:1.12-alpine3.9
+FROM golang:alpine
 LABEL maintainer "Hiroki Konishi <relastle@gmail.com>"
 
 # Install zsh
 RUN apk update && \
-    apk add --no-cache zsh git gcc make && \
+    apk add --no-cache libc-dev zsh git gcc make && \
     rm -f /tmp/* /etc/apk/cache/*
 ENV SHELL /bin/zsh
 
-# Install fzf
-RUN go get -u github.com/junegunn/fzf
-# Install taggo
-RUN go get -u github.com/relastle/taggo
+# Install fzf and taggo
+RUN go get -u github.com/junegunn/fzf && \
+        go get -u github.com/relastle/taggo
 
 
 # Install pmy
