@@ -54,8 +54,9 @@ func (rf RuleFile) isApplicable(cmd string) bool {
 // GetAllRuleFiles get all pmy rules json paths
 // configured by environment variable
 func GetAllRuleFiles() []*RuleFile {
-	ruleRoots := []string{defaultRulePath}
-	ruleRoots = append(ruleRoots, strings.Split(RulePath, ":")...)
+	ruleRoots := strings.Split(RulePath, ":")
+	ruleRoots = append(ruleRoots, defaultRulePath)
+
 	res := []*RuleFile{}
 	for _, ruleRoot := range ruleRoots {
 		globPattern := fmt.Sprintf(

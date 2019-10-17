@@ -2,7 +2,6 @@ package pmy
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
 	utils "github.com/relastle/pmy/src/utils"
@@ -15,6 +14,8 @@ const (
 	shellAfterVariableName          = "__pmy_out_%s_after"
 	shellFuzzyFinderCmdVariableName = "__pmy_out_fuzzy_finder_cmd"
 	shellTagAllEmptyVariableName    = "__pmy_out_tag_all_empty"
+	shellTagDelimiterVariableName   = "__pmy_out_tag_delimiter"
+	shellErrorMessageVariableName   = "__pmy_out_error_message"
 )
 
 // Out represents Output of pmy against zsh routine.
@@ -26,6 +27,7 @@ type Out struct {
 	cmdGroups      CmdGroups
 	fuzzyFinderCmd string
 	allEmptyTag    bool
+	errorMessage   string
 }
 
 // newOutFromRule create new Out from rule
@@ -40,7 +42,10 @@ func newOutFromRule(rule *Rule) Out {
 	out.cmdGroups.alignTag()
 	out.fuzzyFinderCmd = rule.FuzzyFinderCmd
 	// expand magic command
-	out.expandAllMagics()
+	err := out.expandAllMagics()
+	if err != nil {
+		out.errorMessage += err.Error() + "\n"
+	}
 	// expand magic command
 	out.expandAllParams(rule.paramMap)
 	// check if all tag is empty string
@@ -52,7 +57,6 @@ func newOutFromRule(rule *Rule) Out {
 // all results of given command groups
 func (out *Out) buildMainCommand() string {
 	res := ""
-	pmyDelimiter := os.Getenv("PMY_TAG_DELIMITER")
 	for _, cg := range out.cmdGroups {
 		// if there is no tag, no need to use taggo
 		if out.allEmptyTag {
@@ -66,7 +70,7 @@ func (out *Out) buildMainCommand() string {
 				cg.Stmt,
 				cg.tagAligned,
 				cg.TagColor,
-				pmyDelimiter,
+				TagDelimiter,
 			)
 		}
 	}
@@ -81,6 +85,8 @@ func (out *Out) toShellVariables() string {
 	res += fmt.Sprintf("local %v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.bufferLeft, "'"))
 	res += fmt.Sprintf("local %v=$'%v';", shellBufferRightVariableName, utils.Escape(out.bufferRight, "'"))
 	res += fmt.Sprintf("local %v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(out.fuzzyFinderCmd, "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellTagDelimiterVariableName, TagDelimiter)
+	res += fmt.Sprintf("local %v=$'%v';", shellErrorMessageVariableName, utils.Escape(out.errorMessage, "'"))
 	if out.allEmptyTag {
 		res += fmt.Sprintf("local %v=$'%v';", shellTagAllEmptyVariableName, "empty")
 	}
@@ -108,24 +114,36 @@ func expand(org string, paramMap map[string]string) string {
 	return res
 }
 
-func fetchSnippetJSONPath(snippetRelPath string) string {
-	return ""
+func getToApply(snippetFiles []*SnippetFile, relpath string) (*SnippetFile, error) {
+	for _, snippetFile := range snippetFiles {
+		if snippetFile.isApplicable(relpath) {
+			return snippetFile, nil
+		}
+
+	}
+	return nil, fmt.Errorf("snippet file %v not found", relpath)
 }
 
 // expandAllMagics expands all magic commnad in Stmt
 // written in `%hoge` format
-func (out *Out) expandAllMagics() {
+func (out *Out) expandAllMagics() error {
+	snippetFiles := GetAllSnippetFiles()
 	for _, cg := range out.cmdGroups {
 		if !strings.HasPrefix(cg.Stmt, "%") {
 			continue
 		}
 		snippetRelPath := strings.Replace(cg.Stmt, "%", "", -1)
-		snippetPath := fetchSnippetJSONPath(snippetRelPath)
+		snippetFileToApply, err := getToApply(snippetFiles, snippetRelPath)
+		if err != nil {
+			return err
+		}
+
 		cg.Stmt = fmt.Sprintf(
 			"cat %v | taggo -q '0:yellow' -d ' '",
-			snippetPath,
+			snippetFileToApply.Path,
 		)
 	}
+	return nil
 }
 
 // expandAllParams expands all params that refer to regexp parameters
