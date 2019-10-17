@@ -6,10 +6,10 @@ type ruleFetcher interface {
 	// GetCommand returns the command to be executed
 	// given the
 	fetch(
-		rules pmyRules,
+		rules Rules,
 		bufferLeft string,
 		bufferRight string,
-	) (pmyRules, error)
+	) (Rules, error)
 }
 
 // Mock of rruleFetcher
@@ -17,10 +17,10 @@ type ruleFetcherMock struct {
 }
 
 func (cg *ruleFetcherMock) fetch(
-	rules pmyRules,
+	rules Rules,
 	bufferLeft string,
 	bufferRight string,
-) (pmyRules, error) {
+) (Rules, error) {
 	return nil, nil
 }
 
@@ -28,11 +28,11 @@ type ruleFetcherImpl struct {
 }
 
 func (cg *ruleFetcherImpl) fetch(
-	rules pmyRules,
+	rules Rules,
 	bufferLeft string,
 	bufferRight string,
-) (pmyRules, error) {
-	resRules := pmyRules{}
+) (Rules, error) {
+	resRules := Rules{}
 	for _, rule := range rules {
 		ok, err := rule.match(
 			bufferLeft,

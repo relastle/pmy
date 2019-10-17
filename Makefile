@@ -17,7 +17,7 @@ bench:
 
 .PHONY: lint
 lint:
-	golint ./main.go
+	golangci-lint run ./...
 
 .PHONY: docker
 docker:

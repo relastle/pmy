@@ -8,10 +8,13 @@ import (
 	"strings"
 )
 
+type RuleFile struct {
+}
+
 type replaceMap map[string]string
 
 // Rule is a struct representing one rule
-type pmyRule struct {
+type Rule struct {
 	Name           string    `json:"name"`
 	Matcher        string    `json:"matcher"`
 	Description    string    `json:"description"`
@@ -24,16 +27,16 @@ type pmyRule struct {
 	paramMap       map[string]string
 }
 
-type pmyRules []*pmyRule
+type Rules []*Rule
 
-func loadAllRules(cfgPath string) (pmyRules, error) {
+func loadAllRules(cfgPath string) (Rules, error) {
 	jsonFile, err := os.Open(cfgPath)
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		return nil, err
 	}
 	defer jsonFile.Close()
-	var rules pmyRules
+	var rules Rules
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &rules)
 	return rules, nil
@@ -42,7 +45,7 @@ func loadAllRules(cfgPath string) (pmyRules, error) {
 // match check if the query buffers(left and right) satisfies the concerned
 // rule. if the rule regexp contains parametrized subgroups, this function expand
 // the `Command` to `CommandExpanded`, where all parametrized variables were expanded.
-func (rule *pmyRule) match(bufferLeft string, bufferRight string) (bool, error) {
+func (rule *Rule) match(bufferLeft string, bufferRight string) (bool, error) {
 	re, err := regexp.Compile(rule.RegexpLeft)
 	if err != nil {
 		return false, err

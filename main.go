@@ -20,7 +20,7 @@ var (
 
 func mainRoutine() {
 	outString := pmy.Run(
-		pmy.PmyRulePath,
+		pmy.RulePath,
 		pmy.Input{
 			BufferLeft:  bufferLeft,
 			BufferRight: bufferRight,
@@ -45,11 +45,23 @@ func initCmdRoutine() {
 	fmt.Printf(string(bs))
 }
 
-func ruleListCmdRoutine() {
+func debug() {
+}
 
+func ruleListCmdRoutine() {
+	pmy.SetConfigs()
+	paths := pmy.GetAllRuleJSONPaths()
+	for _, path := range paths {
+		fmt.Println(path)
+	}
 }
 
 func snippetListCmdRoutine() {
+	pmy.SetConfigs()
+	paths := pmy.GetAllSnippetJSONPaths()
+	for _, path := range paths {
+		fmt.Println(path)
+	}
 }
 
 func main() {
@@ -65,21 +77,27 @@ func main() {
 	// Subcommand for listing the all loaded snippet json paths
 	snippetsListFlagSet := flag.NewFlagSet("snippet-list", flag.ExitOnError)
 
+	// Subcommand for debuggin
+	debugFlagSet := flag.NewFlagSet("debug", flag.ExitOnError)
+
 	pmy.SetConfigs()
 
 	subCommand := colorflag.Parse([]*flag.FlagSet{
 		initFlagSet,
 		ruleListFlagSet,
 		snippetsListFlagSet,
+		debugFlagSet,
 	})
 
 	switch subCommand {
 	case "init":
 		initCmdRoutine()
 	case "rule-list":
-		fmt.Println("rule-list")
+		ruleListCmdRoutine()
 	case "snippet-list":
-		fmt.Println("snippet-list")
+		snippetListCmdRoutine()
+	case "debug":
+		debug()
 	default:
 		mainRoutine()
 	}
