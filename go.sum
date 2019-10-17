@@ -10,4 +10,5 @@ github.com/rakyll/statik v0.1.6 h1:uICcfUXpgqtw2VopbIncslhAmE5hwc4g20TEyEENBNs=
 github.com/rakyll/statik v0.1.6/go.mod h1:OEi9wJV/fMUAGx1eNjq75DKDsJVuEv1U0oYdX6GX8Zs=
 github.com/relastle/colorflag v0.0.0-20190926071630-d4c845e34e8c h1:+rQG0CRZFZw5xK4A9RCLxRcWdROI4DzCU66iWZx/0HE=
 github.com/relastle/colorflag v0.0.0-20190926071630-d4c845e34e8c/go.mod h1:zCHW+H3mqOZ35829qC8zau+dnhUgsqKObIApF0m0KdM=
+golang.org/x/sys v0.0.0-20190222072716-a9d3bda3a223 h1:DH4skfRX4EBpamg7iV4ZlCpblAHI6s6TDM39bFZumv8=
 golang.org/x/sys v0.0.0-20190222072716-a9d3bda3a223/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=

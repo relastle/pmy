@@ -75,7 +75,10 @@ func TestIntegration(t *testing.T) {
 	defer jsonFile.Close()
 	var cases pmyTestCases
 	byteValue, _ := ioutil.ReadAll(jsonFile)
-	json.Unmarshal(byteValue, &cases)
+	err = json.Unmarshal(byteValue, &cases)
+	if err != nil {
+		t.Error(err)
+	}
 	for _, c := range cases {
 		if ok, err := c.testSelf(t); ok {
 			continue

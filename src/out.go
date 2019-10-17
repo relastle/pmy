@@ -1,7 +1,6 @@
 package pmy
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -18,11 +17,6 @@ const (
 	shellTagAllEmptyVariableName    = "__pmy_out_tag_all_empty"
 )
 
-type afterCmd struct {
-	tag   string
-	after string
-}
-
 // Out represents Output of pmy against zsh routine.
 // This struct has strings exported to shell, whose embedded
 // variables are all expanded.
@@ -30,7 +24,6 @@ type Out struct {
 	bufferLeft     string
 	bufferRight    string
 	cmdGroups      CmdGroups
-	sources        string
 	fuzzyFinderCmd string
 	allEmptyTag    bool
 }
@@ -133,7 +126,6 @@ func (out *Out) expandAllMagics() {
 			snippetPath,
 		)
 	}
-	return
 }
 
 // expandAllParams expands all params that refer to regexp parameters
@@ -144,15 +136,4 @@ func (out *Out) expandAllParams(paramMap map[string]string) {
 	for _, cg := range out.cmdGroups {
 		cg.Stmt = expand(cg.Stmt, paramMap)
 	}
-	return
 }
-
-func (out *Out) toJSON() string {
-	bytes, _ := json.Marshal(out)
-	str := string(bytes)
-	return str
-}
-
-// func (out *Out) serialize() string {
-//     return out.BufferLeft + delimiter + out.BufferRight + delimiter + out.Command
-// }
