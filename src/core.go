@@ -1,21 +1,10 @@
 package pmy
 
 import (
-	"fmt"
 	"log"
-	"os/exec"
-	"path/filepath"
+	"sort"
 	"strings"
 )
-
-// checkJq checks whether `jq` command is available
-func checkJq() bool {
-	_, err := exec.LookPath("jq")
-	if err != nil {
-		return false
-	}
-	return true
-}
 
 // Input represents input from zsh
 type Input struct {
@@ -34,28 +23,28 @@ func (i *Input) getCmdName() string {
 // Run runs the main process of pmy.
 // It returns zsh statement, where resulting values will
 // be passed into zsh variables.
-func Run(cfgPath string, in Input) string {
-	// Load global rules from config file
-	rules, err := loadAllRules(cfgPath)
-	if err != nil {
-		log.Fatal(err)
+func Run(in Input) string {
+	ruleFiles := GetAllRuleFiles()
+	ruleFilesToApply := []*RuleFile{}
+	for _, ruleFile := range ruleFiles {
+		if ruleFile.isApplicable(in.getCmdName()) {
+			ruleFilesToApply = append(ruleFilesToApply, ruleFile)
+		}
 	}
-
-	if cmdName := in.getCmdName(); cmdName != "" {
-		cmdCfgPath := filepath.Join(
-			filepath.Dir(cfgPath),
-			fmt.Sprintf("%v_%v", cmdName, filepath.Base(cfgPath)),
-		)
-		// Load command specific rules from config file
-		cmdRules, err := loadAllRules(cmdCfgPath)
+	sort.SliceStable(
+		ruleFilesToApply,
+		func(i, j int) bool { return ruleFilesToApply[i].priority > ruleFilesToApply[j].priority },
+	)
+	rules := Rules{}
+	for _, ruleFile := range ruleFilesToApply {
+		_rules, err := ruleFile.loadRules()
 		if err == nil {
-			rules = append(cmdRules, rules...)
+			rules = append(rules, _rules...)
 		}
 	}
 
 	// Fetch rule using LBUFFER and RBUFFER
-	var fetcher ruleFetcher
-	fetcher = &ruleFetcherImpl{}
+	fetcher := &ruleFetcherImpl{}
 	resRules, err := fetcher.fetch(
 		rules,
 		in.BufferLeft,
@@ -68,9 +57,9 @@ func Run(cfgPath string, in Input) string {
 		return ""
 	}
 	rule := resRules[0]
-	pmyOut := newPmyOutFromRule(rule)
+	Out := newOutFromRule(rule)
 
 	// Ouput result
 	// log.Print(out)
-	return pmyOut.toShellVariables()
+	return Out.toShellVariables()
 }

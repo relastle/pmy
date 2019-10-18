@@ -36,7 +36,6 @@ func (cgs CmdGroups) alignTag() {
 	for _, cg := range cgs {
 		cg.tagAligned = cg.Tag + utils.MakeNString(max-len(cg.Tag), " ")
 	}
-	return
 }
 
 func (cgs CmdGroups) allEmpty() bool {

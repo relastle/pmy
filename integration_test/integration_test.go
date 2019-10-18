@@ -61,13 +61,13 @@ func TestIntegration(t *testing.T) {
 	gopath := os.Getenv("GOPATH")
 	os.Setenv(
 		"PMY_RULE_PATH",
-		fmt.Sprintf("%v/src/github.com/relastle/pmy/rules/test/pmy_rules_test.json", gopath),
+		fmt.Sprintf("%v/src/github.com/relastle/pmy/test/rules", gopath),
 	)
 	os.Setenv(
-		"PMY_SNIPPET_ROOT",
-		fmt.Sprintf("%v/src/github.com/relastle/pmy/snippets/test", gopath),
+		"PMY_SNIPPET_PATH",
+		fmt.Sprintf("%v/src/github.com/relastle/pmy/test/snippets", gopath),
 	)
-	jsonFile, err := os.Open("../rules/test/pmy_testcases.json")
+	jsonFile, err := os.Open(fmt.Sprintf("%v/src/github.com/relastle/pmy/test/pmy_testcases.json", gopath))
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		log.Fatal(err)
@@ -75,7 +75,10 @@ func TestIntegration(t *testing.T) {
 	defer jsonFile.Close()
 	var cases pmyTestCases
 	byteValue, _ := ioutil.ReadAll(jsonFile)
-	json.Unmarshal(byteValue, &cases)
+	err = json.Unmarshal(byteValue, &cases)
+	if err != nil {
+		t.Error(err)
+	}
 	for _, c := range cases {
 		if ok, err := c.testSelf(t); ok {
 			continue
