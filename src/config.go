@@ -14,12 +14,12 @@ const (
 
 var (
 	// RulePath is a json path contining rules
-	RulePath string = ""
+	RulePath string
 	// SnippetPath defines snippet root directry path
-	SnippetPath string = ""
+	SnippetPath string
 	// TagDelimiter defines delimiter string
 	// that divide `tag` and one line of source
-	TagDelimiter string = "\\t"
+	TagDelimiter = "\\t"
 )
 
 // setConfig set go varible from the given environment variable

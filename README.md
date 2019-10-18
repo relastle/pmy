@@ -14,7 +14,6 @@ I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sou
 
 -   [fzf](https://github.com/junegunn/fzf) (You can of course use other fuzzy finder such as [peco](https://github.com/peco/peco) and [fzy](https://github.com/jhawthorn/fzy) instead of fzf.)
 
-
 ## Installation
 
 First, please get pmy by go get (because the backend system is written in Go)
