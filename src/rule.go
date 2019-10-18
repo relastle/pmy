@@ -66,6 +66,9 @@ func GetAllRuleFiles() []*RuleFile {
 
 	res := []*RuleFile{}
 	for _, ruleRoot := range ruleRoots {
+		if ruleRoot == "" {
+			continue
+		}
 		globPattern := fmt.Sprintf(
 			`%v/**/*%v`,
 			os.ExpandEnv(ruleRoot),
