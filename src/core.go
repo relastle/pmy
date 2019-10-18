@@ -2,6 +2,7 @@ package pmy
 
 import (
 	"log"
+	"sort"
 	"strings"
 )
 
@@ -30,7 +31,10 @@ func Run(in Input) string {
 			ruleFilesToApply = append(ruleFilesToApply, ruleFile)
 		}
 	}
-
+	sort.SliceStable(
+		ruleFilesToApply,
+		func(i, j int) bool { return ruleFilesToApply[i].priority > ruleFilesToApply[j].priority },
+	)
 	rules := Rules{}
 	for _, ruleFile := range ruleFilesToApply {
 		_rules, err := ruleFile.loadRules()

@@ -41,13 +41,13 @@ func newOutFromRule(rule *Rule) Out {
 	out.cmdGroups = rule.CmdGroups
 	out.cmdGroups.alignTag()
 	out.fuzzyFinderCmd = rule.FuzzyFinderCmd
+	// expand all params
+	out.expandAllParams(rule.paramMap)
 	// expand magic command
 	err := out.expandAllMagics()
 	if err != nil {
 		out.errorMessage += err.Error() + "\n"
 	}
-	// expand magic command
-	out.expandAllParams(rule.paramMap)
 	// check if all tag is empty string
 	out.allEmptyTag = out.cmdGroups.allEmpty()
 	return out

@@ -2,6 +2,7 @@
 main: statik
 	# build
 	go build
+	go install
 
 statik: ./shell/pmy.zsh
 	# Remove comments from zsh source code

@@ -12,13 +12,18 @@ import (
 	"github.com/mattn/go-zglob"
 )
 
-const pmyRuleSuffix = "pmy_rules.json"
+const (
+	pmyRuleSuffix       = "pmy_rules.json"
+	priorityGlobal      = 1
+	priorityCmdSpecific = 2
+)
 
 // RuleFile represents one Rule Json file
 // information
 type RuleFile struct {
 	Path     string
 	Basename string
+	priority int
 }
 
 func (rf RuleFile) loadRules() (Rules, error) {
@@ -37,8 +42,9 @@ func (rf RuleFile) loadRules() (Rules, error) {
 	return rules, nil
 }
 
-func (rf RuleFile) isApplicable(cmd string) bool {
+func (rf *RuleFile) isApplicable(cmd string) bool {
 	if rf.Basename == pmyRuleSuffix {
+		rf.priority = priorityGlobal
 		return true
 	}
 	if rf.Basename == fmt.Sprintf(
@@ -46,6 +52,7 @@ func (rf RuleFile) isApplicable(cmd string) bool {
 		cmd,
 		pmyRuleSuffix,
 	) {
+		rf.priority = priorityCmdSpecific
 		return true
 	}
 	return false
