@@ -20,6 +20,8 @@ docker:
 
 .PHONY: test
 test:
+	export GO111MODULE=on
+	go mod tidy
 	$(MAKE) lint
 	$(MAKE) integration_test
 
