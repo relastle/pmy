@@ -85,7 +85,7 @@ func (out *Out) toShellVariables() string {
 	res += fmt.Sprintf("local %v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.bufferLeft, "'"))
 	res += fmt.Sprintf("local %v=$'%v';", shellBufferRightVariableName, utils.Escape(out.bufferRight, "'"))
 	res += fmt.Sprintf("local %v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(out.fuzzyFinderCmd, "'"))
-	res += fmt.Sprintf("local %v=$'%v';", shellTagDelimiterVariableName, TagDelimiter)
+	res += fmt.Sprintf("local %v='%v';", shellTagDelimiterVariableName, TagDelimiter)
 	res += fmt.Sprintf("local %v=$'%v';", shellErrorMessageVariableName, utils.Escape(out.errorMessage, "'"))
 	if out.allEmptyTag {
 		res += fmt.Sprintf("local %v=$'%v';", shellTagAllEmptyVariableName, "empty")
@@ -94,7 +94,7 @@ func (out *Out) toShellVariables() string {
 	for _, cg := range out.cmdGroups {
 		res += fmt.Sprintf(
 			"local %v=$'%v';",
-			fmt.Sprintf(shellAfterVariableName, utils.EncodeTag(cg.Tag)),
+			fmt.Sprintf(shellAfterVariableName, utils.EncodeTag(cg.tagAligned)),
 			utils.Escape(cg.After, "'"),
 		)
 	}
