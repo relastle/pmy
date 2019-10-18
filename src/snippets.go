@@ -36,6 +36,9 @@ func GetAllSnippetFiles() []*SnippetFile {
 
 	res := []*SnippetFile{}
 	for _, snippetRoot := range snippetRoots {
+		if snippetRoot == "" {
+			continue
+		}
 		globPattern := fmt.Sprintf(
 			`%v/**/*%v`,
 			os.ExpandEnv(snippetRoot),
