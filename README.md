@@ -13,23 +13,21 @@ I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sou
 ## Dependency
 
 -   [fzf](https://github.com/junegunn/fzf) (You can of course use other fuzzy finder such as [peco](https://github.com/peco/peco) and [fzy](https://github.com/jhawthorn/fzy) instead of fzf.)
--   [go](https://github.com/golang/go)
-    -   [color](https://github.com/fatih/color)
 
--   awk (available in almost all environment.)
 
 ## Installation
 
-First, please get pmy(backend system written in Go)
-and its dependency tool `taggo` using go get.
+First, please get pmy by go get (because the backend system is written in Go)
+
 ```sh
-go get -u github.com/relastle/pmy github.com/relastle/taggo
+export GO111MODULE=on
+go get -u github.com/relastle/pmy
 ```
 
-Then, source a zsh script which simply configure brief settings.
+Then, only you have to do is executing folloing zsh command.
 
 ```zsh
-source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
+eval "$(pmy init)"
 ```
 
 You can also add the line into your ~/.zshrc if you want.
@@ -138,16 +136,13 @@ You can define such completion (with sub command description) in an very readabl
 
 | variable name                | description                                                                                          | default values                                                           |
 | ---                          | ---                                                                                                  | ---                                                                      |
-| PMY_RULE_PATH                | It defines the path of main rule json file. Command specific json files are also defined by its path | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/rules/pmy_rules.json" |
-| PMY_TAG_DELIMITER            | Delimiter between tag and a line of sources.                                                         | tab character ("\t")                                                     |
 | PMY_FUZZY_FINDER_DEFAULT_CMD | Default fuzzy finder command used when "fuzzyFinderCmd" is not set in a rule                         | "fzf -0 -1"                                                              |
 | PMY_TRIGGER_KEY              | Trigger key that invokes pmy completion                                                              | '^ '                                                                     |
-| PMY_SNIPPET_ROOT             | The root directory in which pmy's snippets for magic command is located                              | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets"             |
 
 If you want to change these values, you should export them in .zshrc before you execute
 
 ```zsh
-source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
+eval "$(pmy init)"
 ```
 
 ## Demonstration
