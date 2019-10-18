@@ -1,6 +1,6 @@
 [
   {
-    "regexpLeft": "(?P<body>git (co|checkout)) *(?P<query>.*)$",
+    "regexpLeft": "(?P<body>git (co|checkout)) +(?P<query>.*)$",
     "cmdGroups": [
       {
         "tag": "🌱:branch",
@@ -13,7 +13,7 @@
     "bufferRight": "[]"
   },
   {
-    "regexpLeft": "git (branch -d|brd) *$",
+    "regexpLeft": "git (branch -d|brd) +$",
     "cmdGroups": [
       {
         "tag": "🌱:branch",
@@ -25,7 +25,7 @@
     "bufferRight": "[]"
   },
   {
-    "regexpLeft": "git (merge|rebase) *$",
+    "regexpLeft": "git (merge|rebase) +$",
     "cmdGroups": [
       {
         "tag": "🌱:branch",
@@ -37,7 +37,7 @@
     "bufferRight": "[]"
   },
   {
-    "regexpLeft": "git (cp|cherry-pick) *$",
+    "regexpLeft": "git (cp|cherry-pick) +$",
     "cmdGroups": [
       {
         "tag": "🍒:commit",

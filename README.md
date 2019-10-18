@@ -10,36 +10,33 @@ pmy is a highly customizable context-aware shell(zsh)-completion scheme utilizin
 [fzf](https://github.com/junegunn/fzf).
 I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sourceforge.net/Doc/Release/Completion-System.html#Completion-System) is so complicated (I admit it is very powerful), so I developed this system.
 
-## :bulb: Dependency
+## Dependency
 
 -   [fzf](https://github.com/junegunn/fzf) (You can of course use other fuzzy finder such as [peco](https://github.com/peco/peco) and [fzy](https://github.com/jhawthorn/fzy) instead of fzf.)
--   [go](https://github.com/golang/go)
-    -   [color](https://github.com/fatih/color)
 
--   awk (available in almost all environment.)
+## Installation
 
-## :hammer: Installation
+First, please get pmy by go get (because the backend system is written in Go)
 
-First, please get pmy(backend system written in Go)
-and its dependency tool `taggo` using go get.
 ```sh
-go get -u github.com/relastle/pmy github.com/relastle/taggo
+export GO111MODULE=on
+go get -u github.com/relastle/pmy
 ```
 
-Then, source a zsh script which simply configure brief settings.
+Then, only you have to do is executing folloing zsh command.
 
 ```zsh
-source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
+eval "$(pmy init)"
 ```
 
 You can also add the line into your ~/.zshrc if you want.
 
-## :black_nib: Basic Usage
+## Basic Usage
 
 Pmy can be invoked by <kbd>Ctrl</kbd> + <kbd>Space</kbd>.
 If the current left buffer (the part of the buffer that lies to the left of the cursor position) and the right buffer (the right part) match pre-defined rule (described below), fuzzy-finder launches against outputs of the corresponding command.
 
-## :gear: Basic Configuration
+## Basic Configuration
 
 ### pmy's rule
 
@@ -138,19 +135,16 @@ You can define such completion (with sub command description) in an very readabl
 
 | variable name                | description                                                                                          | default values                                                           |
 | ---                          | ---                                                                                                  | ---                                                                      |
-| PMY_RULE_PATH                | It defines the path of main rule json file. Command specific json files are also defined by its path | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/rules/pmy_rules.json" |
-| PMY_TAG_DELIMITER            | Delimiter between tag and a line of sources.                                                         | tab character ("\t")                                                     |
 | PMY_FUZZY_FINDER_DEFAULT_CMD | Default fuzzy finder command used when "fuzzyFinderCmd" is not set in a rule                         | "fzf -0 -1"                                                              |
 | PMY_TRIGGER_KEY              | Trigger key that invokes pmy completion                                                              | '^ '                                                                     |
-| PMY_SNIPPET_ROOT             | The root directory in which pmy's snippets for magic command is located                              | "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/snippets"             |
 
 If you want to change these values, you should export them in .zshrc before you execute
 
 ```zsh
-source "${GOPATH:-${HOME}/go}/src/github.com/relastle/pmy/shell/pmy.zsh"
+eval "$(pmy init)"
 ```
 
-## :trumpet: Demonstration
+## Demonstration
 
 Here, some of examples of pmy's completion are provided as GIF with its rule(json format).
 They are just a few examples of all possible pattern-matching based completion, but I think it help you to create new pmy's rule.
@@ -264,7 +258,7 @@ Pmy's completion rule is highly customizable and flexible, you can easily create
 }
 ```
 
-## :memo: [License](LICENSE)
+## [License](LICENSE)
 
 The MIT License (MIT)
 
