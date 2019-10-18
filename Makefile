@@ -10,22 +10,24 @@ statik: ./shell/pmy.zsh
 	# Make statik files
 	statik -src=./_shell
 
-.PHONY: clean
-clean:
-	rm -f ./anypm
-
 .PHONY: bench
 bench:
 	go test -run=XXX -bench=.
-
-.PHONY: lint
-lint:
-	golangci-lint run ./...
 
 .PHONY: docker
 docker:
 	docker build -t relastle/pmy:0.1.0 -f docker/Dockerfile .
 
+.PHONY: test
+test:
+	$(MAKE) lint
+	$(MAKE) integration_test
+
 .PHONY: integration_test
 integration_test:
 	(cd ./integration_test && go test -run .)
+
+.PHONY: lint
+lint:
+	golangci-lint run ./...
+
