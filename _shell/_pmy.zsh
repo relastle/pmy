@@ -8,7 +8,7 @@ _pmy_main() {
     local buffer_right=${2:-""}
     local test_flag=${3:-""}
 
-    local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right})"
+    local out="$(pmy main --buffer-left=${buffer_left} --buffer-right=${buffer_right})"
 
     if [[ -z $out  ]] ; then
         echo "No rule was matched"
