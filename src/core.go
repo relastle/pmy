@@ -4,6 +4,7 @@ import (
 	"log"
 	"sort"
 	"strings"
+	"time"
 )
 
 // Input represents input from zsh
@@ -24,13 +25,19 @@ func (i *Input) getCmdName() string {
 // It returns zsh statement, where resulting values will
 // be passed into zsh variables.
 func Run(in Input) string {
+	defer MeasureElapsedTime(time.Now(), "core.Run")
+
+	// Load all rule files
 	ruleFiles := GetAllRuleFiles()
+
+	// Extract only applicable rule files
 	ruleFilesToApply := []*RuleFile{}
 	for _, ruleFile := range ruleFiles {
 		if ruleFile.isApplicable(in.getCmdName()) {
 			ruleFilesToApply = append(ruleFilesToApply, ruleFile)
 		}
 	}
+	// Sort rule file by priority
 	sort.SliceStable(
 		ruleFilesToApply,
 		func(i, j int) bool { return ruleFilesToApply[i].priority > ruleFilesToApply[j].priority },
@@ -40,6 +47,8 @@ func Run(in Input) string {
 		_rules, err := ruleFile.loadRules()
 		if err == nil {
 			rules = append(rules, _rules...)
+		} else {
+			log.Fatal(err)
 		}
 	}
 

@@ -10,4 +10,5 @@ require (
 	github.com/rakyll/statik v0.1.6
 	github.com/relastle/colorflag v0.0.0-20190926071630-d4c845e34e8c
 	golang.org/x/sys v0.0.0-20191010194322-b09406accb47 // indirect
+	gopkg.in/yaml.v2 v2.2.4
 )
