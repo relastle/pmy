@@ -132,15 +132,19 @@ func (out *Out) expandAllMagics() error {
 		if !strings.HasPrefix(cg.Stmt, "%") {
 			continue
 		}
-		snippetRelPath := strings.Replace(cg.Stmt, "%", "", -1)
+		startIndex := strings.Index(cg.Stmt, "%") + 1      // inclusive
+		length := strings.Index(cg.Stmt[startIndex:], "%") // exclusive
+		snippetRelPath := cg.Stmt[startIndex : startIndex+length]
 		snippetFileToApply, err := getToApply(snippetFiles, snippetRelPath)
 		if err != nil {
 			return err
 		}
 
-		cg.Stmt = fmt.Sprintf(
-			"cat %v | taggo -q '0:yellow' -d ' '",
-			snippetFileToApply.Path,
+		cg.Stmt = strings.Replace(
+			cg.Stmt,
+			"%"+snippetRelPath+"%",
+			fmt.Sprintf("cat %s", snippetFileToApply.Path),
+			-1,
 		)
 	}
 	return nil
