@@ -1,2 +1,1 @@
-export PMY_LS_OPTION='-F'
 source "${GOPATH}/src/github.com/relastle/pmy/shell/pmy.zsh"
