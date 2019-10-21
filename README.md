@@ -19,7 +19,6 @@ I'm fully in love with fzf, and I think [zsh's completion system](http://zsh.sou
 First, please get pmy by go get (because the backend system is written in Go)
 
 ```sh
-export GO111MODULE=on
 go get -u github.com/relastle/pmy
 ```
 
@@ -40,10 +39,9 @@ If the current left buffer (the part of the buffer that lies to the left of the 
 
 ### pmy's rule
 
-Basically, pmy's compleion behavior is solely based on one json file specified with `${PMY_RULE_PATH}`.
-Default setting is [here](https://github.com/relastle/pmy/blob/master/rules/pmy_rules.json).
+Basically, pmy's compleion behavior is solely based on `rule`.
 
-Rule unit is described as follows
+A single rule is described as follows
 
 ```json
 {
@@ -73,12 +71,36 @@ Rule unit is described as follows
 | ***bufferLeft***      | Buffer left values after completion. [] denotes the original left buffer.                                    |
 | ***bufferRight***     | Buffer right values after completion. [] denotes the original right buffer.                                  |
 
+### Rule configuration
+
+pmy searchs for its rule setting in `${HOME}/pmy/rules` by default.
+So you can use common settings by executing
+
+```zsh
+git clone https://github.com/relastle/pmy-config ~/.pmy
+```
+
+If you want to customize pmy's rule.
+You can define environment variable `PMY_RULE_PATH`.
+if you want to add `/path/to/1` and `/path/to/2` into pmy's rules paths,
+execute
+```zsh
+export PMY_RULE_PATH="/path/to/1:/path/to/2"
+```
+This setting is similar that of that of `$PATH` variable (, which controlls paths where executable binaries and scripts are located).
+
+In this situation, priorities as follows:
+
+- 1. /path/to/1/hoge_pmy_rules.json
+- 2. /path/to/2/hoge_pmy_rules.json
+- 3. ${HOME}/.pmy/rules/hoge_pmy_rules.json
+
 ### command specific rule
 
 In many cases, your own rule would be command specific ones (i.g. git-specific rule and cd-spefici-rule),
 which means that setting such rules into a single one file will increase searching time and slow pmy unreasonably.
 Therefore, you can define command specific rule by putting command-specific rules in the same directory as
-${PMY_RULE_PATH} with an appropriate file name as follows.
+`${PMY_RULE_PATH}` with an appropriate file name as follows.
 
 ```bash
 ├── pmy_rules.json
@@ -88,48 +110,7 @@ ${PMY_RULE_PATH} with an appropriate file name as follows.
 ```
 
 In this case, if your current left buffer starts with git command and pmy is invoked,
-it searched for matched rule first in git_pmy_rules.json, and then pmy_rules.json.
-
-### Magic command
-
-You sometimes want to define the fizzy-finder sources as while content of a file.
-pmy supports such function by a magic command "%".
-Suppose that your rule below is defined.
-
-```json
-{
-  "regexpLeft": "^git $",
-  "cmdGroups": [
-    {
-      "tag": "",
-      "stmt": "%git_sub",
-      "after": "awk '{print $1}'"
-    }
-  ],
-  "fuzzyFinderCmd": "fzf -0 -1 ",
-  "bufferLeft": "git ",
-  "bufferRight": "[]"
-}
-```
-
-Then the sources is defined as content of file
-
-```bash
-${PMY_SNIPPET_ROOT}/git_sub.txt
-```
-
-This file's content is as follows
-
-```txt
-clone      Clone a repository into a new directory
-init       Create an empty Git repository or reinitialize an existing one
-add        Add file contents to the index
-.
-.
-.
-```
-
-You can define such completion (with sub command description) in an very readable way :smile:.
+it searched for matched rule first in `git_pmy_rules.json` (git-specific rules), and then `pmy_rules.json` (globally active rules).
 
 ### Environment variables
 
