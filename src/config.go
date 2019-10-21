@@ -7,6 +7,7 @@ import (
 const (
 	defaultRulePath     string = "${HOME}/.pmy/rules"
 	defaultSnippetPath  string = "${HOME}/.pmy/snippets"
+	defaultLogPath      string = "${HOME}/.pmy/log.txt"
 	rulesPathVarName    string = "PMY_RULE_PATH"
 	snippetPathVarName  string = "PMY_SNIPPET_PATH"
 	tagDelimiterVarName string = "PMY_TAG_DELIMITER"
