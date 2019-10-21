@@ -91,9 +91,9 @@ This setting is similar that of that of `$PATH` variable (, which controlls path
 
 In this situation, priorities as follows:
 
-- 1. /path/to/1/hoge_pmy_rules.json
-- 2. /path/to/2/hoge_pmy_rules.json
-- 3. ${HOME}/.pmy/rules/hoge_pmy_rules.json
+-  1. /path/to/1/hoge_pmy_rules.json
+-  2. /path/to/2/hoge_pmy_rules.json
+-  3. ${HOME}/.pmy/rules/hoge_pmy_rules.json
 
 ### command specific rule
 
