@@ -21,7 +21,7 @@ _pmy_main() {
 
     # get output from pmy
     # local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right} 2>/dev/null)"
-    local out="$(pmy --bufferLeft=${buffer_left} --bufferRight=${buffer_right})"
+    local out="$(pmy main --buffer-left=${buffer_left} --buffer-right=${buffer_right})"
 
     # ${out} is empty, which indicates
     # there was no matching

@@ -1,15 +1,16 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
+	"time"
 
 	"github.com/rakyll/statik/fs"
 	_ "github.com/relastle/pmy/statik"
+	"github.com/urfave/cli"
 
-	"github.com/relastle/colorflag"
 	pmy "github.com/relastle/pmy/src"
 )
 
@@ -44,11 +45,7 @@ func initCmdRoutine() {
 	fmt.Printf("%s", string(bs))
 }
 
-func debug() {
-}
-
 func ruleListCmdRoutine() {
-	pmy.SetConfigs()
 	ruleFiles := pmy.GetAllRuleFiles()
 	for _, ruleFile := range ruleFiles {
 		fmt.Println(ruleFile.Path)
@@ -56,7 +53,6 @@ func ruleListCmdRoutine() {
 }
 
 func snippetListCmdRoutine() {
-	pmy.SetConfigs()
 	snippetFiles := pmy.GetAllSnippetFiles()
 	for _, snippetFile := range snippetFiles {
 		fmt.Println(snippetFile.Path)
@@ -64,40 +60,65 @@ func snippetListCmdRoutine() {
 }
 
 func main() {
-	flag.StringVar(&bufferLeft, "bufferLeft", "", "Current left buffer string of zsh prompt")
-	flag.StringVar(&bufferRight, "bufferRight", "", "Current right buffer string of zsh prompt")
-
-	// Subcommand for dumping init zsh script to stdout
-	initFlagSet := flag.NewFlagSet("init", flag.ExitOnError)
-
-	// Subcommandd for listing the all loaded rule json paths
-	ruleListFlagSet := flag.NewFlagSet("rule-list", flag.ExitOnError)
-
-	// Subcommand for listing the all loaded snippet json paths
-	snippetsListFlagSet := flag.NewFlagSet("snippet-list", flag.ExitOnError)
-
-	// Subcommand for debuggin
-	debugFlagSet := flag.NewFlagSet("debug", flag.ExitOnError)
-
 	pmy.SetConfigs()
 
-	subCommand := colorflag.Parse([]*flag.FlagSet{
-		initFlagSet,
-		ruleListFlagSet,
-		snippetsListFlagSet,
-		debugFlagSet,
-	})
+	start := time.Now()
+	app := cli.NewApp()
+	app.Version = "0.4.0"
 
-	switch subCommand {
-	case "init":
-		initCmdRoutine()
-	case "rule-list":
-		ruleListCmdRoutine()
-	case "snippet-list":
-		snippetListCmdRoutine()
-	case "debug":
-		debug()
-	default:
-		mainRoutine()
+	app.Commands = []cli.Command{
+		{
+			Name:  "main",
+			Usage: "Run main task of pmy. It dumps zsh script necessary to invoke fuzzy finder with appropriate source and edit current zsh line.",
+			Action: func(c *cli.Context) error {
+				mainRoutine()
+				return nil
+			},
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:        "buffer-left, l",
+					Usage:       "Current `left` buffer of zsh line",
+					Destination: &bufferLeft,
+					Required:    true,
+				},
+				cli.StringFlag{
+					Name:        "buffer-right, r",
+					Usage:       "Current `right` buffer of zsh line",
+					Destination: &bufferRight,
+					Required:    true,
+				},
+			},
+		},
+		{
+			Name:  "init",
+			Usage: "Dump zsh script to be sourced in order to activate pmy.",
+			Action: func(c *cli.Context) error {
+				initCmdRoutine()
+				return nil
+			},
+		},
+		{
+			Name:  "rule-list",
+			Usage: "List all rule files loaded.",
+			Action: func(c *cli.Context) error {
+				ruleListCmdRoutine()
+				return nil
+			},
+		},
+		{
+			Name:  "snippet-list",
+			Usage: "List all snippet files loaded.",
+			Action: func(c *cli.Context) error {
+				snippetListCmdRoutine()
+				return nil
+			},
+		},
 	}
+
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
+	pmy.MeasureElapsedTime(start, "cli arg parse")
+
 }
