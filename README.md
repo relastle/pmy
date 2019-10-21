@@ -167,9 +167,9 @@ eval "$(pmy init)"
 
 ## Features
 
--  [!] JSON/YML rule-configurations.
--  [!] Customize fuzzy finder command used.
--  [!] Combining multiple command into one source.
+-  [x] JSON/YML rule-configurations.
+-  [x] Customize fuzzy finder command used.
+-  [x] Combining multiple command into one source.
 -  [ ] Caching compiled regular expression.
 -  [ ] Customizing priority of rules.
 
