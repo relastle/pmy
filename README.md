@@ -30,6 +30,46 @@ eval "$(pmy init)"
 
 You can also add the line into your ~/.zshrc if you want.
 
+## Quick Start
+
+Try downloading very simple pmy rule files into `$HOME/.pmy` (where pmy searches for rules by default).
+
+```zsh
+git clone https://github.com/relastle/pmy-config $HOME/.pmy
+```
+
+Then, you are already able to enjoy path completion using fuzzy finder.
+
+[Sample GIF](https://user-images.githubusercontent.com/6816040/67203963-6d975380-f447-11e9-8198-0f62b7e127ed.gif)
+
+This path-completion befavior is realized by simple yml configurations below
+
+```yml
+- regexp-left: ^(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\-.]*/)+)(?P<query>[0-9A-Za-z_\-.]*)$
+  cmd-groups:
+  - stmt: \ls -AlFG --color=always <path> | tail -n +2 | grep --color=always "<query>"
+    after: awk '{print $8}'
+  fuzzy-finder-cmd: fzf -0 -1 --ansi -n8
+  buffer-left: <body><path>
+  buffer-right: '[]'
+
+- regexp-left: ^(?P<body>.*?) (?P<query>[0-9A-Za-z_\-.]*)$
+  cmd-groups:
+  - stmt: \ls -AlFG --color=always | tail -n +2 | grep --color=always "<query>"
+    after: awk '{print $8}'
+  fuzzy-finder-cmd: fzf -0 -1 --ansi -n8
+  buffer-left: '<body> '
+  buffer-right: '[]'
+```
+
+Customization is very easy.
+
+-  Wrtie your own rule in JSON/YML format.
+-  Save it in the name of `pmy_rules.[json|yml]`
+-  Locate the file under one of `$PMY_RULE_PATH`.
+
+If you want to investigate into further examples, see [Gallery](https://github.com/relastle/pmy/wiki/Gallery).
+
 ## Basic Usage
 
 Pmy can be invoked by <kbd>Ctrl</kbd> + <kbd>Space</kbd>.
@@ -124,6 +164,14 @@ If you want to change these values, you should export them in .zshrc before you 
 ```zsh
 eval "$(pmy init)"
 ```
+
+## Features
+
+-  [!] JSON/YML rule-configurations.
+-  [!] Customize fuzzy finder command used.
+-  [!] Combining multiple command into one source.
+-  [ ] Caching compiled regular expression.
+-  [ ] Customizing priority of rules.
 
 ## Demonstration
 
