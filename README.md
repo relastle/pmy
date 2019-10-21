@@ -38,7 +38,7 @@ Try downloading very simple pmy rule files into `$HOME/.pmy` (where pmy searches
 git clone https://github.com/relastle/pmy-config $HOME/.pmy
 ```
 
-Then, you are already able to enjoy path completion using fuzzy finder.
+Then, you are already able to enjoy path completion using fuzzy finder (completion is invoked by <kbd>Ctrl</kbd> + <kbd>Space</kbd>).
 
 ![Sample GIF](https://user-images.githubusercontent.com/6816040/67204810-48a3e000-f449-11e9-8195-ee0ae1282bdb.gif)
 
