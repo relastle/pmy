@@ -47,7 +47,7 @@ workflows:
             branches:
               only:  # only branches matching the below regex filters will run
                 - master
-                - develop
+                # - develop
       - integration-test:
           requires: # buildが成功したら実行する
             - build
