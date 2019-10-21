@@ -10,10 +10,13 @@ import (
 	"strings"
 
 	"github.com/mattn/go-zglob"
+	"gopkg.in/yaml.v2"
 )
 
 const (
-	pmyRuleSuffix       = "pmy_rules.json"
+	pmyRuleSuffixCommon = "pmy_rules.*"
+	pmyRuleSuffixJSON   = "pmy_rules.json"
+	pmyRuleSuffixYML    = "pmy_rules.yml"
 	priorityGlobal      = 1
 	priorityCmdSpecific = 2
 )
@@ -27,15 +30,21 @@ type RuleFile struct {
 }
 
 func (rf RuleFile) loadRules() (Rules, error) {
-	jsonFile, err := os.Open(rf.Path)
+	f, err := os.Open(rf.Path)
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		return nil, err
 	}
-	defer jsonFile.Close()
+	defer f.Close()
 	var rules Rules
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	err = json.Unmarshal(byteValue, &rules)
+	byteValue, _ := ioutil.ReadAll(f)
+
+	// Unmarshal using json or yml encoder
+	if strings.HasSuffix(rf.Basename, "json") {
+		err = json.Unmarshal(byteValue, &rules)
+	} else if strings.HasSuffix(rf.Basename, "yml") {
+		err = yaml.Unmarshal(byteValue, &rules)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -43,14 +52,18 @@ func (rf RuleFile) loadRules() (Rules, error) {
 }
 
 func (rf *RuleFile) isApplicable(cmd string) bool {
-	if rf.Basename == pmyRuleSuffix {
+	if rf.Basename == pmyRuleSuffixJSON || rf.Basename == pmyRuleSuffixYML {
 		rf.priority = priorityGlobal
 		return true
 	}
 	if rf.Basename == fmt.Sprintf(
 		"%s_%s",
 		cmd,
-		pmyRuleSuffix,
+		pmyRuleSuffixJSON,
+	) || rf.Basename == fmt.Sprintf(
+		"%s_%s",
+		cmd,
+		pmyRuleSuffixYML,
 	) {
 		rf.priority = priorityCmdSpecific
 		return true
@@ -72,7 +85,7 @@ func GetAllRuleFiles() []*RuleFile {
 		globPattern := fmt.Sprintf(
 			`%v/**/*%v`,
 			os.ExpandEnv(ruleRoot),
-			pmyRuleSuffix,
+			pmyRuleSuffixCommon,
 		)
 		matches, err := zglob.Glob(globPattern)
 		if err != nil {
@@ -94,15 +107,15 @@ func GetAllRuleFiles() []*RuleFile {
 
 // Rule is a struct representing one rule
 type Rule struct {
-	Name           string    `json:"name"`
-	Matcher        string    `json:"matcher"`
-	Description    string    `json:"description"`
-	RegexpLeft     string    `json:"regexpLeft"`
-	RegexpRight    string    `json:"regexpRight"`
-	CmdGroups      CmdGroups `json:"cmdGroups"`
-	FuzzyFinderCmd string    `json:"fuzzyFinderCmd"`
-	BufferLeft     string    `json:"bufferLeft"`
-	BufferRight    string    `json:"bufferRight"`
+	Name           string    `json:"name" yaml:"name"`
+	Matcher        string    `json:"matcher" yaml:"matcher"`
+	Description    string    `json:"description" yaml:"description"`
+	RegexpLeft     string    `json:"regexpLeft" yaml:"regexp-left"`
+	RegexpRight    string    `json:"regexpRight" yaml:"regexp-right"`
+	CmdGroups      CmdGroups `json:"cmdGroups" yaml:"cmd-groups"`
+	FuzzyFinderCmd string    `json:"fuzzyFinderCmd" yaml:"fuzzy-finder-cmd"`
+	BufferLeft     string    `json:"bufferLeft" yaml:"buffer-left"`
+	BufferRight    string    `json:"bufferRight" yaml:"buffer-right"`
 	paramMap       map[string]string
 }
 
