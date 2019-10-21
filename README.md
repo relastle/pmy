@@ -30,6 +30,46 @@ eval "$(pmy init)"
 
 You can also add the line into your ~/.zshrc if you want.
 
+## Quick Start
+
+Try downloading very simple pmy rule files into `$HOME/.pmy` (where pmy searches for rules by default).
+
+```zsh
+git clone https://github.com/relastle/pmy-config $HOME/.pmy
+```
+
+Then, you are already able to enjoy path completion using fuzzy finder.
+
+![Sample GIF](https://user-images.githubusercontent.com/6816040/67204810-48a3e000-f449-11e9-8195-ee0ae1282bdb.gif)
+
+This path-completion befavior is realized by simple yml configurations below
+
+```yml
+- regexp-left: ^(?P<body>.*?)(?P<path>~{0,1}([0-9A-Za-z_\-.]*/)+)(?P<query>[0-9A-Za-z_\-.]*)$
+  cmd-groups:
+  - stmt: \ls -AlFG --color=always <path> | tail -n +2 | grep --color=always "<query>"
+    after: awk '{print $8}'
+  fuzzy-finder-cmd: fzf -0 -1 --ansi -n8
+  buffer-left: <body><path>
+  buffer-right: '[]'
+
+- regexp-left: ^(?P<body>.*?) (?P<query>[0-9A-Za-z_\-.]*)$
+  cmd-groups:
+  - stmt: \ls -AlFG --color=always | tail -n +2 | grep --color=always "<query>"
+    after: awk '{print $8}'
+  fuzzy-finder-cmd: fzf -0 -1 --ansi -n8
+  buffer-left: '<body> '
+  buffer-right: '[]'
+```
+
+Customization is very easy.
+
+-  Wrtie your own rule in JSON/YML format.
+-  Save it in the name of `pmy_rules.[json|yml]`
+-  Locate the file under one of `$PMY_RULE_PATH`.
+
+If you want to investigate into further examples, see [Gallery](https://github.com/relastle/pmy/wiki/Gallery).
+
 ## Basic Usage
 
 Pmy can be invoked by <kbd>Ctrl</kbd> + <kbd>Space</kbd>.
@@ -60,16 +100,16 @@ A single rule is described as follows
    "bufferRight": "[]"
 }
 ```
-| property name         | description                                                                                                  |
-| ---                   | ---                                                                                                          |
-| ***regexpLeft***      | If this regexp matches the current left buffer, this rule will be activated.                                 |
-| ***regexpRight***     | Same as left one, but in many cases you don't have to set it becasue you usually work in line left to right. |
-| ***cmdGroups.tag***   | tag string which will be inserted ahead of each line of outputs of the corresponding command.                |
-| ***cmdGroups.stmt***  | command that will be executed to make sources for fuzzy-finder.                                              |
-| ***cmdGroups.after*** | command that will be executed against line after fuzzy-finder selection (using pipe).                        |
-| ***fuzzyFinderCmd***  | Fuzzy finder command that will be executed (piped) against obtained command                                  |
-| ***bufferLeft***      | Buffer left values after completion. [] denotes the original left buffer.                                    |
-| ***bufferRight***     | Buffer right values after completion. [] denotes the original right buffer.                                  |
+| property name (JSON / YML)                     | description                                                                                                  |
+| ---                                            | ---                                                                                                          |
+| ***regexpLeft*** / ***regexp-left***           | If this regexp matches the current left buffer, this rule will be activated.                                 |
+| ***regexpRight*** / ***regexp-right***         | Same as left one, but in many cases you don't have to set it becasue you usually work in line left to right. |
+| ***cmdGroups.tag*** / ***cmd-groups.tag***     | tag string which will be inserted ahead of each line of outputs of the corresponding command.                |
+| ***cmdGroups.stmt*** / ***cmd-groups.stmt***   | command that will be executed to make sources for fuzzy-finder.                                              |
+| ***cmdGroups.after*** / ***cmd-groups.after*** | command that will be executed against line after fuzzy-finder selection (using pipe).                        |
+| ***fuzzyFinderCmd*** / ***fuzzy-finder-cmd***  | Fuzzy finder command that will be executed (piped) against obtained command                                  |
+| ***bufferLeft*** / ***buffer-left***           | Buffer left values after completion. [] denotes the original left buffer.                                    |
+| ***bufferRight*** / ***buffer-right***         | Buffer right values after completion. [] denotes the original right buffer.                                  |
 
 ### Rule configuration
 
@@ -91,9 +131,9 @@ This setting is similar that of that of `$PATH` variable (, which controlls path
 
 In this situation, priorities as follows:
 
--  1. /path/to/1/hoge_pmy_rules.json
--  2. /path/to/2/hoge_pmy_rules.json
--  3. ${HOME}/.pmy/rules/hoge_pmy_rules.json
+-  1. `/path/to/1/hoge_pmy_rules.json`
+-  2. `/path/to/2/hoge_pmy_rules.json`
+-  3. `${HOME}/.pmy/rules/hoge_pmy_rules.json`
 
 ### command specific rule
 
@@ -102,7 +142,7 @@ which means that setting such rules into a single one file will increase searchi
 Therefore, you can define command specific rule by putting command-specific rules in the same directory as
 `${PMY_RULE_PATH}` with an appropriate file name as follows.
 
-```bash
+```zsh
 ├── pmy_rules.json
 ├── git_pmy_rules.json
 ├── cd_pmy_rules.json
@@ -125,119 +165,13 @@ If you want to change these values, you should export them in .zshrc before you 
 eval "$(pmy init)"
 ```
 
-## Demonstration
+## Features
 
-Here, some of examples of pmy's completion are provided as GIF with its rule(json format).
-They are just a few examples of all possible pattern-matching based completion, but I think it help you to create new pmy's rule.
-
-### git checkout(co)
-
-![pmy_git_checkout_resized](https://user-images.githubusercontent.com/6816040/59544897-a5e6cc80-8f51-11e9-8b6a-656734d159b0.gif)
-
-```json
-{
-  "regexpLeft": "(?P<body>git (co|checkout)) *(?P<query>.*)$",
-  "cmdGroups": [
-    {
-      "tag": "🌱:branch",
-      "stmt": "git branch --format=\"%(refname:short)\"",
-      "after": "awk '{print $0}'"
-    },
-    {
-      "tag": "🍺:commit",
-      "stmt": "git log --oneline -10",
-      "after": "awk '{print $1}'"
-    }
-  ],
-  "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
-  "bufferLeft": "<body> ",
-  "bufferRight": "[]"
-}
-
-```
-
-### git cherry-pick(cp)
-
-![pmy_git_cherry-pick_resized](https://user-images.githubusercontent.com/6816040/59544901-a67f6300-8f51-11e9-91f9-16e668b25af7.gif)
-
-```json
-{
-  "regexpLeft": "git (cp|cherry-pick) *$",
-  "cmdGroups": [
-    {
-      "tag": "🍒:commit",
-      "stmt": "git log --oneline --branches --tags",
-      "after": "awk '{print $1}'"
-    }
-  ],
-  "bufferLeft": "[]",
-  "bufferRight": "[]"
-}
-
-```
-
-### cd
-
-![pmy_cd_resized](https://user-images.githubusercontent.com/6816040/59544895-a54e3600-8f51-11e9-894a-22beac49014e.gif)
-
-```json
-{
-  "regexpLeft": "^cd +(?P<path>([^/]*/)*)(?P<query>[^/]*)$",
-  "cmdGroups": [
-    {
-      "tag": "",
-      "stmt":  "command ls -F -1 <path> | egrep '/$'",
-      "after": "awk '{print $0}'"
-    }
-  ],
-  "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
-  "bufferLeft": "cd <path>",
-  "bufferRight": "[]"
-}
-```
-
-### Postfix completion
-
-Pmy's completion rule is highly customizable and flexible, you can easily create a rule that performs ***postfix-completion*** .
-
-#### generate for loop iterating from 1 to a given number
-
-![pmy_postfix_numfor_resized](https://user-images.githubusercontent.com/6816040/59544899-a5e6cc80-8f51-11e9-82ca-a149620264cb.gif)
-
-```json
-{
-  "regexpLeft": "^(?P<num>[1-9][0-9]*).for$",
-  "cmdGroups": [
-    {
-      "tag": "",
-      "stmt":  "echo ''",
-      "after": "awk '{print $0}'"
-    }
-  ],
-  "bufferLeft": "for x in $(seq 1 <num>); do ",
-  "bufferRight": "; done"
-}
-
-```
-
-#### generate for loop iterating each line of outputs from a given command
-
-![pmy_postfix_general_resized](https://user-images.githubusercontent.com/6816040/59544900-a5e6cc80-8f51-11e9-8c86-1a88a417b11e.gif)
-
-```json
-{
-  "regexpLeft": "(?P<cmd>.+)\\.for$",
-  "cmdGroups": [
-    {
-      "tag": "",
-      "stmt":  "echo ''",
-      "after": "awk '{print $0}'"
-    }
-  ],
-  "bufferLeft": "for x in $(<cmd>); do ",
-  "bufferRight": "; done"
-}
-```
+-  [x] JSON/YML rule-configurations.
+-  [x] Customize fuzzy finder command used.
+-  [x] Combining multiple command into one source.
+-  [ ] Caching compiled regular expression.
+-  [ ] Customizing priority of rules.
 
 ## [License](LICENSE)
 
