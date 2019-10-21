@@ -25,7 +25,7 @@ func (i *Input) getCmdName() string {
 // It returns zsh statement, where resulting values will
 // be passed into zsh variables.
 func Run(in Input) string {
-	defer measureElapsedTime(time.Now(), "core.Run")
+	defer MeasureElapsedTime(time.Now(), "core.Run")
 
 	// Load all rule files
 	ruleFiles := GetAllRuleFiles()
