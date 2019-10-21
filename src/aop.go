@@ -8,8 +8,9 @@ import (
 )
 
 func measureElapsedTime(start time.Time, name string) {
-	os.MkdirAll(path.Dir(defaultLogPath), os.ModePerm)
-	f, err := os.OpenFile(os.ExpandEnv(defaultLogPath), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	logPath := os.ExpandEnv(defaultLogPath)
+	os.MkdirAll(path.Dir(logPath), os.ModePerm)
+	f, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}
