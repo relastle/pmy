@@ -7,7 +7,9 @@ import (
 	"time"
 )
 
-func measureElapsedTime(start time.Time, name string) {
+// MeasureElapsedTime measures elapsed time given
+// a started time.
+func MeasureElapsedTime(start time.Time, name string) {
 	logPath := os.ExpandEnv(defaultLogPath)
 	os.MkdirAll(path.Dir(logPath), os.ModePerm)
 	f, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
