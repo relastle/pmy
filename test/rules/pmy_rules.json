@@ -28,7 +28,7 @@
     "cmdGroups": [
       {
         "tag": "",
-        "stmt":  "%magic",
+        "stmt":  "%magic%",
         "after": "awk '{print $1}'"
       }
     ],
