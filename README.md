@@ -40,7 +40,7 @@ git clone https://github.com/relastle/pmy-config $HOME/.pmy
 
 Then, you are already able to enjoy path completion using fuzzy finder.
 
-[Sample GIF](https://user-images.githubusercontent.com/6816040/67203963-6d975380-f447-11e9-8198-0f62b7e127ed.gif)
+![Sample GIF](https://user-images.githubusercontent.com/6816040/67203963-6d975380-f447-11e9-8198-0f62b7e127ed.gif)
 
 This path-completion befavior is realized by simple yml configurations below
 
