@@ -2,6 +2,7 @@ package pmy
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -36,12 +37,14 @@ func GetAllSnippetFiles() []*SnippetFile {
 
 	res := []*SnippetFile{}
 	for _, snippetRoot := range snippetRoots {
+		// expand environment variable
+		snippetRoot = os.ExpandEnv(snippetRoot)
 		if snippetRoot == "" {
 			continue
 		}
 		globPattern := fmt.Sprintf(
 			`%v/**/*%v`,
-			os.ExpandEnv(snippetRoot),
+			snippetRoot,
 			pmySnippetSuffix,
 		)
 		matches, err := zglob.Glob(globPattern)
@@ -51,6 +54,7 @@ func GetAllSnippetFiles() []*SnippetFile {
 		for _, snippetPath := range matches {
 			relpath, err := filepath.Rel(snippetRoot, snippetPath)
 			if err != nil {
+				log.Fatal(err)
 				relpath = ""
 			}
 			res = append(
