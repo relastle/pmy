@@ -9,7 +9,7 @@ import (
 
 	"github.com/rakyll/statik/fs"
 	_ "github.com/relastle/pmy/statik"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 
 	pmy "github.com/relastle/pmy/src"
 )
@@ -66,7 +66,7 @@ func main() {
 	app := cli.NewApp()
 	app.Version = "0.5.2"
 
-	app.Commands = []cli.Command{
+	app.Commands = []*cli.Command{
 		{
 			Name:  "main",
 			Usage: "Run main task of pmy. It dumps zsh script necessary to invoke fuzzy finder with appropriate source and edit current zsh line.",
@@ -75,13 +75,13 @@ func main() {
 				return nil
 			},
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:        "buffer-left, l",
 					Usage:       "Current `left` buffer of zsh line",
 					Destination: &bufferLeft,
 					Required:    true,
 				},
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:        "buffer-right, r",
 					Usage:       "Current `right` buffer of zsh line",
 					Destination: &bufferRight,
