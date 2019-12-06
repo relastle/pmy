@@ -20,6 +20,11 @@ func Escape(target string, query string) string {
 	return strings.Replace(target, query, fmt.Sprintf("\\%s", query), -1)
 }
 
+// EscapeBackslash escape backslash in shell.
+func EscapeBackslash(target string) string {
+	return strings.Replace(target, "\\", "\\", -1)
+}
+
 // EncodeTag encode with base64 and then replace `/` and `+`
 // into `a_a` and `b_b` respectively.
 func EncodeTag(tag string) string {

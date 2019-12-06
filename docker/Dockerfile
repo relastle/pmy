@@ -8,10 +8,8 @@ RUN apk update && \
 ENV SHELL /bin/zsh
 ENV GOPATH /go
 
-# Install fzf and taggo
-RUN go get -u github.com/junegunn/fzf && \
-        go get -u github.com/relastle/taggo
-
+# Install fzf
+RUN go get -u github.com/junegunn/fzf
 
 # Install pmy
 WORKDIR /go/src/github.com/relastle/pmy
