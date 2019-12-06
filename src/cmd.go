@@ -8,7 +8,6 @@ import (
 // creating sources for fzf
 type CmdGroup struct {
 	Tag        string `json:"tag"`
-	TagColor   string `json:"tagColor"`
 	Stmt       string `json:"stmt"`
 	After      string `json:"after"`
 	tagAligned string

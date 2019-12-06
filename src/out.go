@@ -58,7 +58,7 @@ func newOutFromRule(rule *Rule) Out {
 func (out *Out) buildMainCommand() string {
 	res := ""
 	for _, cg := range out.cmdGroups {
-		// if there is no tag, no need to use taggo
+		// if there is no tag, simply execute command
 		if out.allEmptyTag {
 			res += fmt.Sprintf(
 				"%v ;",
@@ -66,11 +66,10 @@ func (out *Out) buildMainCommand() string {
 			)
 		} else {
 			res += fmt.Sprintf(
-				"%v | taggo -t '%v' -c '%v' --tag-delimiter '%v' ;",
+				"%v | awk '{printf \"%%s%v%%s\\\\n\", \"%v\", $0}' ; ",
 				cg.Stmt,
+				utils.EscapeBackslash(TagDelimiter),
 				cg.tagAligned,
-				cg.TagColor,
-				TagDelimiter,
 			)
 		}
 	}
