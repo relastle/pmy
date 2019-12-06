@@ -24,6 +24,7 @@ test:
 	go mod tidy
 	$(MAKE) lint
 	$(MAKE) integration_test
+	unset GO111MODULE
 
 .PHONY: integration_test
 integration_test:
