@@ -14,7 +14,7 @@ type Input struct {
 }
 
 func (i *Input) getCmdName() string {
-	elms := strings.Split(i.BufferLeft, " ")
+	elms := strings.Split(strings.TrimSpace(i.BufferLeft), " ")
 	if len(elms) == 0 {
 		return ""
 	}
