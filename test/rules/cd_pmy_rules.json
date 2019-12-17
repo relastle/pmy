@@ -1,6 +1,6 @@
 [
   {
-    "regexpLeft": "^cd +(?P<path>([^/]*/)*)(?P<query>[^/]*)$",
+    "regexpLeft": "(?P<space>\\s*)cd +(?P<path>([^/]*/)*)(?P<query>[^/]*)$",
     "cmdGroups": [
       {
         "tag": "",
@@ -9,7 +9,7 @@
       }
     ],
     "fuzzyFinderCmd": "fzf -0 -1 -q \"<query>\"",
-    "bufferLeft": "cd <path>",
+    "bufferLeft": "<space>cd <path>",
     "bufferRight": "[]"
   }
 ]

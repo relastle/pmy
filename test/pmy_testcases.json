@@ -1,5 +1,15 @@
 [
   {
+    "lbuffer": "cd ",
+    "rbuffer": "",
+    "expected": "cd test_directory/"
+  },
+  {
+    "lbuffer": " cd ",
+    "rbuffer": "",
+    "expected": " cd test_directory/"
+  },
+  {
     "lbuffer": "git checkout mas",
     "rbuffer": "",
     "expected": "git checkout master"
