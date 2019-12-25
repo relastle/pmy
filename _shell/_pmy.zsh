@@ -3,6 +3,10 @@
 export PMY_FUZZY_FINDER_DEFAULT_CMD=${PMY_FUZZY_FINDER_DEFAULT_CMD:-"fzf -0 -1 --ansi"}
 export PMY_TRIGGER_KEY=${PMY_TRIGGER_KEY:-'^ '}
 
+_PMY_SUCCESS_EXIT_CODE=0
+_PMY_NOT_FOUND_EXIT_CODE=204
+_PMY_FATAL_EXIT_CODE=205
+
 _pmy_main() {
     local buffer_left=${1:-""}
     local buffer_right=${2:-""}
@@ -11,17 +15,14 @@ _pmy_main() {
     local out="$(pmy main --buffer-left=${buffer_left} --buffer-right=${buffer_right})"
 
     if [[ -z $out  ]] ; then
-        echo "No rule was matched"
-        __pmy_res_lbuffer=${buffer_left}
-        __pmy_res_rbuffer=${buffer_right}
-        return
+        return ${_PMY_NOT_FOUND_EXIT_CODE}
     fi
 
     eval ${out}
 
     if [[ ${__pmy_out_error_message} != '' ]] ; then
         echo ${__pmy_out_error_message}
-        return
+        return ${_PMY_FATAL_EXIT_CODE}
     fi
 
     local fuzzy_finder_cmd=${__pmy_out_fuzzy_finder_cmd:-${PMY_FUZZY_FINDER_DEFAULT_CMD}}
@@ -46,14 +47,42 @@ _pmy_main() {
         echo $__pmy_res_lbuffer
         echo $__pmy_res_rbuffer
     fi
+
+    return ${_PMY_SUCCESS_EXIT_CODE}
 }
 
 pmy-widget() {
     _pmy_main ${LBUFFER} ${RBUFFER}
-    zle reset-prompt
-    LBUFFER=${__pmy_res_lbuffer}
-    RBUFFER=${__pmy_res_rbuffer}
+    local exit_status=$?
+    case $exit_status in
+        $_PMY_SUCCESS_EXIT_CODE)
+            zle reset-prompt
+            LBUFFER=${__pmy_res_lbuffer}
+            RBUFFER=${__pmy_res_rbuffer}
+            ;;
+        $_PMY_NOT_FOUND_EXIT_CODE)
+            if [[ ${PMY_TRIGGER_KEY} == "^I" ]] then;
+                zle ${pmy_default_completion:-expand-or-complete}
+            else
+                echo "No rule was matched"
+                __pmy_res_lbuffer=${buffer_left}
+                __pmy_res_rbuffer=${buffer_right}
+                zle reset-prompt
+                LBUFFER=${__pmy_res_lbuffer}
+                RBUFFER=${__pmy_res_rbuffer}
+            fi
+            ;;
+        $_PMY_FATAL_EXIT_CODE)
+            ;;
+    esac
+}
+
+[[ ${PMY_TRIGGER_KEY} == "^I" ]] && [[ -z "$pmy_default_completion" ]] && {
+  binding=$(bindkey '^I')
+  [[ $binding =~ 'undefined-key' ]] || pmy_default_completion=$binding[(s: :w)2]
+  unset binding
 }
 
 zle -N pmy-widget
+
 bindkey ${PMY_TRIGGER_KEY} pmy-widget
