@@ -22,6 +22,8 @@ First, please get pmy by go get (because the backend system is written in Go)
 go get -u github.com/relastle/pmy
 ```
 
+Or you can download single binary releases from [here](https://github.com/relastle/pmy/releases)
+
 Then, only you have to do is executing folloing zsh command.
 
 ```zsh
@@ -124,9 +126,11 @@ If you want to customize pmy's rule.
 You can define environment variable `PMY_RULE_PATH`.
 if you want to add `/path/to/1` and `/path/to/2` into pmy's rules paths,
 execute
+
 ```zsh
 export PMY_RULE_PATH="/path/to/1:/path/to/2"
 ```
+
 This setting is similar that of that of `$PATH` variable (, which controlls paths where executable binaries and scripts are located).
 
 In this situation, priorities as follows:
@@ -164,6 +168,13 @@ If you want to change these values, you should export them in .zshrc before you 
 ```zsh
 eval "$(pmy init)"
 ```
+
+If you set `PMY_TRIGGER_KEY` to `^I` (tab key),
+zsh's default completion action will be invoked when no rule was found.
+
+This behavior is similar to `kill` command completion of
+[fzf](https://github.com/junegunn/fzf).
+
 
 ## Features
 
