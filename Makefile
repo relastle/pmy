@@ -1,6 +1,6 @@
 .PHONY: main
 main: statik
-	# build
+	go mod tidy
 	go build
 	go install
 
