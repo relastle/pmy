@@ -6,6 +6,11 @@
 export PMY_FUZZY_FINDER_DEFAULT_CMD=${PMY_FUZZY_FINDER_DEFAULT_CMD:-"fzf -0 -1 --ansi"}
 export PMY_TRIGGER_KEY=${PMY_TRIGGER_KEY:-'^ '}
 
+# Declarations of exit status code constants
+_PMY_SUCCESS_EXIT_CODE=0
+_PMY_NOT_FOUND_EXIT_CODE=204
+_PMY_FATAL_EXIT_CODE=205
+
 # Main Function of Pmy
 # Args:
 #     - Left buffer string
@@ -26,10 +31,7 @@ _pmy_main() {
     # ${out} is empty, which indicates
     # there was no matching
     if [[ -z $out  ]] ; then
-        echo "No rule was matched"
-        __pmy_res_lbuffer=${buffer_left}
-        __pmy_res_rbuffer=${buffer_right}
-        return
+        return ${_PMY_NOT_FOUND_EXIT_CODE}
     fi
 
     # Here, evaluate the output of pmy,
@@ -47,7 +49,7 @@ _pmy_main() {
     # Check if error occurred.
     if [[ ${__pmy_out_error_message} != '' ]] ; then
         echo ${__pmy_out_error_message}
-        return
+        return ${_PMY_FATAL_EXIT_CODE}
     fi
 
     local fuzzy_finder_cmd=${__pmy_out_fuzzy_finder_cmd:-${PMY_FUZZY_FINDER_DEFAULT_CMD}}
@@ -77,14 +79,51 @@ _pmy_main() {
         echo $__pmy_res_lbuffer
         echo $__pmy_res_rbuffer
     fi
+
+    return ${_PMY_SUCCESS_EXIT_CODE}
 }
 
 pmy-widget() {
     _pmy_main ${LBUFFER} ${RBUFFER}
-    zle reset-prompt
-    LBUFFER=${__pmy_res_lbuffer}
-    RBUFFER=${__pmy_res_rbuffer}
+    local exit_status=$?
+    # Switch by the exit status code of `_pmy_main`
+    case $exit_status in
+        $_PMY_SUCCESS_EXIT_CODE)
+            # When there was match
+            zle reset-prompt
+            LBUFFER=${__pmy_res_lbuffer}
+            RBUFFER=${__pmy_res_rbuffer}
+            ;;
+        $_PMY_NOT_FOUND_EXIT_CODE)
+            # When there was not match
+            if [[ ${PMY_TRIGGER_KEY} == "^I" ]] then;
+                # invole zsh's original completion
+                zle ${pmy_default_completion:-expand-or-complete}
+            else
+                echo "No rule was matched"
+                __pmy_res_lbuffer=${buffer_left}
+                __pmy_res_rbuffer=${buffer_right}
+                zle reset-prompt
+                LBUFFER=${__pmy_res_lbuffer}
+                RBUFFER=${__pmy_res_rbuffer}
+            fi
+            ;;
+        $_PMY_FATAL_EXIT_CODE)
+            # When error occurred in pmy-core.
+            ;;
+    esac
+}
+
+# If PMY_TRIGGER_KEY is set to `tab`
+# make the key signal down to pre-refined completion.
+# The main strategy is the same as
+# https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
+[[ ${PMY_TRIGGER_KEY} == "^I" ]] && [[ -z "$pmy_default_completion" ]] && {
+  binding=$(bindkey '^I')
+  [[ $binding =~ 'undefined-key' ]] || pmy_default_completion=$binding[(s: :w)2]
+  unset binding
 }
 
 zle -N pmy-widget
+
 bindkey ${PMY_TRIGGER_KEY} pmy-widget
