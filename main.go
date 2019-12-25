@@ -64,7 +64,7 @@ func main() {
 
 	start := time.Now()
 	app := cli.NewApp()
-	app.Version = "0.5.2"
+	app.Version = "0.5.3"
 
 	app.Commands = []*cli.Command{
 		{
