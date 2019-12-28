@@ -11,7 +11,8 @@ import (
 	"github.com/mattn/go-zglob"
 )
 
-const pmySnippetSuffix = "pmy_snippet.txt"
+const pmySnippetSuffix = ".txt"
+const _pmySnippetSuffix = "pmy_snippet.txt"
 
 // SnippetFile represents one Snippet Json file
 // information
@@ -22,11 +23,19 @@ type SnippetFile struct {
 }
 
 func (s SnippetFile) isApplicable(relpath string) bool {
-	return fmt.Sprintf(
-		"%s_%s",
+	if s.Relpath == fmt.Sprintf(
+		"%s%s",
 		relpath,
 		pmySnippetSuffix,
-	) == s.Relpath
+	) {
+		return true
+	}
+
+	return s.Relpath == fmt.Sprintf(
+		"%s_%s",
+		relpath,
+		_pmySnippetSuffix,
+	)
 }
 
 // GetAllSnippetFiles get all pmy snippets txt paths
@@ -45,7 +54,7 @@ func GetAllSnippetFiles() []*SnippetFile {
 		globPattern := fmt.Sprintf(
 			`%v/**/*%v`,
 			snippetRoot,
-			pmySnippetSuffix,
+			_pmySnippetSuffix,
 		)
 		matches, err := zglob.Glob(globPattern)
 		if err != nil {
