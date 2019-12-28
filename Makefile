@@ -18,15 +18,22 @@ bench:
 docker:
 	docker build -t relastle/pmy:0.1.0 -f docker/Dockerfile .
 
+.PHONY: lint
+lint:
+	golangci-lint run ./...
+
 .PHONY: test
 test: lint
 	go test -v ./src
 
 .PHONY: integration_test
-integration_test: main test
+integration_test:
 	(cd ./integration_test && go test -v -run .)
 
-.PHONY: lint
-lint:
-	golangci-lint run ./...
+.PHONY: test_all
+test_all:
+	$(MAKE) main
+	$(MAKE) test
+	$(MAKE) integration_test
+
 
