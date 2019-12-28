@@ -14,11 +14,25 @@ import (
 )
 
 const (
-	pmyRuleSuffixCommon = "pmy_rules.*"
-	pmyRuleSuffixJSON   = "pmy_rules.json"
-	pmyRuleSuffixYML    = "pmy_rules.yml"
+	// !!! will be deprecated !!!
+	_pmyRuleSuffixJSON = "pmy_rules.json"
+	_pmyRuleSuffixYML  = "pmy_rules.yml"
+	_pmyRuleSuffixYAML = "pmy_rules.yaml"
+
+	pmyRuleSuffixJSON = ".json"
+	pmyRuleSuffixYML  = ".yml"
+	pmyRuleSuffixYAML = ".yaml"
+
 	priorityGlobal      = 1
 	priorityCmdSpecific = 2
+)
+
+var (
+	pmyRuleGlobalNames = []string{
+		"_.json",
+		"_.yml",
+		"_.yaml",
+	}
 )
 
 // RuleFile represents one Rule Json file
@@ -27,6 +41,63 @@ type RuleFile struct {
 	Path     string
 	Basename string
 	priority int
+}
+
+func (rf RuleFile) isGlobal() bool {
+	for _, globalName := range pmyRuleGlobalNames {
+		if rf.Basename == globalName {
+			return true
+		}
+	}
+	// TODO: deprecated global rules
+	return (rf.Basename == _pmyRuleSuffixJSON ||
+		rf.Basename == _pmyRuleSuffixYML ||
+		rf.Basename == _pmyRuleSuffixYAML)
+}
+
+func (rf RuleFile) isCommandSpecific(cmd string) bool {
+	if rf.Basename == fmt.Sprintf(
+		"%s%s",
+		cmd,
+		pmyRuleSuffixJSON,
+	) || rf.Basename == fmt.Sprintf(
+		"%s%s",
+		cmd,
+		pmyRuleSuffixYML,
+	) || rf.Basename == fmt.Sprintf(
+		"%s%s",
+		cmd,
+		pmyRuleSuffixYAML,
+	) {
+		return true
+	}
+
+	// TODO: deprecated command specific rules
+	if rf.Basename == fmt.Sprintf(
+		"%s_%s",
+		cmd,
+		_pmyRuleSuffixJSON,
+	) || rf.Basename == fmt.Sprintf(
+		"%s_%s",
+		cmd,
+		_pmyRuleSuffixYML,
+	) || rf.Basename == fmt.Sprintf(
+		"%s_%s",
+		cmd,
+		_pmyRuleSuffixYAML,
+	) {
+		return true
+	}
+	return false
+}
+
+func (rf RuleFile) isJSON() bool {
+	return strings.HasSuffix(rf.Basename, pmyRuleSuffixJSON)
+}
+
+func (rf RuleFile) isYAML() bool {
+	return (strings.HasSuffix(rf.Basename, pmyRuleSuffixYML) ||
+		strings.HasSuffix(rf.Basename, pmyRuleSuffixYAML))
 }
 
 func (rf RuleFile) loadRules() (Rules, error) {
@@ -40,9 +111,9 @@ func (rf RuleFile) loadRules() (Rules, error) {
 	byteValue, _ := ioutil.ReadAll(f)
 
 	// Unmarshal using json or yml encoder
-	if strings.HasSuffix(rf.Basename, "json") {
+	if rf.isJSON() {
 		err = json.Unmarshal(byteValue, &rules)
-	} else if strings.HasSuffix(rf.Basename, "yml") {
+	} else if rf.isYAML() {
 		err = yaml.Unmarshal(byteValue, &rules)
 	}
 	if err != nil {
@@ -51,27 +122,22 @@ func (rf RuleFile) loadRules() (Rules, error) {
 	return rules, nil
 }
 
-func (rf *RuleFile) isApplicable(cmd string) bool {
-	if rf.Basename == pmyRuleSuffixJSON || rf.Basename == pmyRuleSuffixYML {
+// setPriority set priority for the rule given a command
+func (rf *RuleFile) setPriority(cmd string) bool {
+	if rf.isGlobal() {
 		rf.priority = priorityGlobal
 		return true
 	}
-	if rf.Basename == fmt.Sprintf(
-		"%s_%s",
-		cmd,
-		pmyRuleSuffixJSON,
-	) || rf.Basename == fmt.Sprintf(
-		"%s_%s",
-		cmd,
-		pmyRuleSuffixYML,
-	) {
+
+	if rf.isCommandSpecific(cmd) {
 		rf.priority = priorityCmdSpecific
 		return true
+
 	}
 	return false
 }
 
-// GetAllRuleFiles get all pmy rules json paths
+// GetAllRuleFiles get all files under $PMY_RULE_PATH
 // configured by environment variable
 func GetAllRuleFiles() []*RuleFile {
 	ruleRoots := strings.Split(RulePath, ":")
@@ -85,9 +151,8 @@ func GetAllRuleFiles() []*RuleFile {
 			continue
 		}
 		globPattern := fmt.Sprintf(
-			`%v/**/*%v`,
+			`%v/**/*`,
 			ruleRoot,
-			pmyRuleSuffixCommon,
 		)
 		matches, err := zglob.Glob(globPattern)
 		if err != nil {
