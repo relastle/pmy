@@ -23,7 +23,7 @@ test: lint
 	go test -v ./src
 
 .PHONY: integration_test
-integration_test: main
+integration_test: main test
 	(cd ./integration_test && go test -v -run .)
 
 .PHONY: lint

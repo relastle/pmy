@@ -52,9 +52,8 @@ func GetAllSnippetFiles() []*SnippetFile {
 			continue
 		}
 		globPattern := fmt.Sprintf(
-			`%v/**/*%v`,
+			`%v/**/*`,
 			snippetRoot,
-			_pmySnippetSuffix,
 		)
 		matches, err := zglob.Glob(globPattern)
 		if err != nil {
