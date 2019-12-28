@@ -19,16 +19,12 @@ docker:
 	docker build -t relastle/pmy:0.1.0 -f docker/Dockerfile .
 
 .PHONY: test
-test:
-	export GO111MODULE=on
-	go mod tidy
-	$(MAKE) lint
-	$(MAKE) integration_test
-	unset GO111MODULE
+test: lint
+	go test -v ./src
 
 .PHONY: integration_test
-integration_test:
-	(cd ./integration_test && go test -run .)
+integration_test: main test
+	(cd ./integration_test && go test -v -run .)
 
 .PHONY: lint
 lint:
