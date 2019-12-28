@@ -33,7 +33,7 @@ func Run(in Input) string {
 	// Extract only applicable rule files
 	ruleFilesToApply := []*RuleFile{}
 	for _, ruleFile := range ruleFiles {
-		if ruleFile.isApplicable(in.getCmdName()) {
+		if ruleFile.setPriority(in.getCmdName()) {
 			ruleFilesToApply = append(ruleFilesToApply, ruleFile)
 		}
 	}
