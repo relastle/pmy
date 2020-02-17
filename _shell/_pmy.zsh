@@ -52,6 +52,8 @@ _pmy_main() {
 }
 
 pmy-widget() {
+    local buffer_left=${LBUFFER}
+    local buffer_right=${RBUFFER}
     _pmy_main ${LBUFFER} ${RBUFFER}
     local exit_status=$?
     case $exit_status in
@@ -67,9 +69,9 @@ pmy-widget() {
                 echo "No rule was matched"
                 __pmy_res_lbuffer=${buffer_left}
                 __pmy_res_rbuffer=${buffer_right}
-                zle reset-prompt
                 LBUFFER=${__pmy_res_lbuffer}
                 RBUFFER=${__pmy_res_rbuffer}
+                zle reset-prompt
             fi
             ;;
         $_PMY_FATAL_EXIT_CODE)
