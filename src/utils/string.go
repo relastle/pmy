@@ -22,7 +22,7 @@ func Escape(target string, query string) string {
 
 // EscapeBackslash escape backslash in shell.
 func EscapeBackslash(target string) string {
-	return strings.Replace(target, "\\", "\\", -1)
+	return strings.Replace(target, "\\", "\\\\", -1)
 }
 
 // EncodeTag encode with base64 and then replace `/` and `+`
