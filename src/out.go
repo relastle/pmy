@@ -66,9 +66,9 @@ func (out *Out) buildMainCommand() string {
 			)
 		} else {
 			res += fmt.Sprintf(
-				"%v | awk '{printf \"%%s%v%%s\\\\n\", \"%v\", $0}' ; ",
+				"%v | awk '{printf \"%%s%v%%s\\n\", \"%v\", $0}' ; ",
 				cg.Stmt,
-				utils.EscapeBackslash(TagDelimiter),
+				TagDelimiter,
 				cg.tagAligned,
 			)
 		}
@@ -80,7 +80,7 @@ func (out *Out) buildMainCommand() string {
 // passed into shell variables
 func (out *Out) toShellVariables() string {
 	res := ""
-	res += fmt.Sprintf("local %v=$'%v';", shellCommandVariableName, utils.Escape(out.buildMainCommand(), "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellCommandVariableName, utils.Escape(utils.EscapeBackslash(out.buildMainCommand()), "'"))
 	res += fmt.Sprintf("local %v=$'%v';", shellBufferLeftVariableName, utils.Escape(utils.EscapeBackslash(out.bufferLeft), "'"))
 	res += fmt.Sprintf("local %v=$'%v';", shellBufferRightVariableName, utils.Escape(utils.EscapeBackslash(out.bufferRight), "'"))
 	res += fmt.Sprintf("local %v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(utils.EscapeBackslash(out.fuzzyFinderCmd), "'"))
