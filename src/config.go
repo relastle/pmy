@@ -20,7 +20,7 @@ var (
 	// SnippetPath defines snippet root directry path
 	SnippetPath string
 	// LogPath is a path of the log file
-	LogPath string
+	LogPath = os.ExpandEnv(defaultLogPath)
 	// TagDelimiter defines delimiter string
 	// that divide `tag` and one line of source
 	TagDelimiter = "\\t"
@@ -30,11 +30,9 @@ var (
 func setConfig(
 	target *string,
 	varName string,
-	defaultValue string,
 ) {
 	envVar, ok := os.LookupEnv(varName)
 	if !ok {
-		*target = defaultValue
 		return
 	}
 	*target = envVar
@@ -43,8 +41,8 @@ func setConfig(
 // SetConfigs set all Pmy config variable from shell's
 // environment variables.
 func SetConfigs() {
-	setConfig(&RulePath, rulesPathVarName, "")
-	setConfig(&SnippetPath, snippetPathVarName, "")
-	setConfig(&LogPath, logPathVarName, os.ExpandEnv(defaultLogPath))
-	setConfig(&TagDelimiter, tagDelimiterVarName, "")
+	setConfig(&RulePath, rulesPathVarName)
+	setConfig(&SnippetPath, snippetPathVarName)
+	setConfig(&LogPath, logPathVarName)
+	setConfig(&TagDelimiter, tagDelimiterVarName)
 }
