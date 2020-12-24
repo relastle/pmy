@@ -66,9 +66,9 @@ func (out *Out) buildMainCommand() string {
 			)
 		} else {
 			res += fmt.Sprintf(
-				"%v | awk '{printf \"%%s%v%%s\\\\n\", \"%v\", $0}' ; ",
+				"%v | awk '{printf \"%%s%v%%s\\n\", \"%v\", $0}' ; ",
 				cg.Stmt,
-				utils.EscapeBackslash(TagDelimiter),
+				TagDelimiter,
 				cg.tagAligned,
 			)
 		}
@@ -80,12 +80,12 @@ func (out *Out) buildMainCommand() string {
 // passed into shell variables
 func (out *Out) toShellVariables() string {
 	res := ""
-	res += fmt.Sprintf("local %v=$'%v';", shellCommandVariableName, utils.Escape(out.buildMainCommand(), "'"))
-	res += fmt.Sprintf("local %v=$'%v';", shellBufferLeftVariableName, utils.Escape(out.bufferLeft, "'"))
-	res += fmt.Sprintf("local %v=$'%v';", shellBufferRightVariableName, utils.Escape(out.bufferRight, "'"))
-	res += fmt.Sprintf("local %v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(out.fuzzyFinderCmd, "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellCommandVariableName, utils.Escape(utils.EscapeBackslash(out.buildMainCommand()), "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellBufferLeftVariableName, utils.Escape(utils.EscapeBackslash(out.bufferLeft), "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellBufferRightVariableName, utils.Escape(utils.EscapeBackslash(out.bufferRight), "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellFuzzyFinderCmdVariableName, utils.Escape(utils.EscapeBackslash(out.fuzzyFinderCmd), "'"))
 	res += fmt.Sprintf("local %v='%v';", shellTagDelimiterVariableName, TagDelimiter)
-	res += fmt.Sprintf("local %v=$'%v';", shellErrorMessageVariableName, utils.Escape(out.errorMessage, "'"))
+	res += fmt.Sprintf("local %v=$'%v';", shellErrorMessageVariableName, utils.Escape(utils.EscapeBackslash(out.errorMessage), "'"))
 	if out.allEmptyTag {
 		res += fmt.Sprintf("local %v=$'%v';", shellTagAllEmptyVariableName, "empty")
 	}
@@ -94,7 +94,7 @@ func (out *Out) toShellVariables() string {
 		res += fmt.Sprintf(
 			"local %v=$'%v';",
 			fmt.Sprintf(shellAfterVariableName, utils.EncodeTag(cg.tagAligned)),
-			utils.Escape(cg.After, "'"),
+			utils.Escape(utils.EscapeBackslash(cg.After), "'"),
 		)
 	}
 	return res
