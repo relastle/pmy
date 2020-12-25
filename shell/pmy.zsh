@@ -10,6 +10,7 @@ export PMY_TRIGGER_KEY=${PMY_TRIGGER_KEY:-'^ '}
 _PMY_SUCCESS_EXIT_CODE=0
 _PMY_NOT_FOUND_EXIT_CODE=204
 _PMY_FATAL_EXIT_CODE=205
+_PMY_FUZZY_FINDER_FAIL_EXIT_CODE=206
 
 # Main Function of Pmy
 # Args:
@@ -53,7 +54,13 @@ _pmy_main() {
     fi
 
     local fuzzy_finder_cmd=${__pmy_out_fuzzy_finder_cmd:-${PMY_FUZZY_FINDER_DEFAULT_CMD}}
-    local fzf_res_tag_included="$(eval ${__pmy_out_command} | eval ${fuzzy_finder_cmd})"
+    local fzf_res_tag_included
+    fzf_res_tag_included="$(eval ${__pmy_out_command} | eval ${fuzzy_finder_cmd})"
+    if [[ "$?" -ne 0 ]]; then
+        # when ${fuzzy_finder_cmd} is failed (or canceled)
+        return ${_PMY_FUZZY_FINDER_FAIL_EXIT_CODE}
+    fi
+
     # get result from fzf
     # get tag
     if [[ -z ${__pmy_out_tag_all_empty} ]] ; then
@@ -112,6 +119,10 @@ pmy-widget() {
             ;;
         $_PMY_FATAL_EXIT_CODE)
             # When error occurred in pmy-core.
+            ;;
+        $_PMY_FUZZY_FINDER_FAIL_EXIT_CODE)
+            # When fuzzy finder was failed
+            zle reset-prompt
             ;;
     esac
 }
