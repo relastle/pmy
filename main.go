@@ -1,14 +1,12 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"time"
 
-	"github.com/rakyll/statik/fs"
-	_ "github.com/relastle/pmy/statik"
 	"github.com/urfave/cli/v2"
 
 	pmy "github.com/relastle/pmy/src"
@@ -18,6 +16,9 @@ var (
 	bufferLeft  string
 	bufferRight string
 )
+
+//go:embed _shell/_pmy.zsh
+var initScript string
 
 func mainRoutine() {
 	outString := pmy.Run(
@@ -30,19 +31,7 @@ func mainRoutine() {
 }
 
 func initCmdRoutine() {
-	statikFS, err := fs.New()
-	if err != nil {
-		log.Fatal(err)
-	}
-	f, err := statikFS.Open("/_pmy.zsh")
-	if err != nil {
-		log.Fatal(err)
-	}
-	bs, err := ioutil.ReadAll(f)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("%s", string(bs))
+	fmt.Printf("%s", initScript)
 }
 
 func ruleListCmdRoutine() {
