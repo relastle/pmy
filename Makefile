@@ -1,14 +1,13 @@
 .PHONY: main
-main: statik
+main: script
 	go mod tidy
 	go build
 	go install
 
-statik: ./shell/pmy.zsh
+.PHONY: script
+script: ./shell/pmy.zsh
 	# Remove comments from zsh source code
 	sed '/^[[:blank:]]*#/d;s/#.*//' ./shell/pmy.zsh > ./_shell/_pmy.zsh
-	# Make statik files
-	statik -src=./_shell
 
 .PHONY: bench
 bench:
