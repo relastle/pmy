@@ -58,16 +58,19 @@ type pmyTestCases []*pmyTestCase
 // - pmy core runner (Go part)
 // - zsh-go interaction
 func TestIntegration(t *testing.T) {
-	gopath := os.Getenv("GOPATH")
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Error(err)
+	}
 	os.Setenv(
 		"PMY_RULE_PATH",
-		fmt.Sprintf("%v/src/github.com/relastle/pmy/test/rules", gopath),
+		fmt.Sprintf("%v/../test/rules", cwd),
 	)
 	os.Setenv(
 		"PMY_SNIPPET_PATH",
-		fmt.Sprintf("%v/src/github.com/relastle/pmy/test/snippets", gopath),
+		fmt.Sprintf("%v/../test/snippets", cwd),
 	)
-	jsonFile, err := os.Open(fmt.Sprintf("%v/src/github.com/relastle/pmy/test/pmy_testcases.json", gopath))
+	jsonFile, err := os.Open(fmt.Sprintf("%v/../test/pmy_testcases.json", cwd))
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		log.Fatal(err)
